@@ -5,9 +5,10 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box } from '@mui/material';
 import Topbar from './components/TopBar';
 import SideBar from './components/SideBar';
-import NavBar from './components/AppBar';
 import { ColorModeContext, useMode } from './theme';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import store from './store/store'
+import { Provider } from 'react-redux'
 
 import Home from './views/Home';
 import Login from './views/Login';
@@ -65,49 +66,53 @@ function App() {
     <div className="App">
       {isAuthenticated ? (
         <>
-          <ColorModeContext.Provider value={colorMode} >
-            <ThemeProvider theme={theme}>
-              <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
+          <Provider store={store}>
+
+            <ColorModeContext.Provider value={colorMode} >
+              <ThemeProvider theme={theme}>
+                <Box sx={{ display: 'flex' }}>
+                  <CssBaseline />
 
 
-                <Topbar sidebarOpen={openSidebar} onSidebarToggle={handleSidebarOpen} onSidebarClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
-                <SideBar open={openSidebar} onOpen={handleSidebarOpen} onClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
-                <Main open={openSidebar}>
-                  <DrawerHeader />
-                  <Box component="main">
-                    <Container maxWidth="lg">
-                      <Routes>
-                        <Route path="/" exact element={
-                          isAuthenticated ? <Home to="/" /> : <Navigate to="/login" />
-                        }>
-                        </Route>
-                        <Route path="/user" exact element={
-                          isAuthenticated ? <User to="/user" /> : <Navigate to="/login" />
-                        }>
-                        </Route>
-                      </Routes>
-                    </Container>
-                  </Box>
-                </Main>
+                  <Topbar sidebarOpen={openSidebar} onSidebarToggle={handleSidebarOpen} onSidebarClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
+                  <SideBar open={openSidebar} onOpen={handleSidebarOpen} onClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
+                  <Main open={openSidebar}>
+                    <DrawerHeader />
+                    <Box component="main">
+                      <Container maxWidth="lg">
+                        <Routes>
+                          <Route path="/" exact element={
+                            isAuthenticated ? <Home to="/" /> : <Navigate to="/login" />
+                          }>
+                          </Route>
+                          <Route path="/user" exact element={
+                            isAuthenticated ? <User to="/user" /> : <Navigate to="/login" />
+                          }>
+                          </Route>
+                        </Routes>
+                      </Container>
+                    </Box>
+                  </Main>
 
 
-              </Box>
-            </ThemeProvider>
-          </ColorModeContext.Provider >
+                </Box>
+              </ThemeProvider>
+            </ColorModeContext.Provider >
+          </Provider>
 
         </>
       ) : (
         <Navigate to="/login" />
       )}
 
-
-      <Routes>
-        <Route path="/login" exact element={
-          isAuthenticated ? <Navigate to="/" /> : <Login />
-        }>
-        </Route>
-      </Routes>
+      <Provider store={store}>
+        <Routes>
+          <Route path="/login" exact element={
+            isAuthenticated ? <Navigate to="/" /> : <Login />
+          }>
+          </Route>
+        </Routes>
+      </Provider>
     </div >
   );
 }

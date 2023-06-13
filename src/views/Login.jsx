@@ -1,9 +1,13 @@
 import './Login.css';
 import * as React from 'react';
+import { useSelector, useDispatch } from 'react-redux'
+import { setLogin } from '../store/features/Login'
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 const LightTheme = createTheme({
@@ -16,13 +20,15 @@ const LightTheme = createTheme({
 });
 
 export default function Login() {
+    const dispatch = useDispatch()
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get('email'),
+        dispatch(setLogin({
+            email: data.get('matricula'),
             password: data.get('password'),
-        });
+        }))
     };
 
     return (
@@ -31,7 +37,7 @@ export default function Login() {
                 <Grid item xs={12} md={8} className='grid-img'>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <Box className="box-login">
+                    <Box component="form" onSubmit={handleSubmit} className="box-login">
                         <ThemeProvider theme={LightTheme}>
                             <Grid item xs={12} md={4} className='grid-logo'>
 
@@ -44,16 +50,23 @@ export default function Login() {
                                     <TextField
                                         required
                                         id="matricula"
+                                        name="matricula"
                                         label="Matricula"
                                     // variant="filled"
                                     />
                                     <TextField
                                         required
-                                        id="senha"
+                                        id="password"
+                                        name="password"
+                                        type="password"
                                         label="Senha"
                                     // variant="filled"
                                     />
-                                    <Button variant="contained" color="success">
+                                    {/* <FormControlLabel
+                                        control={<Checkbox value="remember" color="primary" />}
+                                        label="Lembrar-me"
+                                    /> */}
+                                    <Button type="submit" variant="contained" color="success">
                                         Acessar
                                     </Button>
                                 </Box>
