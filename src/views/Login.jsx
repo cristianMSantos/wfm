@@ -26,7 +26,7 @@ export default function Login() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         dispatch(setLogin({
-            email: data.get('matricula'),
+            matricula: data.get('matricula'),
             password: data.get('password'),
         }))
     };
