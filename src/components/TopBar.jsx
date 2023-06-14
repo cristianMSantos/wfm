@@ -3,9 +3,11 @@ import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 import { styled, useTheme } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
+import { tokens } from "../theme";
 
 const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) => {
     const theme = useTheme();
+    const colors = tokens(theme.palette.mode);
 
     const handleSidebarToggle = () => {
         if (sidebarOpen) {
@@ -15,7 +17,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
         }
     };
 
-    const AppBar = styled(MuiAppBar, {
+    const CustomAppBar  = styled(MuiAppBar, {
         shouldForwardProp: (prop) => prop !== 'open',
     })(({ theme, open }) => ({
         transition: theme.transitions.create(['margin', 'width'], {
@@ -33,7 +35,13 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     }));
 
     return (
-        <AppBar position="fixed" open={sidebarOpen} style={{backgroundColor: theme.palette.primary.main}}>
+        <CustomAppBar  position="fixed" open={sidebarOpen} sx={{
+            backgroundColor: colors.primary[500],
+            // boxShadow: "none",
+            backgroundImage: "unset",
+            borderBottom:'1px solid rgba(255, 255, 255, 0.12)',
+            height:"12%"
+           }}>
             <Toolbar>
                 <IconButton color="inherit" edge="start" onClick={handleSidebarToggle} sx={{ mr: 2 }}>
                     <MenuIcon />
@@ -42,7 +50,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                     Persistent drawer
                 </Typography>
             </Toolbar>
-        </AppBar>
+        </CustomAppBar >
     );
 };
 
