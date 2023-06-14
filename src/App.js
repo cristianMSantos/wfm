@@ -7,8 +7,7 @@ import Topbar from './components/TopBar';
 import SideBar from './components/SideBar';
 import { ColorModeContext, useMode } from './theme';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import store from './store/store'
-import { Provider } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import Home from './views/Home';
 import Login from './views/Login';
@@ -58,15 +57,14 @@ function App() {
     justifyContent: 'flex-end',
   }));
 
-  const token = localStorage.getItem('token');
-
+  const token = useSelector((state) => state.login.isAuthenticated)
   const isAuthenticated = !!token;
 
   return (
     <div className="App">
       {isAuthenticated ? (
         <>
-          <Provider store={store}>
+          
 
             <ColorModeContext.Provider value={colorMode} >
               <ThemeProvider theme={theme}>
@@ -98,21 +96,21 @@ function App() {
                 </Box>
               </ThemeProvider>
             </ColorModeContext.Provider >
-          </Provider>
+        
 
         </>
       ) : (
         <Navigate to="/login" />
       )}
 
-      <Provider store={store}>
+      
         <Routes>
           <Route path="/login" exact element={
             isAuthenticated ? <Navigate to="/" /> : <Login />
           }>
           </Route>
         </Routes>
-      </Provider>
+      
     </div >
   );
 }
