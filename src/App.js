@@ -18,7 +18,7 @@ export const SidebarContext = createContext();
 function App() {
   const [theme, colorMode] = useMode()
   const [openSidebar, setOpenSidebar] = useState(true);
-  const sidebarWidth = openSidebar ? 150 : 0; // Specify the width of the sidebar when it's open and closed
+  const sidebarWidth = openSidebar ? 240 : 0; // Specify the width of the sidebar when it's open and closed
 
   const handleSidebarOpen = () => {
     setOpenSidebar(true);
