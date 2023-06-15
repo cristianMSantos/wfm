@@ -1,5 +1,8 @@
 import React, { useEffect } from "react";
-import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Badge, Box } from '@mui/material';
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { styled, useTheme } from '@mui/material/styles';
 import MuiAppBar from '@mui/material/AppBar';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -14,6 +17,18 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     const token = useSelector((state) => state.login.isAuthenticated)
     const user = useSelector((state) => state.user.user)
     const colors = tokens(theme.palette.mode);
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+
+    const isMenuOpen = Boolean(anchorEl);
+    const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+    const handleProfileMenuOpen = (event) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const menuId = 'primary-search-account-menu';
 
     useEffect(() => {
         getUser()
@@ -75,8 +90,39 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                     <MenuIcon />
                 </IconButton>
                 <Typography variant="h6" noWrap component="div">
-                    { user.nome }
+                    {user ? user.nome : ''}
                 </Typography>
+                <Box sx={{ flexGrow: 1 }} />
+                <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        aria-label="account of current user"
+                        aria-controls={menuId}
+                        aria-haspopup="true"
+                        onClick={handleProfileMenuOpen}
+                        color="inherit"
+                    >
+                        <AccountCircle />
+                    </IconButton>
+                    <IconButton
+                        size="large"
+                        edge="end"
+                        aria-label="show settings"
+                        color="inherit"
+                    >
+                        <SettingsIcon />
+                    </IconButton>
+                    <IconButton
+                        size="large"
+                        aria-label="show 17 new notifications"
+                        color="inherit"
+                    >
+                        <Badge badgeContent={17} color="error">
+                            <NotificationsIcon />
+                        </Badge>
+                    </IconButton>
+                </Box>
             </Toolbar>
         </CustomAppBar >
     );
