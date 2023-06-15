@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import api from '../../axios'
 
 
 export const login = createSlice({
@@ -7,7 +8,7 @@ export const login = createSlice({
         isAuthenticated: localStorage.getItem('token'),
     },
     reducers: {
-        setLogin: (state, {payload}) => {
+        setLogin: (state, { payload }) => {
             // Redux Toolkit allows us to write "mutating" logic in reducers. It
             // doesn't actually mutate the state because it uses the Immer library,
             // which detects changes to a "draft state" and produces a brand new
@@ -18,10 +19,16 @@ export const login = createSlice({
                 state.isAuthenticated = localStorage.getItem('token')
             }
         },
+        setLogout: (state) => {
+            state.user = null
+            delete api.defaults.headers.common['Authorization']
+            localStorage.removeItem('token')
+            state.isAuthenticated = localStorage.getItem('token')
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setLogin } = login.actions
+export const { setLogin, setLogout } = login.actions
 
 export default login.reducer
