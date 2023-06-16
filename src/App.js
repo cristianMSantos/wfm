@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, createContext, useEffect } from "react";
+import React, { useState, createContext, useEffect, useContext } from "react";
 import { useNavigate } from 'react-router-dom';
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,16 +16,19 @@ import Login from './views/Login';
 import User from './views/User';
 import { setLogout } from './store/features/Login';
 
+import { RoutesContext, RoutesElement } from './routes';
+
 export const SidebarContext = createContext();
 
 function App() {
   const [theme, colorMode] = useMode()
+  const routes = useContext(RoutesContext);
   const [openSidebar, setOpenSidebar] = useState(true);
   const sidebarWidth = openSidebar ? 240 : 0; // Specify the width of the sidebar when it's open and closed
 
   const navigate = useNavigate();
   const dispatch = useDispatch()
-  const token =  useSelector((state) => state.login.isAuthenticated)
+  const token = useSelector((state) => state.login.isAuthenticated)
   const isAuthenticated = !!token;
 
   axios.interceptors.response.use(response => {
@@ -76,7 +79,6 @@ function App() {
     justifyContent: 'flex-end',
   }));
 
-
   return (
     <div className="App">
       {isAuthenticated ? (
@@ -95,16 +97,9 @@ function App() {
                   <DrawerHeader />
                   <Box component="main">
                     <Container maxWidth="lg">
-                      <Routes>
-                        <Route path="/" exact element={
-                          isAuthenticated ? <Home to="/" /> : <Navigate to="/login" />
-                        }>
-                        </Route>
-                        <Route path="/user" exact element={
-                          isAuthenticated ? <User to="/user" /> : <Navigate to="/login" />
-                        }>
-                        </Route>
-                      </Routes>
+                    <RoutesContext.Provider value={routes}>
+                      <RoutesElement />
+                    </RoutesContext.Provider>
                     </Container>
                   </Box>
                 </Main>

@@ -62,6 +62,21 @@ const menuItems = [
       ],
       section: 'Departamentos',
     },
+    {
+      id: 'user',
+      icon: <DataThresholdingOutlinedIcon />,
+      text: 'Usuário',
+      hasSubItems: true,
+      subItems: [
+        {
+          id: 'user-list',
+          icon: <StarBorder />,
+          text: 'Lista',
+          route: '/user/list',
+        },
+      ],
+      section: 'Departamentos',
+    },
   ];
   
 
