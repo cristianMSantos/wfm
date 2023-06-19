@@ -17,7 +17,11 @@ export default function BreadCrumbs() {
     })
 
     useEffect(() => {
-        console.log(routes)
+        pathnames.map((value, index) => {
+            console.log(routes)
+            const last = index === pathnames.length - 1;
+            console.log(pathnames)
+        })
     }, [])
 
     function handleClick(event) {
@@ -32,7 +36,7 @@ export default function BreadCrumbs() {
     return (
         <div role="presentation" onClick={handleClick}>
             <Breadcrumbs separator="›" aria-label="breadcrumb">
-                <LinkRouter underline="hover" color="inherit" href="/">
+                <LinkRouter underline="hover" color="inherit" to="/">
                     Home
                 </LinkRouter>
                 {pathnames.map((value, index) => {

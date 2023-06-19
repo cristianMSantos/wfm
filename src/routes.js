@@ -25,6 +25,11 @@ const routes = [
         element: IsAuthenticated ? <User to="/user" /> : <Navigate to="/login" />,
     },
     {
+        path: "/user/create",
+        name: 'User Create',
+        element: IsAuthenticated ? <UserList to="/user" /> : <Navigate to="/login" />,
+    },
+    {
         path: "/user/list",
         name: 'User List',
         element: IsAuthenticated ? <UserList to="/user" /> : <Navigate to="/login" />,
