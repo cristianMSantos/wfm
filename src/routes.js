@@ -19,6 +19,21 @@ const routes = [
         name: 'Home',
         element: IsAuthenticated ? <Home to="/" /> : <Navigate to="/login" />,
     },
+    // {
+    //     path: "/user",
+    //     name: 'User',
+    //     children: [
+    //         {
+    //             path: "",
+    //             element: <User to="user" replace />
+    //         },
+    //         {
+    //             path: "create",
+    //             element: <UserList />,
+    //         },
+
+    //     ],
+    // },
     {
         path: "/user",
         name: 'User',

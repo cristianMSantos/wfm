@@ -80,6 +80,12 @@ const menuItems = [
           text: 'Criação',
           route: '/user/create',
         },
+        {
+          id: 'user',
+          icon: <StarBorder />,
+          text: 'Index',
+          route: '/user',
+        },
       ],
       section: 'Departamentos',
     },

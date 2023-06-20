@@ -107,7 +107,7 @@ function App() {
 
               </Box>
             </ThemeProvider>
-          </ColorModeContext.Provider >
+          </ColorModeContext.Provider>
 
 
         </>

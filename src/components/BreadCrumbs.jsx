@@ -1,13 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import { Link as RouterLink, Routes, useLocation, useResolvedPath } from "react-router-dom";
+import { Navigate, Link as RouterLink, Routes, useLocation, useNavigate, useResolvedPath } from "react-router-dom";
 import { Typography } from "@mui/material";
 import { RoutesContext } from "../routes";
 
 export default function BreadCrumbs() {
     const routes = useContext(RoutesContext);
-    const location = useLocation();
+    const navigate = useNavigate()
+    const location = useLocation()
     const pathnames = location.pathname.split('/').filter((x) => x);
 
     const breadcrumbNameMap = {};
@@ -16,29 +17,28 @@ export default function BreadCrumbs() {
         breadcrumbNameMap[e.path] = e.name
     })
 
-    useEffect(() => {
-        pathnames.map((value, index) => {
-            console.log(routes)
-            const last = index === pathnames.length - 1;
-            console.log(pathnames)
-        })
-    }, [])
-
-    function handleClick(event) {
-        event.preventDefault();
-        console.info('You clicked a breadcrumb.');
+    function handleClick(event, to) {
+        event.preventDefault()
+        console.log('handleClick')
+        console.log(to)
+        navigate(to)
     }
 
     function LinkRouter(props) {
+        // console.log(props)
+        // return <Link {...props} onClick={(event) => handleClick(event, props.to)}>{breadcrumbNameMap[props.to]}</Link>
         return <Link {...props} component={RouterLink} />;
     }
 
     return (
-        <div role="presentation" onClick={handleClick}>
-            <Breadcrumbs separator="›" aria-label="breadcrumb">
-                <LinkRouter underline="hover" color="inherit" to="/">
+        <div role="presentation" >
+            <Breadcrumbs aria-label="breadcrumb">
+                {/* <LinkRouter underline="hover" color="inherit" to="/">
                     Home
-                </LinkRouter>
+                </LinkRouter> */}
+                <Typography color="inherit">
+                    Home
+                </Typography>
                 {pathnames.map((value, index) => {
                     const last = index === pathnames.length - 1;
                     const to = `/${pathnames.slice(0, index + 1).join('/')}`;
@@ -48,10 +48,14 @@ export default function BreadCrumbs() {
                             {breadcrumbNameMap[to]}
                         </Typography>
                     ) : (
-                        <LinkRouter underline="hover" color="inherit" to={to} key={to}>
+                        <Typography color="inherit" key={to}>
                             {breadcrumbNameMap[to]}
-                        </LinkRouter>
+                        </Typography>
                     );
+
+                    {/* <LinkRouter underline="hover" color="inherit" to={to} key={to}>
+                            {breadcrumbNameMap[to]}
+                        </LinkRouter> */}
                 })}
             </Breadcrumbs>
         </div>

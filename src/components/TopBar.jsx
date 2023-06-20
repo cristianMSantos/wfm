@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AppBar, Toolbar, Typography, IconButton, Badge, Box } from '@mui/material';
 import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
@@ -22,6 +22,7 @@ import { tokens } from "../theme";
 import api from '../axios'
 import { setUser } from '../store/features/User'
 import BreadCrumbs from "./BreadCrumbs";
+import SwipeableTemporaryDrawer from "./Swipeable";
 
 const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) => {
     const theme = useTheme();
@@ -41,6 +42,8 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+    const [ drawerRight, setDrawerRight ] = useState(false);
+
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -57,6 +60,11 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
     };
+
+    const toggleDrawerRight = (event) => {
+        setDrawerRight(event)
+        console.log(event)
+    }
 
     const menuId = 'primary-search-account-menu';
 
@@ -90,6 +98,10 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                 <ListItemText>Sair</ListItemText>
             </MenuItem>
         </Menu>
+    );
+
+    const renderSwipeable = (
+        <SwipeableTemporaryDrawer onSidebarToggle={toggleDrawerRight} open={drawerRight}/>
     );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -169,7 +181,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     useEffect(() => {
         getUser()
     }, []);
-
+    
     const getUser = async () => {
         const options = {
             url: `/auth/me`,
@@ -248,6 +260,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                             edge="end"
                             aria-label="show settings"
                             color="inherit"
+                            onClick={() => toggleDrawerRight(true)}
                         >
                             <SettingsIcon />
                         </IconButton>
@@ -277,6 +290,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
+            {renderSwipeable}
         </Box>
     );
 };
