@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit'
 export const menu = createSlice({
     name: 'menu',
     initialState: {
-        list: null,
+        list: [],
     },
     reducers: {
         setMenu: (state, {payload}) => {
