@@ -5,7 +5,7 @@ import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { Container, Box } from '@mui/material';
 import Topbar from './components/TopBar';
-import SideBar from './components/SideBar';
+import SideBar from './components/sidebar/Sidebar';
 import { ColorModeContext, useMode } from './theme';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
