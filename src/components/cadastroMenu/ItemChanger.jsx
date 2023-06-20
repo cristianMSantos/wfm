@@ -12,7 +12,9 @@ import * as Icons from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
 
-const ItemChanger = () => {
+const ItemChanger = ({ defaultIcon }) => {
+const DynamicIcon = Icons[defaultIcon];
+
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const allIcons = Object.keys(Icons);
@@ -140,7 +142,7 @@ const ItemChanger = () => {
     <>
       <div>
         <IconButton onClick={handleOpen}>
-          <Icons.Settings
+          <DynamicIcon
             sx={{
               fontSize: "24px",
               color: selectedIcon ? "primary" : "inherit",
