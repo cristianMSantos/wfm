@@ -36,8 +36,8 @@ export default function SwipeableTemporaryDrawer({onSidebarToggle, open}) {
 
     const handleChangeColorPrimary = (color) => {
         setColorPrimary(color);
-        // colorMode.toggleColorMode()
-        console.log(color)
+        colorMode.toggleComponentMode(color)
+        // console.log(color)
     };
 
   const list = () => (
