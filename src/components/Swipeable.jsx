@@ -16,13 +16,24 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Avatar, AvatarGroup, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, Typography } from '@mui/material';
 import { ColorModeContext } from '../theme';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setOrientation } from '../store/features/SideBarControl';
 
 
-export default function SwipeableTemporaryDrawer({onSidebarToggle, open}) {
+export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
     const theme = useTheme()
     const colorMode = React.useContext(ColorModeContext)
     const [mode, setMode] = React.useState('dark');
     const [colorPrimary, setColorPrimary] = React.useState('blue');
+    const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
+    const dispatch = useDispatch()
+    const [menu, setMenu] = React.useState(sidebarControl);
+
+
+    useEffect(() => {
+        setMode(mode);
+    }, [])
 
     const handleClick = (open) => (event) => {
         onSidebarToggle(open)
@@ -40,100 +51,125 @@ export default function SwipeableTemporaryDrawer({onSidebarToggle, open}) {
         // console.log(color)
     };
 
-  const list = () => (
-    <Box
-      sx={{ 
-        width: 250,
-        backgroundColor: theme.palette.mode,
-        ...theme.typography.fontSize,
-        color: theme.palette.mode,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center'
-         }}
-      role="presentation"
-    //   onKeyDown={handleClick(false)}
-    >
-      <Grid container sx={{display: 'flex', alignItems: 'center', padding: theme.spacing(2),}}>
-        <Grid item xs={10} md={10}>
-            <Typography>Personalizar Sistema</Typography>
-        </Grid>
-        <Grid item xs={2} md={2}>
-            <IconButton aria-label='close' onClick={handleClick(false)} edge="end">
-                <CloseIcon />
-            </IconButton>
-        </Grid>
-      </Grid>  
-      <Divider />
-      <Grid container sx={{display: 'flex', alignItems: 'center',  padding: theme.spacing(2),}}>
-        <FormControl>
-            <Grid container sx={{display: 'flex', alignItems: 'center'}}>
-                <Grid item xs={12} md={12}>
-                    <Typography>Modo</Typography>
-                    <RadioGroup
-                            row
-                            aria-labelledby="mode"
-                            name="mode-group"
-                            value={mode}
-                            onChange={handleChangeMode}
-                        >
-                        <FormControlLabel value="dark" control={<Radio />} label="Escuro" />
-                        <FormControlLabel value="light" control={<Radio />} label="Claro" />
-                    </RadioGroup>
+    const handleChangeMenu = (event) => {
+        setMenu(event.target.value)
+        dispatch(setOrientation(event.target.value))
+
+        console.log(event.target.value)
+    }
+
+    const list = () => (
+        <Box
+            sx={{
+                width: 250,
+                backgroundColor: theme.palette.mode,
+                ...theme.typography.fontSize,
+                color: theme.palette.mode,
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center'
+            }}
+            role="presentation"
+        //   onKeyDown={handleClick(false)}
+        >
+            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+                <Grid item xs={10} md={10}>
+                    <Typography>Personalizar Sistema</Typography>
                 </Grid>
-                <Grid item xs={12} md={12}>
-                    <Typography>Cor Primaria</Typography>
-                    <AvatarGroup 
-                        variant="rounded" 
-                        sx={{display: 'flex', justifyContent: 'center'}}
-                        >
-                        <Avatar sx={{ bgcolor: '#004AAD', mr: 2 }}>
-                            <Button sx={{width: '100%', height: '100%'}} onClick={() => handleChangeColorPrimary('blue')}>
-                                {colorPrimary === 'blue' ? <CheckIcon sx={{color: 'white'}} /> : ''}
-                            </Button>
-                        </Avatar>
-                        <Avatar sx={{ bgcolor: '#FD6809', mr: 2 }}>
-                            <Button sx={{width: '100%', height: '100%'}} onClick={() => handleChangeColorPrimary('orange')}>
-                                {colorPrimary === 'orange' ? <CheckIcon sx={{color: 'white'}} /> : ''}
-                            </Button>
-                        </Avatar>
-                        <Avatar sx={{ bgcolor: '#716F70', mr: 2 }}>
-                            <Button sx={{width: '100%', height: '100%'}} onClick={() => handleChangeColorPrimary('grey')}>
-                                {colorPrimary === 'grey' ? <CheckIcon sx={{color: 'white'}} /> : ''}
-                            </Button>
-                        </Avatar>
-                    </AvatarGroup>
+                <Grid item xs={2} md={2}>
+                    <IconButton aria-label='close' onClick={handleClick(false)} edge="end">
+                        <CloseIcon />
+                    </IconButton>
                 </Grid>
             </Grid>
-        </FormControl>
-      </Grid>  
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
-      </List>
-    </Box>
-  );
+            <Divider />
+            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+                <Grid container sx={{ display: 'flex', alignItems: 'center' }}>
+                    <Grid item xs={12} md={12}>
+                        <Typography>Modo</Typography>
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                aria-labelledby="mode"
+                                name="mode-group"
+                                value={mode}
+                                onChange={handleChangeMode}
+                            >
+                                <FormControlLabel value="dark" control={<Radio />} label="Escuro" />
+                                <FormControlLabel value="light" control={<Radio />} label="Claro" />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                    <Grid item xs={12} md={12}>
+                        <Typography>Cor Primaria</Typography>
+                        <AvatarGroup
+                            variant="rounded"
+                            sx={{ display: 'flex', justifyContent: 'center' }}
+                        >
+                            <Avatar sx={{ bgcolor: '#004AAD', mr: 2 }}>
+                                <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('blue')}>
+                                    {colorPrimary === 'blue' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
+                                </Button>
+                            </Avatar>
+                            <Avatar sx={{ bgcolor: '#FD6809', mr: 2 }}>
+                                <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('orange')}>
+                                    {colorPrimary === 'orange' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
+                                </Button>
+                            </Avatar>
+                            <Avatar sx={{ bgcolor: '#716F70', mr: 2 }}>
+                                <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('grey')}>
+                                    {colorPrimary === 'grey' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
+                                </Button>
+                            </Avatar>
+                        </AvatarGroup>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Divider />
+            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+                <Grid item xs={12} md={12}>
+                    <Typography>Menu</Typography>
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby="menu"
+                            name="menu-group"
+                            value={menu}
+                            onChange={handleChangeMenu}
+                        >
+                            <FormControlLabel value="vertical" control={<Radio />} label="Vertical" />
+                            <FormControlLabel value="horizontal" control={<Radio />} label="Horizontal" />
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
+            </Grid>
+            <Divider />
+            <List>
+                {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                    <ListItem key={text} disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                            </ListItemIcon>
+                            <ListItemText primary={text} />
+                        </ListItemButton>
+                    </ListItem>
+                ))}
+            </List>
+        </Box>
+    );
 
-  return (
-    <div>
-          {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
-        <SwipeableDrawer
-            anchor='right'
-            open={open}
-            onClose={handleClick(false)}
-            onOpen={handleClick(true)}
-        >
-            {list()}
-        </SwipeableDrawer>
-    </div>
-  );
+    return (
+        <div>
+            {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
+            <SwipeableDrawer
+                anchor='right'
+                open={open}
+                onClose={handleClick(false)}
+                onOpen={handleClick(true)}
+            >
+                {list()}
+            </SwipeableDrawer>
+        </div>
+    );
 }

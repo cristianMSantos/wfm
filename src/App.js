@@ -24,7 +24,8 @@ function App() {
   const [theme, colorMode] = useMode()
   const routes = useContext(RoutesContext);
   const [openSidebar, setOpenSidebar] = useState(true);
-  const sidebarWidth = openSidebar ? 240 : 0; // Specify the width of the sidebar when it's open and closed
+  const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
+  const sidebarWidth = openSidebar && sidebarControl === 'vertical' ? 240 : 0; // Specify the width of the sidebar when it's open and closed
 
   const navigate = useNavigate();
   const dispatch = useDispatch()

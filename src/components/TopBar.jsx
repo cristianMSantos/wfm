@@ -23,12 +23,16 @@ import api from '../axios'
 import { setUser } from '../store/features/User'
 import BreadCrumbs from "./BreadCrumbs";
 import SwipeableTemporaryDrawer from "./Swipeable";
+import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import logo from "../assets/images/logo.png";
+import { motion } from "framer-motion";
 
 const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) => {
     const theme = useTheme();
     const dispatch = useDispatch()
     const token = useSelector((state) => state.login.isAuthenticated)
     const user = useSelector((state) => state.user.user)
+    const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
     const colors = tokens(theme.palette.mode);
 
     const fullName = user ? user.nome : '';
@@ -37,12 +41,26 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     const lastName = nameParts[nameParts.length - 1];
 
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorElTopMenu, setAnchorElTopMenu] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-    const [ drawerRight, setDrawerRight ] = useState(false);
+    const [drawerRight, setDrawerRight] = useState(false);
+    const openTopMenu = Boolean(anchorElTopMenu);
+
+
+    const handleMenuTopOpen = (event) => {
+        setAnchorElTopMenu(event.currentTarget);
+    };
+
+    const handleMenuTopClone = (event) => {
+        setAnchorElTopMenu(null);
+    };
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
 
     const handleProfileMenuOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -101,7 +119,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     );
 
     const renderSwipeable = (
-        <SwipeableTemporaryDrawer onSidebarToggle={toggleDrawerRight} open={drawerRight}/>
+        <SwipeableTemporaryDrawer onSidebarToggle={toggleDrawerRight} open={drawerRight} />
     );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -181,7 +199,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     useEffect(() => {
         getUser()
     }, []);
-    
+
     const getUser = async () => {
         const options = {
             url: `/auth/me`,
@@ -219,14 +237,25 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                 // boxShadow: "none",
                 backgroundImage: "unset",
                 borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
-                height: "12%"
+                height: sidebarControl === 'horizontal' ? 'auto' : '12%'
             }}>
                 <Toolbar>
-                    <IconButton color="inherit" edge="start" onClick={handleSidebarToggle} sx={{ mr: 2 }}>
-                        <ViewSidebarOutlinedIcon sx={{ transform: 'scaleX(-1)' }} />
-                    </IconButton>
+                    {
+                        sidebarControl === 'vertical' ?
+                            <IconButton color="inherit" edge="start" onClick={handleSidebarToggle} sx={{  }}>
+                                <ViewSidebarOutlinedIcon sx={{ transform: 'scaleX(-1)' }} />
+                            </IconButton> :
+                            <motion.img
+                                src={logo}
+                                alt="Logo"
+                                style={{ width: "10%", marginRight: '20px' }}
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                            />
+
+                    }
                     <BreadCrumbs />
-                    
+
                     <Box sx={{ flexGrow: 1 }} />
                     <Search sx={{ mr: 4 }}>
                         <SearchIconWrapper>
@@ -287,6 +316,33 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                         </IconButton>
                     </Box>
                 </Toolbar>
+                {
+                    sidebarControl === 'horizontal' ?
+                        <Box sx={{ display: 'flex' }}>
+                            <Button
+                                id="basic-button"
+                                aria-controls={openTopMenu ? 'basic-menu' : undefined}
+                                aria-haspopup="true"
+                                aria-expanded={openTopMenu ? 'true' : undefined}
+                                onClick={handleMenuTopOpen}
+                            >
+                                Ferramentas
+                                {openTopMenu ? <ExpandLess /> : <ExpandMore />}
+                            </Button>
+                            <Menu
+                                id="basic-menu"
+                                anchorEl={anchorElTopMenu}
+                                open={openTopMenu}
+                                onClose={handleMenuTopClone}
+                                MenuListProps={{
+                                    'aria-labelledby': 'basic-button',
+                                }}
+                            >
+                                <MenuItem onClick={handleMenuTopClone}>DashBoard</MenuItem>
+                            </Menu>
+                        </Box> : false
+
+                }
             </AppBar>
             {renderMobileMenu}
             {renderMenu}
