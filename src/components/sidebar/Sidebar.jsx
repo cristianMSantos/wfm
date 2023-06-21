@@ -19,7 +19,7 @@ import {
   ListItemButtonStyled,
   ListItemStyled,
 } from "./Sidebar.styles";
-import CadastroMenu from '../cadastroMenu/CadastroMenu';
+import EditorItem from "../cadastroMenu/editorItem";
 
 const Sidebar = ({ open, onClose, sidebarWidth }) => {
   const { menuItems, error } = useMenu();
@@ -115,7 +115,7 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
             </React.Fragment>
           ))}
       </List>
-      <CadastroMenu></CadastroMenu>
+      <EditorItem></EditorItem>
     </Drawer>
   );
 };

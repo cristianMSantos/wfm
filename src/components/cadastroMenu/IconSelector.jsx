@@ -12,29 +12,18 @@ import * as Icons from "@mui/icons-material";
 import { tokens } from "../../theme";
 import { useTheme } from "@mui/material/styles";
 
-const ItemChanger = ({ defaultIcon }) => {
-const DynamicIcon = Icons[defaultIcon];
-
+const IconSelector = ({ isOpen, onClose }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const allIcons = Object.keys(Icons);
-  const [open, setOpen] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [searchText, setSearchText] = useState("");
   const [selectedStyle, setSelectedStyle] = useState("all");
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
   const handleIconClick = (icon) => {
     setSelectedIcon(icon);
-    handleClose();
     onSelect(icon);
+    onClose(icon);
   };
 
   const handleSearchChange = (event) => {
@@ -76,7 +65,7 @@ const DynamicIcon = Icons[defaultIcon];
   };
 
   const onSelect = (icon) => {
-    console.log("Selected Icon:", icon);
+    // console.log("Selected Icon:", icon);
     // Perform any desired action with the selected icon
   };
 
@@ -99,7 +88,7 @@ const DynamicIcon = Icons[defaultIcon];
         return (
           <IconButton
             key={icon}
-            onClick={() => handleIconClick(icon)}
+            onClick={() => handleIconClick(icon, onClose)}
             color="default"
             sx={{
               display: "flex",
@@ -137,84 +126,59 @@ const DynamicIcon = Icons[defaultIcon];
 
     return iconRows;
   };
-
   return (
-    <>
-      <div>
-        <IconButton onClick={handleOpen}>
-          <DynamicIcon
-            sx={{
-              fontSize: "24px",
-              color: selectedIcon ? "primary" : "inherit",
-            }}
+    <Dialog open={isOpen} onClose={onClose}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="stretch"
+        padding="16px"
+        width="600px"
+        maxHeight="400px"
+      >
+        <RadioGroup
+          aria-label="icon-style"
+          name="icon-style"
+          value={selectedStyle}
+          onChange={handleStyleChange}
+          style={{ marginBottom: "16px" }}
+          row
+        >
+          <FormControlLabel value="all" control={<Radio />} label="All" />
+          <FormControlLabel value="filled" control={<Radio />} label="Filled" />
+          <FormControlLabel
+            value="outlined"
+            control={<Radio />}
+            label="Outlined"
           />
-        </IconButton>
-        <Dialog open={open} onClose={handleClose}>
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="stretch"
-            padding="16px"
-            width="600px"
-            maxHeight="400px"
-          >
-            <RadioGroup
-              aria-label="icon-style"
-              name="icon-style"
-              value={selectedStyle}
-              onChange={handleStyleChange}
-              style={{ marginBottom: "16px" }}
-              row
-            >
-              <FormControlLabel value="all" control={<Radio />} label="All" />
-              <FormControlLabel
-                value="filled"
-                control={<Radio />}
-                label="Filled"
-              />
-              <FormControlLabel
-                value="outlined"
-                control={<Radio />}
-                label="Outlined"
-              />
-              <FormControlLabel
-                value="round"
-                control={<Radio />}
-                label="Rounded"
-              />
-              <FormControlLabel
-                value="twotone"
-                control={<Radio />}
-                label="Two Tone"
-              />
-              <FormControlLabel
-                value="sharp"
-                control={<Radio />}
-                label="Sharp"
-              />
-            </RadioGroup>
-            <TextField
-              label="Search"
-              variant="outlined"
-              value={searchText}
-              onChange={handleSearchChange}
-              style={{ marginBottom: "16px" }}
-            />
-            <div
-              style={{
-                overflowY: "auto",
-                boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-                backgroundColor: colors.primary[300],
-                borderRadius: "16px",
-              }}
-            >
-              {renderIcons()}
-            </div>
-          </Box>
-        </Dialog>
-      </div>
-    </>
+          <FormControlLabel value="round" control={<Radio />} label="Rounded" />
+          <FormControlLabel
+            value="twotone"
+            control={<Radio />}
+            label="Two Tone"
+          />
+          <FormControlLabel value="sharp" control={<Radio />} label="Sharp" />
+        </RadioGroup>
+        <TextField
+          label="Search"
+          variant="outlined"
+          value={searchText}
+          onChange={handleSearchChange}
+          style={{ marginBottom: "16px" }}
+        />
+        <div
+          style={{
+            overflowY: "auto",
+            boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
+            backgroundColor: colors.primary[300],
+            borderRadius: "16px",
+          }}
+        >
+          {renderIcons()}
+        </div>
+      </Box>
+    </Dialog>
   );
 };
 
-export default ItemChanger;
+export default IconSelector;
