@@ -101,7 +101,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     );
 
     const renderSwipeable = (
-        <SwipeableTemporaryDrawer onSidebarToggle={toggleDrawerRight} open={drawerRight}/>
+        <SwipeableTemporaryDrawer onSidebarToggle={toggleDrawerRight} open={drawerRight} />
     );
 
     const mobileMenuId = 'primary-search-account-menu-mobile';
@@ -214,11 +214,10 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                 display: 'flex',
                 justifyContent: 'center',
                 width: `calc(100% - ${sidebarWidth}px)`,
-                backgroundColor: colors.primary[500],
-                color: colors.grey[100],
-                // boxShadow: "none",
+                backgroundColor: colors.systembar[500],
+                boxShadow: "none",
                 backgroundImage: "unset",
-                borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+                borderBottom: '1px solid #cad4e0',
                 height: "12%"
             }}>
                 <Toolbar>

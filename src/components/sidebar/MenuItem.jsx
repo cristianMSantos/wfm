@@ -112,14 +112,14 @@ const MenuItem = ({ menuItem, openIcons, onClick, onClickSubItem }) => {
                 <Icons.ExpandLess
                   sx={{
                     minWidth: 0,
-                    color: colors.grey[100],
+                    
                   }}
                 />
               ) : (
                 <Icons.ChevronRight
                   sx={{
                     minWidth: 0,
-                    color: colors.grey[100],
+                    
                   }}
                 />
               ))}

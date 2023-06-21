@@ -16,14 +16,14 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import { Avatar, AvatarGroup, FormControl, FormControlLabel, FormLabel, Grid, IconButton, Radio, RadioGroup, Typography } from '@mui/material';
 import { ColorModeContext } from '../theme';
-
+import { tokens } from '../theme';
 
 export default function SwipeableTemporaryDrawer({onSidebarToggle, open}) {
     const theme = useTheme()
     const colorMode = React.useContext(ColorModeContext)
     const [mode, setMode] = React.useState('dark');
     const [colorPrimary, setColorPrimary] = React.useState('blue');
-
+    const colors = tokens(theme.palette.mode);
     const handleClick = (open) => (event) => {
         onSidebarToggle(open)
     }
@@ -44,12 +44,11 @@ export default function SwipeableTemporaryDrawer({onSidebarToggle, open}) {
     <Box
       sx={{ 
         width: 250,
-        backgroundColor: theme.palette.mode,
         ...theme.typography.fontSize,
         color: theme.palette.mode,
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center'
+        justifyContent: 'center',
          }}
       role="presentation"
     //   onKeyDown={handleClick(false)}
@@ -127,6 +126,10 @@ export default function SwipeableTemporaryDrawer({onSidebarToggle, open}) {
     <div>
           {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
         <SwipeableDrawer
+          sx={{"& .MuiDrawer-paper": {
+            backgroundColor:colors.systembar[500],
+            opacity: 1,
+          },}}
             anchor='right'
             open={open}
             onClose={handleClick(false)}

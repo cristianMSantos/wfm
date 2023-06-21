@@ -170,7 +170,6 @@ const IconSelector = ({ isOpen, onClose }) => {
           style={{
             overflowY: "auto",
             boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
-            backgroundColor: colors.primary[300],
             borderRadius: "16px",
           }}
         >

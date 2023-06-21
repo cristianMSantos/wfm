@@ -26,7 +26,6 @@ const SubMenuItem = ({ subItem, onClick }) => {
 
   const listItemStyles = {
     pl: 8,
-    background: colors.primary[400],
   };
 
   const hoverStyles = {
@@ -100,7 +99,6 @@ const SubMenuItem = ({ subItem, onClick }) => {
           primaryTypographyProps={{
             fontSize: "12px",
             lineHeight: "1",
-            color: colors.grey[100],
           }}
           primary={subItem.text}
         />

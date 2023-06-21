@@ -38,7 +38,7 @@ const DialogComponent = ({ menuList, open, onClose }) => {
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} sx={{color:colors.corComponent[500]}}>Close</Button>
+        <Button onClick={onClose} >Close</Button>
       </DialogActions>
     </Dialog>
   );

@@ -152,8 +152,8 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
         '& .MuiDrawer-paper': {
           width: sidebarWidth,
           boxSizing: 'border-box',
-          backgroundColor: colors.primary[500],
-          color: colors.grey[100],
+          // backgroundColor: colors.primary[500],
+          // color: colors.grey[100],
         },
       }}
     >
@@ -183,7 +183,7 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
                 paddingTop: '12px',
                 paddingBottom: '4px',
                 textAlign: 'left',
-                color: colors.grey[100],
+                // color: colors.grey[100],
               }}
             >
               {section}
@@ -198,8 +198,8 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
                       onClick={() => handleClick(menuItem.id)}
                     >
                         {menuItem.hasSubItems &&
-                        (openIcons[menuItem.id] ? <ExpandLess sx={{ minWidth: '0', width:'15%', height:'5%', color: colors.grey[100]}} /> : <ChevronRightIcon  sx={{ minWidth: '0', width:'15%', height:'5%', color: colors.grey[100]}}/>)}
-                      <ListItemIcon sx={{ minWidth: '0', width:'10%', height:'5%', marginRight: '16px', color: colors.grey[100],}}>
+                        (openIcons[menuItem.id] ? <ExpandLess sx={{ minWidth: '0', width:'15%', height:'5%', color: colors.grey[100]}} /> : <ChevronRightIcon  sx={{ minWidth: '0', width:'15%', height:'5%'}}/>)}
+                      <ListItemIcon sx={{ minWidth: '0', width:'10%', height:'5%', marginRight: '16px'}}>
                         {menuItem.icon}
                       </ListItemIcon>
                       <ListItemText
@@ -216,11 +216,11 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
                               sx={{ pl: 6 }}
                               onClick={() => handleClick(menuItem.id, subItem)}
                             >
-                              <ListItemIcon sx={{ minWidth: '0', width:'10%', height:'5%', marginRight: '16px', color: colors.grey[100], }}>
+                              <ListItemIcon sx={{ minWidth: '0', width:'10%', height:'5%', marginRight: '16px'  }}>
                                 {subItem.icon}
                               </ListItemIcon>
                               <ListItemText
-                                primaryTypographyProps={{ fontSize: '12px', lineHeight: '1', color: colors.grey[100], }}
+                                primaryTypographyProps={{ fontSize: '12px', lineHeight: '1' }}
                                 primary={subItem.text}
                               />
                             </ListItemButton>

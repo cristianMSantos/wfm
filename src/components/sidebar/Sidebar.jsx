@@ -61,10 +61,9 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
         flexShrink: 0,
         "& .MuiDrawer-paper": {
           width: sidebarWidth,
+          backgroundColor:colors.systembar[500],
           boxSizing: "border-box",
-          backgroundColor: colors.primary[500],
-          color: colors.grey[100],
-          boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
+          // boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
         },
       }}
       initial="hidden"

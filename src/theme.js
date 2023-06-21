@@ -1,11 +1,9 @@
 import { createContext, useState, useMemo } from "react";
 import { createTheme } from "@mui/material/styles";
-
-
-
 // color design tokens export
+
+
 export const tokens = (mode, componentMode) => ({
-  
   ...(mode === "dark"
     ? {    
       grey: {
@@ -20,6 +18,17 @@ export const tokens = (mode, componentMode) => ({
         900: "#141414",
       },
       primary: {
+        100: "#d2d2d2",
+        200: "#a4a4a4",
+        300: "#777777",
+        400: "#494949",
+        500: "#1c1c1c",
+        600: "#161616",
+        700: "#111111",
+        800: "#0b0b0b",
+        900: "#060606",
+      },
+      systembar:{
         100: "#d2d2d2",
         200: "#a4a4a4",
         300: "#777777",
@@ -75,15 +84,26 @@ export const tokens = (mode, componentMode) => ({
         900: "#e0e0e0",
       },
       primary: {
-        100: "#040509",
-        200: "#080b12",
-        300: "#0c101b",
-        400: "#f2f0f0", // manually changed
-        500: "#ffffff",
-        600: "#1F2A40",
-        700: "#727681",
-        800: "#a1a4ab",
-        900: "#d0d1d5",
+        100: "#fefefd",
+        200: "#fdfdfb",
+        300: "#fcfbfa",
+        400: "#fbfaf8",
+        500: "#FAF9F6",
+        600: "#c8c7c5",
+        700: "#969594",
+        800: "#646462",
+        900: "#323231"
+      },
+      systembar:{
+        100: "#ccdbef",
+          200: "#99b7de",
+          300: "#6692ce",
+          400: "#336ebd",
+          500: "#E6F2FF",
+          600: "#003b8a",
+          700: "#002c68",
+          800: "#001e45",
+          900: "#000f23"
       },
       corComponent: componentMode === 'blue' ? {
         100: "#cfcee2",
@@ -95,7 +115,7 @@ export const tokens = (mode, componentMode) => ({
         700: "#0a0741",
         800: "#07052b",
         900: "#030216"
-      } : componentMode === 'orage' ? {
+      } : componentMode === 'orange' ? {
         100: "#d2d2d2",
         200: "#a4a4a4",
         300: "#777777",
@@ -127,6 +147,20 @@ export const themeSettings = (mode, componentMode) => {
     palette: {
       mode: mode,
       componentMode: componentMode,
+      primary: {
+        main: 'rgba(10,113,247,0.18)',
+        contrastText: '#0f279a',
+      },
+      background: {
+        default: colors.primary[500],
+        paper: colors.corComponent[500],
+      },
+      text: {
+        primary: '#0f279a',
+      },
+      secondary: {
+        main: colors.grey[500],
+      },
     },
     typography: {
       fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
@@ -240,7 +274,7 @@ export const ColorModeContext = createContext({
 });
 
 export const useMode = () => {
-  const [mode, setMode] = useState("dark");
+  const [mode, setMode] = useState("light");
   const [componentMode, setComponentMode] = useState("blue"); // Default component mode is "blue"
 
 

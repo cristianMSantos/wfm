@@ -13,7 +13,7 @@ import {
     display: flex;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    border-bottom: 1px solid #cad4e0;
     cursor: pointer;
   `;
   
@@ -32,16 +32,12 @@ import {
         width: props.sidebarWidth,
         flexShrink: 0,
         boxSizing: "border-box",
-        backgroundColor: `${props.colors.primary[500]} !important`,
-        color: `${props.colors.grey[100]} !important`,
-        boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
+        // boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
         "&.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation0.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.css-15b8vjn-MuiPaper-root-MuiDrawer-paper":
           {
             width: props.sidebarWidth,
             boxSizing: "border-box",
-            backgroundColor: `${props.colors.primary[500]} !important`,
-            color: `${props.colors.grey[100]} !important`,
-            boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
+            // boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
           },
       }}
       {...props}
