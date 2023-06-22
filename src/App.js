@@ -48,6 +48,7 @@ function App() {
   };
 
   const handleSidebarClose = () => {
+    console.log('handleSidebarClose')
     setOpenSidebar(false);
   };
 
@@ -94,7 +95,7 @@ function App() {
 
                 <Topbar sidebarOpen={openSidebar} onSidebarToggle={handleSidebarOpen} onSidebarClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
                 <SideBar open={openSidebar} onOpen={handleSidebarOpen} onClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
-                <Main open={openSidebar}>
+                <Main open={openSidebar} sx={{ marginTop: sidebarControl === 'horizontal' ? '10px' : 0 }}>
                   <DrawerHeader />
                   <Box component="main">
                     <Container maxWidth="lg">

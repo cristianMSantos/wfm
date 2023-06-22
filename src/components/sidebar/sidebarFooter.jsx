@@ -1,15 +1,16 @@
 import React from "react";
-import { List, ListItem, ListItemText } from "@mui/material";
-import ItemChanger from "../cadastroMenu/ItemChanger";
+import { List, ListItem, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+
 
 const sidebarFooter = () => {
   return (
     <List style={{ marginTop: "auto" }}>
-      <ListItem>
-        <ListItemText>
-          <ItemChanger /> {/* Render the User component */}
-        </ListItemText>
-      </ListItem>
+      <ListItemButton>
+        <ListItemIcon>
+          <AccountCircleIcon fontSize="small" />
+        </ListItemIcon>
+        <ListItemText>Perfil</ListItemText>
+      </ListItemButton>
     </List>
   );
 };

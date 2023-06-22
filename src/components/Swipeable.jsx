@@ -25,15 +25,19 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
     const theme = useTheme()
     const colorMode = React.useContext(ColorModeContext)
     const [mode, setMode] = React.useState('dark');
-    const [colorPrimary, setColorPrimary] = React.useState('blue');
     const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
+    const [colorPrimary, setColorPrimary] = React.useState('blue');
     const dispatch = useDispatch()
-    const [menu, setMenu] = React.useState(sidebarControl);
+    const [menu, setMenu] = React.useState('vertical');
 
 
     useEffect(() => {
         setMode(mode);
     }, [])
+  
+    useEffect(() => {
+        setMenu(sidebarControl)
+    }, [sidebarControl])
 
     const handleClick = (open) => (event) => {
         onSidebarToggle(open)
@@ -42,7 +46,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
     const handleChangeMode = (event) => {
         setMode(event.target.value);
         colorMode.toggleColorMode()
-        console.log('handleChangeMode')
+        // console.log('handleChangeMode')
     };
 
     const handleChangeColorPrimary = (color) => {
@@ -55,7 +59,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         setMenu(event.target.value)
         dispatch(setOrientation(event.target.value))
 
-        console.log(event.target.value)
+        // console.log(event.target.value)
     }
 
     const list = () => (

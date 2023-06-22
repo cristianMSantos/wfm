@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { Drawer, List } from "@mui/material";
+import { Drawer, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+import SettingsIcon from '@mui/icons-material/Settings';
 import { Navigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import { setMenu } from "../../store/features/Menu";
@@ -32,11 +35,25 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
 
   const [openIcons, setOpenIcons] = useState({});
   const [selectedRoute, setSelectedRoute] = useState(null);
+  const [isMobile, setIsMobile] = useState(null)
 
   useEffect(() => {
     const initialOpenState = generateInitialOpenState(menuItems);
     setOpenIcons(initialOpenState);
   }, [menuItems]);
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setIsMobile(window.matchMedia('(max-width: 900px)').matches);
+    };
+
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, [])
 
   const handleClickMenuItem = (item, subItem) => {
     handleClick(item, subItem, setOpenIcons, setSelectedRoute, menuItems);
@@ -53,14 +70,14 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
 
   return (
     <Drawer
-      open={true}
+      open={open}
       onClose={onClose}
-      variant="persistent"
+      variant={isMobile ? 'temporary' : "permanent"}
       sx={{
-        width: sidebarWidth,
+        width: isMobile ? 'unset' : sidebarWidth,
         flexShrink: 0,
         "& .MuiDrawer-paper": {
-          width: sidebarWidth,
+          width: isMobile ? 'unset' : sidebarWidth,
           boxSizing: "border-box",
           backgroundColor: colors.primary[500],
           color: colors.grey[100],
@@ -71,7 +88,7 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
       animate="visible"
       variants={sidebarVariants}
       component={DrawerPaperStyled}
-      sidebarWidth={sidebarWidth}
+      sidebarWidth={isMobile ? 0 : sidebarWidth}
       colors={colors}
     >
       {selectedRoute && <Navigate to={selectedRoute} replace={true} />}
@@ -116,6 +133,29 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
           ))}
       </List>
       <EditorItem></EditorItem>
+      {
+        isMobile ?
+          <List style={{ marginTop: "auto" }}>
+            <ListItemButton>
+              <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Personalizar Sistema</ListItemText>
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <AccountCircleIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Perfil</ListItemText>
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <LogoutIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Sair</ListItemText>
+            </ListItemButton>
+          </List> : false
+      }
     </Drawer>
   );
 };

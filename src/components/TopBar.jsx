@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, IconButton, Badge, Box } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Badge, Box, Divider } from '@mui/material';
 import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -26,6 +26,7 @@ import SwipeableTemporaryDrawer from "./Swipeable";
 import { ExpandLess, ExpandMore } from "@mui/icons-material";
 import logo from "../assets/images/logo.png";
 import { motion } from "framer-motion";
+import { setOrientation } from "../store/features/SideBarControl";
 
 const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) => {
     const theme = useTheme();
@@ -49,6 +50,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
 
     const [drawerRight, setDrawerRight] = useState(false);
     const openTopMenu = Boolean(anchorElTopMenu);
+    const [isMobile, setIsMobile] = useState(null)
 
 
     const handleMenuTopOpen = (event) => {
@@ -140,16 +142,24 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
             onClose={handleMobileMenuClose}
         >
             <MenuItem>
-                <IconButton
-                    size="large"
-                    aria-label="show 17 new notifications"
-                    color="inherit"
-                >
+                <ListItemIcon>
                     <Badge badgeContent={17} color="error">
                         <NotificationsIcon />
                     </Badge>
-                </IconButton>
-                <p>Notifications</p>
+                </ListItemIcon>
+                <ListItemText>Notificações</ListItemText>
+            </MenuItem>
+            <MenuItem >
+                <ListItemIcon>
+                    <AccountCircleIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Perfil</ListItemText>
+            </MenuItem>
+            <MenuItem >
+                <ListItemIcon>
+                    <LogoutIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText>Sair</ListItemText>
             </MenuItem>
         </Menu>
     );
@@ -163,7 +173,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
         },
         marginLeft: 0,
         width: '100%',
-        [theme.breakpoints.up('sm')]: {
+        [theme.breakpoints.up('xs')]: {
             marginLeft: theme.spacing(1),
             width: 'auto',
         },
@@ -187,7 +197,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
             paddingLeft: `calc(1em + ${theme.spacing(4)})`,
             transition: theme.transitions.create('width'),
             width: '100%',
-            [theme.breakpoints.up('sm')]: {
+            [theme.breakpoints.up('xs')]: {
                 width: '12ch',
                 '&:focus': {
                     width: '20ch',
@@ -195,6 +205,25 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
             },
         },
     }));
+
+    useEffect(() => {
+        const handleWindowResize = () => {
+            setIsMobile(window.matchMedia('(max-width: 900px)').matches);
+        };
+
+
+        window.addEventListener('resize', handleWindowResize);
+
+        return () => {
+            window.removeEventListener('resize', handleWindowResize);
+        };
+    }, [])
+
+    useEffect(() => {
+        if (isMobile) {
+            dispatch(setOrientation('vertical'))
+        }
+    }, [isMobile]);
 
     useEffect(() => {
         getUser()
@@ -229,20 +258,27 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     return (
         <Box>
             <AppBar position="fixed" open={sidebarOpen} sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                width: `calc(100% - ${sidebarWidth}px)`,
-                backgroundColor: colors.primary[500],
-                color: colors.grey[100],
-                // boxShadow: "none",
-                backgroundImage: "unset",
-                borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
-                height: sidebarControl === 'horizontal' ? 'auto' : '12%'
+                width: `calc(100% - ${isMobile ? 0 : sidebarWidth}px)`,
+                height: '10%'
+
             }}>
-                <Toolbar>
+                <Toolbar
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        backgroundColor: colors.primary[500],
+                        color: colors.grey[100],
+                        width: '100%',
+                        // boxShadow: "none",
+                        backgroundImage: "unset",
+                        borderBottom: '1px solid rgba(255, 255, 255, 0.12)',
+                        // height: sidebarControl === 'horizontal' ? 'auto' : '12%'
+                        height: '100%'
+                    }}
+                >
                     {
                         sidebarControl === 'vertical' ?
-                            <IconButton color="inherit" edge="start" onClick={handleSidebarToggle} sx={{  }}>
+                            <IconButton color="inherit" edge="start" onClick={handleSidebarToggle} sx={{}}>
                                 <ViewSidebarOutlinedIcon sx={{ transform: 'scaleX(-1)' }} />
                             </IconButton> :
                             <motion.img
@@ -257,20 +293,26 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                     <BreadCrumbs />
 
                     <Box sx={{ flexGrow: 1 }} />
-                    <Search sx={{ mr: 4 }}>
-                        <SearchIconWrapper>
-                            <SearchIcon />
-                        </SearchIconWrapper>
-                        <StyledInputBase
-                            placeholder="Search…"
-                            inputProps={{
-                                'aria-label': 'search',
-                                endadornment: (
-                                    <InputAdornment position="end">⌘/</InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Search>
+                    {
+                        !isMobile ?
+                            <Search sx={{ mr: 4 }}>
+                                <SearchIconWrapper>
+                                    <SearchIcon />
+                                </SearchIconWrapper>
+                                <StyledInputBase
+                                    placeholder="Search…"
+                                    inputProps={{
+                                        'aria-label': 'search',
+                                        endadornment: (
+                                            <InputAdornment position="end">⌘/</InputAdornment>
+                                        ),
+                                    }}
+                                />
+                            </Search> :
+                            <IconButton size="large" aria-label="search" color="inherit">
+                                <SearchIcon />
+                            </IconButton>
+                    }
                     <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                         <Button
                             aria-label="account of current user"
@@ -306,6 +348,15 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
                             size="large"
+                            aria-label="show 17 new notifications"
+                            color="inherit"
+                        >
+                            <Badge badgeContent={17} color="error">
+                                <NotificationsIcon />
+                            </Badge>
+                        </IconButton>
+                        {/* <IconButton
+                            size="large"
                             aria-label="show more"
                             aria-controls={mobileMenuId}
                             aria-haspopup="true"
@@ -313,38 +364,40 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                             color="inherit"
                         >
                             <MoreIcon />
-                        </IconButton>
+                        </IconButton> */}
                     </Box>
                 </Toolbar>
                 {
                     sidebarControl === 'horizontal' ?
-                        <Box sx={{ display: 'flex' }}>
-                            <Button
-                                id="basic-button"
-                                aria-controls={openTopMenu ? 'basic-menu' : undefined}
-                                aria-haspopup="true"
-                                aria-expanded={openTopMenu ? 'true' : undefined}
-                                onClick={handleMenuTopOpen}
-                            >
-                                Ferramentas
-                                {openTopMenu ? <ExpandLess /> : <ExpandMore />}
-                            </Button>
-                            <Menu
-                                id="basic-menu"
-                                anchorEl={anchorElTopMenu}
-                                open={openTopMenu}
-                                onClose={handleMenuTopClone}
-                                MenuListProps={{
-                                    'aria-labelledby': 'basic-button',
-                                }}
-                            >
-                                <MenuItem onClick={handleMenuTopClone}>DashBoard</MenuItem>
-                            </Menu>
-                        </Box> : false
-
+                        <div>
+                            <Box sx={{ display: 'flex', marginLeft: '15px' }}>
+                                <Button
+                                    id="basic-button"
+                                    aria-controls={openTopMenu ? 'basic-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={openTopMenu ? 'true' : undefined}
+                                    onClick={handleMenuTopOpen}
+                                >
+                                    Ferramentas
+                                    {openTopMenu ? <ExpandLess /> : <ExpandMore />}
+                                </Button>
+                                <Menu
+                                    id="basic-menu"
+                                    anchorEl={anchorElTopMenu}
+                                    open={openTopMenu}
+                                    onClose={handleMenuTopClone}
+                                    MenuListProps={{
+                                        'aria-labelledby': 'basic-button',
+                                    }}
+                                >
+                                    <MenuItem onClick={handleMenuTopClone}>DashBoard</MenuItem>
+                                </Menu>
+                            </Box>
+                            {/* <Divider /> */}
+                        </div> : false
                 }
             </AppBar>
-            {renderMobileMenu}
+            {/* {renderMobileMenu} */}
             {renderMenu}
             {renderSwipeable}
         </Box>
