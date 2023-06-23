@@ -23,7 +23,7 @@ import api from '../axios'
 import { setUser } from '../store/features/User'
 import BreadCrumbs from "./BreadCrumbs";
 import SwipeableTemporaryDrawer from "./Swipeable";
-import { ExpandLess, ExpandMore } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, ChevronRight } from "@mui/icons-material";
 import logo from "../assets/images/logo.png";
 import { motion } from "framer-motion";
 import { setOrientation } from "../store/features/SideBarControl";
@@ -42,24 +42,30 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     const lastName = nameParts[nameParts.length - 1];
 
     const [anchorEl, setAnchorEl] = React.useState(null);
-    const [anchorElTopMenu, setAnchorElTopMenu] = React.useState(null);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const [drawerRight, setDrawerRight] = useState(false);
-    const openTopMenu = Boolean(anchorElTopMenu);
     const [isMobile, setIsMobile] = useState(null)
+    const menuItems = useSelector((state) => state.menu.list);
+    const sections = menuItems
+        .map((menuItem) => menuItem.section)
+        .filter((value, index, self) => self.indexOf(value) === index);
 
+    const [openMenus, setOpenMenus] = useState([]);
 
-    const handleMenuTopOpen = (event) => {
-        setAnchorElTopMenu(event.currentTarget);
+    const handleMenuTopOpen = (section) => {
+        if (!openMenus.includes(section)) {
+            setOpenMenus((prevOpenMenus) => [...prevOpenMenus, section]);
+        }
     };
 
-    const handleMenuTopClone = (event) => {
-        setAnchorElTopMenu(null);
+    const handleMenuTopClose = (section) => {
+        setOpenMenus((prevOpenMenus) => prevOpenMenus.filter((menu) => menu !== section));
     };
+
     const handleClose = () => {
         setAnchorEl(null);
     };
@@ -368,32 +374,90 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                     </Box>
                 </Toolbar>
                 {
+
                     sidebarControl === 'horizontal' ?
                         <div>
+
                             <Box sx={{ display: 'flex', marginLeft: '15px' }}>
-                                <Button
-                                    id="basic-button"
-                                    aria-controls={openTopMenu ? 'basic-menu' : undefined}
-                                    aria-haspopup="true"
-                                    aria-expanded={openTopMenu ? 'true' : undefined}
-                                    onClick={handleMenuTopOpen}
-                                >
-                                    Ferramentas
-                                    {openTopMenu ? <ExpandLess /> : <ExpandMore />}
-                                </Button>
-                                <Menu
-                                    id="basic-menu"
-                                    anchorEl={anchorElTopMenu}
-                                    open={openTopMenu}
-                                    onClose={handleMenuTopClone}
-                                    MenuListProps={{
-                                        'aria-labelledby': 'basic-button',
-                                    }}
-                                >
-                                    <MenuItem onClick={handleMenuTopClone}>DashBoard</MenuItem>
-                                </Menu>
+                                {sections.map((section) => (
+                                    <React.Fragment key={section}>
+                                        <Button
+                                            id={section}
+                                            aria-controls={openMenus.includes(section) ? section : undefined}
+                                            aria-haspopup="true"
+                                            aria-expanded={openMenus.includes(section) ? 'true' : undefined}
+                                            onClick={() => handleMenuTopOpen(section)}
+                                        >
+                                            {section}
+                                            {openMenus.includes(section) ? <ExpandLess /> : <ExpandMore />}
+                                        </Button>
+                                        {menuItems
+                                            .filter((menu) => menu.section === section)
+                                            .map((menu) => (
+                                                <Menu
+                                                    key={menu.id}
+                                                    id={menu.id}
+                                                    anchorEl={openMenus.includes(section) ? document.getElementById(section) : null}
+                                                    open={openMenus.includes(section)}
+                                                    onClose={() => handleMenuTopClose(section)}
+                                                    MenuListProps={{
+                                                        'aria-labelledby': menu.id,
+                                                    }}
+                                                >
+                                                    {
+                                                        menu.hasSubItems ?
+                                                            <MenuItem>
+                                                                <Button
+                                                                    id={`${menu.id}-button`}
+                                                                    aria-controls={`${menu.id}-menu`}
+                                                                    aria-haspopup="true"
+                                                                    aria-expanded={openMenus.includes(menu.id) ? 'true' : undefined}
+                                                                    onClick={() => handleMenuTopOpen(menu.id)}
+                                                                >
+                                                                    {menu.id}
+                                                                    {openMenus.includes(menu.id) ? <ChevronRight /> : <ExpandMore />}
+                                                                </Button>
+                                                                <Menu
+                                                                    id={`${menu.id}-menu`}
+                                                                    aria-labelledby={`${menu.id}-button`}
+                                                                    anchorEl={openMenus.includes(menu.id) ? document.getElementById(`${menu.id}-button`) : null}
+                                                                    open={openMenus.includes(menu.id)}
+                                                                    onClose={() => handleMenuTopClose(menu.id)}
+                                                                    anchorOrigin={{
+                                                                        vertical: 'center',
+                                                                        horizontal: 'right',
+                                                                    }}
+                                                                    transformOrigin={{
+                                                                        vertical: 'top',
+                                                                        horizontal: 'left',
+                                                                    }}
+                                                                >
+                                                                    {menu.subItems.map((subItem) => (
+                                                                        <MenuItem key={subItem.text} onClick={() => handleMenuTopClose(subItem.text)}>
+                                                                            {subItem.text}
+                                                                        </MenuItem>
+                                                                    ))}
+                                                                </Menu>
+                                                            </MenuItem>
+                                                            :
+                                                            <MenuItem onClick={() => handleMenuTopClose(section)}>
+                                                                <Button
+                                                                    id={menu.id}
+                                                                    aria-controls={'demo-positioned-menu'}
+                                                                    aria-haspopup="true"
+                                                                    aria-expanded={'true'}
+
+                                                                >
+                                                                    {menu.id}
+                                                                </Button>
+                                                            </MenuItem>
+
+                                                    }
+                                                </Menu>
+                                            ))}
+                                    </React.Fragment>
+                                ))}
                             </Box>
-                            {/* <Divider /> */}
                         </div> : false
                 }
             </AppBar>

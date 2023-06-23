@@ -91,8 +91,6 @@ function App() {
             <ThemeProvider theme={theme}>
               <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
-
-
                 <Topbar sidebarOpen={openSidebar} onSidebarToggle={handleSidebarOpen} onSidebarClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
                 <SideBar open={openSidebar} onOpen={handleSidebarOpen} onClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
                 <Main open={openSidebar} sx={{ marginTop: sidebarControl === 'horizontal' ? '10px' : 0 }}>
