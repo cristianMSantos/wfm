@@ -29,12 +29,13 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
     const [colorPrimary, setColorPrimary] = React.useState('blue');
     const dispatch = useDispatch()
     const [menu, setMenu] = React.useState('vertical');
+    const [bar, setBar] = React.useState('fixed');
 
 
     useEffect(() => {
         setMode(mode);
     }, [])
-  
+
     useEffect(() => {
         setMenu(sidebarControl)
     }, [sidebarControl])
@@ -58,6 +59,13 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
     const handleChangeMenu = (event) => {
         setMenu(event.target.value)
         dispatch(setOrientation(event.target.value))
+
+        // console.log(event.target.value)
+    }
+   
+    const handleChangeBar = (event) => {
+        setBar(event.target.value)
+        // dispatch(setOrientation(event.target.value))
 
         // console.log(event.target.value)
     }
@@ -104,29 +112,32 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
                             </RadioGroup>
                         </FormControl>
                     </Grid>
-                    <Grid item xs={12} md={12}>
-                        <Typography>Cor Primaria</Typography>
-                        <AvatarGroup
-                            variant="rounded"
-                            sx={{ display: 'flex', justifyContent: 'center' }}
-                        >
-                            <Avatar sx={{ bgcolor: '#004AAD', mr: 2 }}>
-                                <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('blue')}>
-                                    {colorPrimary === 'blue' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
-                                </Button>
-                            </Avatar>
-                            <Avatar sx={{ bgcolor: '#FD6809', mr: 2 }}>
-                                <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('orange')}>
-                                    {colorPrimary === 'orange' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
-                                </Button>
-                            </Avatar>
-                            <Avatar sx={{ bgcolor: '#716F70', mr: 2 }}>
-                                <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('grey')}>
-                                    {colorPrimary === 'grey' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
-                                </Button>
-                            </Avatar>
-                        </AvatarGroup>
-                    </Grid>
+                </Grid>
+            </Grid>
+            <Divider />
+            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+                <Grid item xs={12} md={12}>
+                    <Typography>Temas</Typography>
+                    <AvatarGroup
+                        variant="rounded"
+                        sx={{ display: 'flex', justifyContent: 'center' }}
+                    >
+                        <Avatar sx={{ bgcolor: '#004AAD', mr: 2 }}>
+                            <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('blue')}>
+                                {colorPrimary === 'blue' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
+                            </Button>
+                        </Avatar>
+                        <Avatar sx={{ bgcolor: '#FD6809', mr: 2 }}>
+                            <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('orange')}>
+                                {colorPrimary === 'orange' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
+                            </Button>
+                        </Avatar>
+                        <Avatar sx={{ bgcolor: '#716F70', mr: 2 }}>
+                            <Button sx={{ width: '100%', height: '100%' }} onClick={() => handleChangeColorPrimary('grey')}>
+                                {colorPrimary === 'grey' ? <CheckIcon sx={{ color: 'white' }} /> : ''}
+                            </Button>
+                        </Avatar>
+                    </AvatarGroup>
                 </Grid>
             </Grid>
             <Divider />
@@ -148,18 +159,24 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
                 </Grid>
             </Grid>
             <Divider />
-            <List>
-                {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                    <ListItem key={text} disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
-            </List>
+            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+                <Grid item xs={12} md={12}>
+                    <Typography>Barra de Navegação</Typography>
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby="bar"
+                            name="bar-group"
+                            value={bar}
+                            onChange={handleChangeBar}
+                        >
+                            <FormControlLabel value="estatic" control={<Radio />} label="Estático" />
+                            <FormControlLabel value="fixed" control={<Radio />} label="Fixa" />
+                            <FormControlLabel value="hide" control={<Radio />} label="Esconder" />
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
+            </Grid>
         </Box>
     );
 
