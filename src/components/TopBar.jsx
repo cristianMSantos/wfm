@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, IconButton, Badge, Box, Divider } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Badge, Box, Divider, Grid } from '@mui/material';
 import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -27,10 +27,13 @@ import { ExpandLess, ExpandMore, ChevronRight } from "@mui/icons-material";
 import logo from "../assets/images/logo.png";
 import { motion } from "framer-motion";
 import { setOrientation } from "../store/features/SideBarControl";
+import { useNavigate } from "react-router";
+import { setLogout } from "../store/features/Login";
 
 const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) => {
     const theme = useTheme();
     const dispatch = useDispatch()
+    const navigate = useNavigate();
     const token = useSelector((state) => state.login.isAuthenticated)
     const user = useSelector((state) => state.user.user)
     const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
@@ -42,13 +45,15 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     const lastName = nameParts[nameParts.length - 1];
 
     const [anchorEl, setAnchorEl] = React.useState(null);
+    const [anchorNotification, setAnchorNotification] = React.useState(null);
+    const openNotification = Boolean(anchorNotification);
     const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
     const isMenuOpen = Boolean(anchorEl);
     const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
     const [drawerRight, setDrawerRight] = useState(false);
-    const [isMobile, setIsMobile] = useState(null)
+    const [isMobile, setIsMobile] = useState(window.matchMedia('(max-width: 900px)').matches)
     const menuItems = useSelector((state) => state.menu.list);
     const sections = menuItems
         .map((menuItem) => menuItem.section)
@@ -64,6 +69,14 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
 
     const handleMenuTopClose = (section) => {
         setOpenMenus((prevOpenMenus) => prevOpenMenus.filter((menu) => menu !== section));
+    };
+
+    const handleClickNotification = (event) => {
+        console.log(event.currentTarget)
+        setAnchorNotification(event.currentTarget);
+    };
+    const handleCloseNotification = () => {
+        setAnchorNotification(null);
     };
 
     const handleClose = () => {
@@ -82,6 +95,11 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
         setAnchorEl(null);
         handleMobileMenuClose();
     };
+
+    const handleLogout = async () => {
+        await dispatch(setLogout())
+        navigate('/login')
+    }
 
     const handleMobileMenuOpen = (event) => {
         setMobileMoreAnchorEl(event.currentTarget);
@@ -117,7 +135,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                 </ListItemIcon>
                 <ListItemText>Perfil</ListItemText>
             </MenuItem>
-            <MenuItem onClick={handleMenuClose}>
+            <MenuItem onClick={handleLogout}>
                 <ListItemIcon>
                     <LogoutIcon fontSize="small" />
                 </ListItemIcon>
@@ -211,6 +229,51 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
             },
         },
     }));
+
+    const renderMenuNotification = (
+        <Menu
+            anchorEl={anchorNotification}
+            id="notification"
+            open={openNotification}
+            onClose={handleCloseNotification}
+            onClick={handleCloseNotification}
+            PaperProps={{
+                elevation: 0,
+                sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                        width: 32,
+                        height: 32,
+                        ml: -0.5,
+                        mr: 1,
+                    },
+                    '&:before': {
+                        content: '""',
+                        display: 'block',
+                        position: 'absolute',
+                        top: 0,
+                        right: 14,
+                        width: 10,
+                        height: 10,
+                        bgcolor: 'background.paper',
+                        transform: 'translateY(-50%) rotate(45deg)',
+                        zIndex: 0,
+                    },
+                },
+            }}
+            transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+            anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+                <Grid item xs={12} md={12} sx={{display: 'flex'}}>
+                    <NotificationsIcon />
+                    <Typography>Notificações</Typography>
+                </Grid>
+            </Grid>
+        </Menu>
+    )
 
     useEffect(() => {
         const handleWindowResize = () => {
@@ -342,6 +405,11 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                             <SettingsIcon />
                         </IconButton>
                         <IconButton
+                            id='notification'
+                            onClick={handleClickNotification}
+                            aria-controls={openNotification ? 'notification' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={openNotification ? 'true' : undefined}
                             size="large"
                             aria-label="show 17 new notifications"
                             color="inherit"
@@ -350,9 +418,16 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
+                        {renderMenuNotification}
+
                     </Box>
                     <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
                         <IconButton
+                            id='notification'
+                            onClick={handleClickNotification}
+                            aria-controls={openNotification ? 'notification' : undefined}
+                            aria-haspopup="true"
+                            aria-expanded={openNotification ? 'true' : undefined}
                             size="large"
                             aria-label="show 17 new notifications"
                             color="inherit"
@@ -361,16 +436,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                                 <NotificationsIcon />
                             </Badge>
                         </IconButton>
-                        {/* <IconButton
-                            size="large"
-                            aria-label="show more"
-                            aria-controls={mobileMenuId}
-                            aria-haspopup="true"
-                            onClick={handleMobileMenuOpen}
-                            color="inherit"
-                        >
-                            <MoreIcon />
-                        </IconButton> */}
+                        {renderMenuNotification}
                     </Box>
                 </Toolbar>
                 {

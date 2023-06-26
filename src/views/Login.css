@@ -4,7 +4,7 @@
     --white: #FFFFFF;
     --color: rgba(255, 255, 255, 0.4);
     --background-img: rgba(255, 255, 255, 0.65);
-  }
+}
 
 .grid-container {
     background-color: #073377;
@@ -12,6 +12,7 @@
 
 .login-message {
     font-family: 'Inter', sans-serif;
+    font-size: 3.75rem;
     color: black;
     font-weight: 600;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -62,4 +63,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+@media screen and (max-width: 900px) {
+    .login-message {
+        font-size: 2.75rem !important;
+    }
 }

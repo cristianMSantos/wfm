@@ -26,6 +26,15 @@ const LightTheme = createTheme({
 
 export default function Login() {
     const [loading, setLoading] = React.useState(false);
+    const [error, setError] = React.useState({
+        matricula: false, 
+        senha: false
+    });
+    const [messageError, setMessageError] = React.useState({
+        matricula: null, 
+        senha: null
+    });
+    
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
@@ -57,6 +66,37 @@ export default function Login() {
             })
     };
 
+    const handleRules = (event, field) => {
+        console.log(event)
+        if(!event){
+            console.log(!!event)
+            setError({ ...error, [field]: true });
+            setMessageError({ ...messageError, [field]: 'Campo é Obrigatório' });
+            return
+        }
+
+        if(field === 'matricula'){
+            if(event && event.length < 6 || event && event.length > 6 ) {
+                setError({ ...error, [field]: true });
+                setMessageError({ ...messageError, [field]: 'Matrícula Inválida' });
+                return
+            }else{
+                setError({ ...error, [field]: false });
+                setMessageError({ ...messageError, [field]: null });
+                return
+            }
+        }
+
+
+        setError({ ...error, [field]: false })
+        setMessageError({ ...messageError, [field]: null })
+        
+
+
+
+        // setMatricula(event.target.value)
+    }
+
     return (
         <Box sx={{ height: '100vh', width: '100%' }}>
             <Grid container className='grid-container' sx={{ height: '100vh', width: '100%' }}>
@@ -82,6 +122,9 @@ export default function Login() {
                                     }}>
                                         <h3 className='login-title'>Login</h3>
                                         <TextField
+                                            error={error['matricula']}
+                                            helperText={messageError['matricula']}
+                                            onChange={(event) => handleRules(event.target.value, 'matricula')}
                                             required
                                             id="matricula"
                                             name="matricula"
@@ -91,6 +134,9 @@ export default function Login() {
                                         />
                                         <TextField
                                             required
+                                            error={error['senha']}
+                                            helperText={messageError['senha']}
+                                            onChange={(event) => handleRules(event.target.value, 'senha')}
                                             id="password"
                                             name="password"
                                             type="password"
