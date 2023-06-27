@@ -6,6 +6,7 @@ import { Navigate } from "react-router-dom";
 import Home from './views/Home';
 import User from './views/User';
 import UserList from "./views/UserList";
+import Teste from "./views/Teste";
 
 const IsAuthenticated = () => {
     const token = useSelector((state) => state.login.isAuthenticated)
@@ -48,6 +49,11 @@ const routes = [
         path: "/user/list",
         name: 'User List',
         element: IsAuthenticated ? <UserList to="/user" /> : <Navigate to="/login" />,
+    },
+    {
+        path: "/teste",
+        name: 'Teste',
+        element: IsAuthenticated ? <Teste to="/teste" /> : <Navigate to="/login" />,
     },
 ]
 

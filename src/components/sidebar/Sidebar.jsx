@@ -88,7 +88,6 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
 
   return (
     <div>
-
       <Drawer
         open={open}
         onClose={onClose}

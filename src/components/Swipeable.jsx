@@ -67,7 +67,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         setBar(event.target.value)
         // dispatch(setOrientation(event.target.value))
 
-        // console.log(event.target.value)
+        console.log(event.target.value)
     }
 
     const list = () => (

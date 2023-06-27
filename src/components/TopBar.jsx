@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, Toolbar, Typography, IconButton, Badge, Box, Divider, Grid } from '@mui/material';
+import { AppBar, Toolbar, Typography, IconButton, Badge, Box, Divider, Grid, ButtonGroup } from '@mui/material';
 import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -30,6 +30,7 @@ import { motion } from "framer-motion";
 import { setOrientation } from "../store/features/SideBarControl";
 import { useNavigate } from "react-router";
 import { setLogout } from "../store/features/Login";
+import { width } from "@mui/system";
 
 const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) => {
     const theme = useTheme();
@@ -274,7 +275,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                 </Grid>
             </Grid>
             <Divider />
-            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+            <Grid container sx={{ display: 'flex', alignItems: 'center', paddingRight: theme.spacing(2), paddingLeft: theme.spacing(2), }}>
                 <Grid item xs={12} md={12} sx={{ display: 'flex' }}>
                     <Button>
                         <Avatar>
@@ -285,7 +286,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                 </Grid>
             </Grid>
             <Grid container sx={{ display: 'flex', alignItems: 'center', paddingRight: theme.spacing(2), paddingLeft: theme.spacing(2) }}>
-                <Grid item xs={12} md={12} sx={{ display: 'flex' }}> 
+                <Grid item xs={12} md={12} sx={{ display: 'flex' }}>
                     <Button>
                         <Avatar>
                             <Person />
@@ -466,6 +467,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
 
                     sidebarControl === 'horizontal' ?
                         <div>
+                            {console.log(menuItems)}
 
                             <Box sx={{ display: 'flex', marginLeft: '15px' }}>
                                 {sections.map((section) => (
@@ -480,70 +482,77 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
                                             {section}
                                             {openMenus.includes(section) ? <ExpandLess /> : <ExpandMore />}
                                         </Button>
-                                        {menuItems
-                                            .filter((menu) => menu.section === section)
-                                            .map((menu) => (
-                                                <Menu
-                                                    key={menu.id}
-                                                    id={menu.id}
-                                                    anchorEl={openMenus.includes(section) ? document.getElementById(section) : null}
-                                                    open={openMenus.includes(section)}
-                                                    onClose={() => handleMenuTopClose(section)}
-                                                    MenuListProps={{
-                                                        'aria-labelledby': menu.id,
-                                                    }}
-                                                >
-                                                    {
-                                                        menu.hasSubItems ?
-                                                            <MenuItem>
-                                                                <Button
-                                                                    id={`${menu.id}-button`}
-                                                                    aria-controls={`${menu.id}-menu`}
-                                                                    aria-haspopup="true"
-                                                                    aria-expanded={openMenus.includes(menu.id) ? 'true' : undefined}
-                                                                    onClick={() => handleMenuTopOpen(menu.id)}
-                                                                >
-                                                                    {menu.id}
-                                                                    {openMenus.includes(menu.id) ? <ChevronRight /> : <ExpandMore />}
-                                                                </Button>
-                                                                <Menu
-                                                                    id={`${menu.id}-menu`}
-                                                                    aria-labelledby={`${menu.id}-button`}
-                                                                    anchorEl={openMenus.includes(menu.id) ? document.getElementById(`${menu.id}-button`) : null}
-                                                                    open={openMenus.includes(menu.id)}
-                                                                    onClose={() => handleMenuTopClose(menu.id)}
-                                                                    anchorOrigin={{
-                                                                        vertical: 'center',
-                                                                        horizontal: 'right',
-                                                                    }}
-                                                                    transformOrigin={{
-                                                                        vertical: 'top',
-                                                                        horizontal: 'left',
-                                                                    }}
-                                                                >
-                                                                    {menu.subItems.map((subItem) => (
-                                                                        <MenuItem key={subItem.text} onClick={() => handleMenuTopClose(subItem.text)}>
-                                                                            {subItem.text}
-                                                                        </MenuItem>
-                                                                    ))}
-                                                                </Menu>
-                                                            </MenuItem>
-                                                            :
-                                                            <MenuItem onClick={() => handleMenuTopClose(section)}>
-                                                                <Button
-                                                                    id={menu.id}
-                                                                    aria-controls={'demo-positioned-menu'}
-                                                                    aria-haspopup="true"
-                                                                    aria-expanded={'true'}
+                                        <Menu
+                                            key={section}
+                                            id={section}
+                                            anchorEl={openMenus.includes(section) ? document.getElementById(section) : null}
+                                            open={openMenus.includes(section)}
+                                            onClose={() => handleMenuTopClose(section)}
+                                            MenuListProps={{
+                                                'aria-labelledby': section,
+                                            }}>
+                                            <ButtonGroup orientation="vertical" sx={{backgroundColor: 'transparent'}}>
 
-                                                                >
-                                                                    {menu.id}
-                                                                </Button>
-                                                            </MenuItem>
+                                                {
+                                                    menuItems
+                                                        .filter((menu) => menu.section === section)
+                                                        .map((menu) => {
 
-                                                    }
-                                                </Menu>
-                                            ))}
+                                                            return menu.hasSubItems ?
+                                                                <div>
+
+                                                                    <Button
+                                                                        sx={{width: '100%', mb:1}}
+                                                                        id={`${menu.id}-button`}
+                                                                        aria-controls={`${menu.id}-menu`}
+                                                                        aria-haspopup="true"
+                                                                        aria-expanded={openMenus.includes(menu.id) ? 'true' : undefined}
+                                                                        onClick={() => handleMenuTopOpen(menu.id)}
+                                                                    >
+                                                                        {menu.id}
+                                                                        <Box sx={{flexGrow: 1}}></Box>
+                                                                        {openMenus.includes(menu.id) ? <ChevronRight /> : <ExpandMore />}
+                                                                    </Button>
+                                                                    <Menu
+                                                                        id={`${menu.id}-menu`}
+                                                                        aria-labelledby={`${menu.id}-button`}
+                                                                        anchorEl={openMenus.includes(menu.id) ? document.getElementById(`${menu.id}-button`) : null}
+                                                                        open={openMenus.includes(menu.id)}
+                                                                        onClose={() => handleMenuTopClose(menu.id)}
+                                                                        anchorOrigin={{
+                                                                            vertical: 'center',
+                                                                            horizontal: 'right',
+                                                                        }}
+                                                                        transformOrigin={{
+                                                                            vertical: 'top',
+                                                                            horizontal: 'left',
+                                                                        }}
+                                                                    >
+                                                                        {menu.subItems.map((subItem) => (
+                                                                            <MenuItem key={subItem.text} onClick={() => handleMenuTopClose(subItem.text)}>
+                                                                                {subItem.text}
+                                                                            </MenuItem>
+                                                                        ))}
+                                                                    </Menu>
+                                                                </div>
+                                                                :
+                                                                <div>
+                                                                    <Button
+                                                                        id={menu.id}
+                                                                        aria-controls={'demo-positioned-menu'}
+                                                                        aria-haspopup="true"
+                                                                        aria-expanded={'true'}
+
+                                                                    >
+                                                                        {menu.id}
+                                                                    </Button>
+                                                                </div>
+
+                                                        })
+                                                }
+                                            </ButtonGroup>
+                                        </Menu>
+
                                     </React.Fragment>
                                 ))}
                             </Box>
