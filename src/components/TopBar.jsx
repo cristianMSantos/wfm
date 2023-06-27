@@ -3,6 +3,7 @@ import { AppBar, Toolbar, Typography, IconButton, Badge, Box, Divider, Grid } fr
 import ViewSidebarOutlinedIcon from '@mui/icons-material/ViewSidebarOutlined';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import InputAdornment from '@mui/material/InputAdornment';
+import PestControlIcon from '@mui/icons-material/PestControl';
 import Button from '@mui/material/Button';
 import InputBase from '@mui/material/InputBase';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -23,7 +24,7 @@ import api from '../axios'
 import { setUser } from '../store/features/User'
 import BreadCrumbs from "./BreadCrumbs";
 import SwipeableTemporaryDrawer from "./Swipeable";
-import { ExpandLess, ExpandMore, ChevronRight } from "@mui/icons-material";
+import { ExpandLess, ExpandMore, ChevronRight, Person } from "@mui/icons-material";
 import logo from "../assets/images/logo.png";
 import { motion } from "framer-motion";
 import { setOrientation } from "../store/features/SideBarControl";
@@ -267,11 +268,33 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
             anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
             <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
-                <Grid item xs={12} md={12} sx={{display: 'flex'}}>
+                <Grid item xs={12} md={12} sx={{ display: 'flex' }}>
                     <NotificationsIcon />
                     <Typography>Notificações</Typography>
                 </Grid>
             </Grid>
+            <Divider />
+            <Grid container sx={{ display: 'flex', alignItems: 'center', padding: theme.spacing(2), }}>
+                <Grid item xs={12} md={12} sx={{ display: 'flex' }}>
+                    <Button>
+                        <Avatar>
+                            <PestControlIcon />
+                        </Avatar>
+                        <Typography>Erro Corrigido!</Typography>
+                    </Button>
+                </Grid>
+            </Grid>
+            <Grid container sx={{ display: 'flex', alignItems: 'center', paddingRight: theme.spacing(2), paddingLeft: theme.spacing(2) }}>
+                <Grid item xs={12} md={12} sx={{ display: 'flex' }}> 
+                    <Button>
+                        <Avatar>
+                            <Person />
+                        </Avatar>
+                        <Typography>Novo Usuário Cadastrado.</Typography>
+                    </Button>
+                </Grid>
+            </Grid>
+
         </Menu>
     )
 
