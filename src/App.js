@@ -25,13 +25,27 @@ function App() {
   const routes = useContext(RoutesContext);
   const [openSidebar, setOpenSidebar] = useState(true);
   const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
-  const sidebarWidth = openSidebar && sidebarControl === 'vertical' ? 240 : 0; // Specify the width of the sidebar when it's open and closed
+  const sidebarWidth = openSidebar && sidebarControl === 'vertical' ? 240 : 0;
+  const [isMobile, setIsMobile] = useState(window.matchMedia('(max-width: 900px)').matches)
 
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const token = useSelector((state) => state.login.isAuthenticated)
   const appBarControl = useSelector((state) => state.sidebarControl.appBar)
   const isAuthenticated = !!token;
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setIsMobile(window.matchMedia('(max-width: 900px)').matches);
+    };
+
+
+    window.addEventListener('resize', handleWindowResize);
+
+    return () => {
+      window.removeEventListener('resize', handleWindowResize);
+    };
+  }, [])
 
   axios.interceptors.response.use(response => {
 
@@ -86,11 +100,9 @@ function App() {
     <div className="App">
       {isAuthenticated ? (
         <>
-
-
           <ColorModeContext.Provider value={colorMode} >
             <ThemeProvider theme={theme}>
-              <Box sx={{ display: appBarControl === 'static' ? 'block' : 'flex'  }}>
+              <Box sx={{ display: isMobile || appBarControl === 'static' ? 'block' : 'flex'  }}>
                 <CssBaseline />
                 <Topbar sidebarOpen={openSidebar} onSidebarToggle={handleSidebarOpen} onSidebarClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
                 <SideBar open={openSidebar} onOpen={handleSidebarOpen} onClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
@@ -104,18 +116,13 @@ function App() {
                     </Container>
                   </Box>
                 </Main>
-
-
               </Box>
             </ThemeProvider>
           </ColorModeContext.Provider>
-
-
         </>
       ) : (
         <Navigate to="/login" />
       )}
-
 
       <Routes>
         <Route path="/login" exact element={
@@ -123,8 +130,7 @@ function App() {
         }>
         </Route>
       </Routes>
-
-    </div >
+    </div>
   );
 }
 
