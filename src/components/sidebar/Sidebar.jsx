@@ -39,6 +39,7 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
   const [openIcons, setOpenIcons] = useState({});
   const [selectedRoute, setSelectedRoute] = useState(null);
   const [isMobile, setIsMobile] = useState(window.matchMedia('(max-width: 900px)').matches)
+  const appBarControl = useSelector((state) => state.sidebarControl.appBar)
   const [drawerRight, setDrawerRight] = useState(false);
 
   useEffect(() => {
@@ -91,7 +92,7 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
       <Drawer
         open={open}
         onClose={onClose}
-        variant={isMobile ? 'temporary' : "permanent"}
+        variant={isMobile || appBarControl === 'static' ? 'temporary' : "permanent"}
         sx={{
           width: isMobile ? 'unset' : sidebarWidth,
           flexShrink: 0,

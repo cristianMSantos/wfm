@@ -18,7 +18,7 @@ import { Avatar, AvatarGroup, FormControl, FormControlLabel, FormLabel, Grid, Ic
 import { ColorModeContext } from '../theme';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setOrientation } from '../store/features/SideBarControl';
+import { setAppbar, setOrientation } from '../store/features/SideBarControl';
 
 
 export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
@@ -26,6 +26,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
     const colorMode = React.useContext(ColorModeContext)
     const [mode, setMode] = React.useState('dark');
     const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
+    const appBarControl = useSelector((state) => state.sidebarControl.appBar)
     const [colorPrimary, setColorPrimary] = React.useState('blue');
     const dispatch = useDispatch()
     const [menu, setMenu] = React.useState('vertical');
@@ -39,6 +40,10 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
     useEffect(() => {
         setMenu(sidebarControl)
     }, [sidebarControl])
+
+    useEffect(() => {
+        setBar(appBarControl)
+    }, [appBarControl])
 
     const handleClick = (open) => (event) => {
         onSidebarToggle(open)
@@ -65,7 +70,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
    
     const handleChangeBar = (event) => {
         setBar(event.target.value)
-        // dispatch(setOrientation(event.target.value))
+        dispatch(setAppbar(event.target.value))
 
         console.log(event.target.value)
     }
@@ -170,9 +175,9 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
                             value={bar}
                             onChange={handleChangeBar}
                         >
-                            <FormControlLabel value="estatic" control={<Radio />} label="Estático" />
+                            <FormControlLabel value="static" control={<Radio />} label="Estático" />
                             <FormControlLabel value="fixed" control={<Radio />} label="Fixa" />
-                            <FormControlLabel value="hide" control={<Radio />} label="Esconder" />
+                            {/* <FormControlLabel value="hide" control={<Radio />} label="Esconder" /> */}
                         </RadioGroup>
                     </FormControl>
                 </Grid>

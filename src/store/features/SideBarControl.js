@@ -5,6 +5,7 @@ export const sidebarControl = createSlice({
     name: 'sidebarControl',
     initialState: {
         orientation: 'vertical',
+        appBar: 'fixed'
     },
     reducers: {
         setOrientation: (state, {payload}) => {
@@ -17,10 +18,15 @@ export const sidebarControl = createSlice({
                 state.orientation = payload
             }
         },
+        setAppbar: (state, {payload}) => {
+            if (payload) {
+                state.appBar = payload
+            }
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { setOrientation } = sidebarControl.actions
+export const { setOrientation, setAppbar } = sidebarControl.actions
 
 export default sidebarControl.reducer

@@ -30,6 +30,7 @@ function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch()
   const token = useSelector((state) => state.login.isAuthenticated)
+  const appBarControl = useSelector((state) => state.sidebarControl.appBar)
   const isAuthenticated = !!token;
 
   axios.interceptors.response.use(response => {
@@ -89,7 +90,7 @@ function App() {
 
           <ColorModeContext.Provider value={colorMode} >
             <ThemeProvider theme={theme}>
-              <Box sx={{ display: 'flex' }}>
+              <Box sx={{ display: appBarControl === 'static' ? 'block' : 'flex'  }}>
                 <CssBaseline />
                 <Topbar sidebarOpen={openSidebar} onSidebarToggle={handleSidebarOpen} onSidebarClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
                 <SideBar open={openSidebar} onOpen={handleSidebarOpen} onClose={handleSidebarClose} sidebarWidth={sidebarWidth} />

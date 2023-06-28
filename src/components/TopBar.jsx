@@ -39,6 +39,7 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
     const token = useSelector((state) => state.login.isAuthenticated)
     const user = useSelector((state) => state.user.user)
     const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
+    const appBarControl = useSelector((state) => state.sidebarControl.appBar)
     const colors = tokens(theme.palette.mode);
 
     const fullName = user ? user.nome : '';
@@ -350,8 +351,8 @@ const Topbar = ({ sidebarOpen, onSidebarToggle, onSidebarClose, sidebarWidth }) 
 
     return (
         <Box>
-            <AppBar position="fixed" open={sidebarOpen} sx={{
-                width: `calc(100% - ${isMobile ? 0 : sidebarWidth}px)`,
+            <AppBar position={appBarControl} open={sidebarOpen} sx={{
+                width: `calc(100% - ${isMobile || appBarControl === 'static' ? 0 : sidebarWidth}px)`,
                 height: '10%'
 
             }}>
