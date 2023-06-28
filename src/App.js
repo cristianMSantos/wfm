@@ -10,13 +10,10 @@ import { ColorModeContext, useMode } from './theme';
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux'
 import axios from './axios'
-
-import Home from './views/Home';
 import Login from './views/Login';
-import User from './views/User';
 import { setLogout } from './store/features/Login';
-
 import { RoutesContext, RoutesElement } from './routes';
+
 
 export const SidebarContext = createContext();
 
@@ -25,7 +22,7 @@ function App() {
   const routes = useContext(RoutesContext);
   const [openSidebar, setOpenSidebar] = useState(true);
   const sidebarControl = useSelector((state) => state.sidebarControl.orientation)
-  const sidebarWidth = openSidebar && sidebarControl === 'vertical' ? 240 : 0;
+  const sidebarWidth = openSidebar && sidebarControl === 'vertical' ? 240 : 0; // Specify the width of the sidebar when it's open and closed
   const [isMobile, setIsMobile] = useState(window.matchMedia('(max-width: 900px)').matches)
 
   const navigate = useNavigate();
@@ -36,16 +33,16 @@ function App() {
 
   useEffect(() => {
     const handleWindowResize = () => {
-      setIsMobile(window.matchMedia('(max-width: 900px)').matches);
+        setIsMobile(window.matchMedia('(max-width: 900px)').matches);
     };
 
 
     window.addEventListener('resize', handleWindowResize);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+        window.removeEventListener('resize', handleWindowResize);
     };
-  }, [])
+}, [])
 
   axios.interceptors.response.use(response => {
 
@@ -102,7 +99,7 @@ function App() {
         <>
           <ColorModeContext.Provider value={colorMode} >
             <ThemeProvider theme={theme}>
-              <Box sx={{ display: isMobile || appBarControl === 'static' ? 'block' : 'flex'  }}>
+              <Box sx={{ display: isMobile || appBarControl === 'static' ? 'block' : 'flex' }}>
                 <CssBaseline />
                 <Topbar sidebarOpen={openSidebar} onSidebarToggle={handleSidebarOpen} onSidebarClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
                 <SideBar open={openSidebar} onOpen={handleSidebarOpen} onClose={handleSidebarClose} sidebarWidth={sidebarWidth} />
