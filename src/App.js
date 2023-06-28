@@ -26,8 +26,9 @@ function App() {
   // const [theme, colorMode] = useMode();
   const routes = useContext(RoutesContext);
   const [openSidebar, setOpenSidebar] = useState(true);
-  const [selectedTheme, setSelectedTheme] = useState(padrao);
+  const [selectedTheme, setSelectedTheme] = useState(azul);
   const [mode, setMode] = React.useState("claro");
+  const [modoAuxiliar, setModoAuxiliar] = React.useState("claro");
   const sidebarControl = useSelector(
     (state) => state.sidebarControl.orientation
   );
@@ -41,6 +42,14 @@ function App() {
   const token = useSelector((state) => state.login.isAuthenticated);
   const appBarControl = useSelector((state) => state.sidebarControl.appBar);
   const isAuthenticated = !!token;
+
+  useEffect(() => {
+    setMode(mode);
+  }, []);
+
+  useEffect(() => {
+    console.log(selectedTheme);
+  }, [selectedTheme]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -77,8 +86,65 @@ function App() {
   };
 
   const getModo = (event) => {
-    console.log(event.target.value);
     setMode(event.target.value);
+    setModoAuxiliar(event.target.value);
+
+    const updatedTheme = { ...selectedTheme };
+
+    const tempColorDefault = updatedTheme.colors.default;
+    updatedTheme.colors.default = updatedTheme.colors.defaultDark;
+    updatedTheme.colors.defaultDark = tempColorDefault;
+
+    const tempColorPaper = updatedTheme.colors.paper;
+    updatedTheme.colors.paper = updatedTheme.colors.paperDark;
+    updatedTheme.colors.paperDark = tempColorPaper;
+
+    const tempColorPrimary = updatedTheme.colors.primary;
+    updatedTheme.colors.primary = updatedTheme.colors.primaryDark;
+    updatedTheme.colors.primaryDark = tempColorPrimary;
+
+    const tempColorSecondary = updatedTheme.colors.secondary;
+    updatedTheme.colors.secondary = updatedTheme.colors.secondaryDark;
+    updatedTheme.colors.secondaryDark = tempColorSecondary;
+
+    const tempColorMuiToolbar = updatedTheme.colors.MuiToolbar;
+    updatedTheme.colors.MuiToolbar = updatedTheme.colors.MuiToolbarDark;
+    updatedTheme.colors.MuiToolbarDark = tempColorMuiToolbar;
+
+    const tempColorMuiTypography = updatedTheme.colors.MuiTypography;
+    updatedTheme.colors.MuiTypography = updatedTheme.colors.MuiTypographyDark;
+    updatedTheme.colors.MuiTypographyDark = tempColorMuiTypography;
+
+    const tempColorMuiSvgIcon = updatedTheme.colors.MuiSvgIcon;
+    updatedTheme.colors.MuiSvgIcon = updatedTheme.colors.MuiSvgIconDark;
+    updatedTheme.colors.MuiSvgIconDark = tempColorMuiSvgIcon;
+
+    const tempColorMuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbs;
+    updatedTheme.colors.MuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbsDark;
+    updatedTheme.colors.MuiBreadcrumbsDark = tempColorMuiBreadcrumbs;
+
+    const tempColorMuiListSubheader = updatedTheme.colors.MuiListSubheader;
+    updatedTheme.colors.MuiListSubheader =
+      updatedTheme.colors.MuiListSubheaderDark;
+    updatedTheme.colors.MuiListSubheaderDark = tempColorMuiListSubheader;
+
+    const tempColorMuiIconButton = updatedTheme.colors.MuiIconButton;
+    updatedTheme.colors.MuiIconButton = updatedTheme.colors.MuiIconButtonDark;
+    updatedTheme.colors.MuiIconButtonDark = tempColorMuiIconButton;
+
+    const tempColorMuiListItemButton = updatedTheme.colors.MuiListItemButton;
+    updatedTheme.colors.MuiListItemButton =
+      updatedTheme.colors.MuiListItemButtonDark;
+    updatedTheme.colors.MuiListItemButtonDark = tempColorMuiListItemButton;
+  };
+
+  const getTema = (valor) => {
+    setSelectedTheme(valor);
+    if (valor === padrao) {
+      setMode(modoAuxiliar);
+    } else {
+      setMode("claro");
+    }
   };
 
   const tema = createTheme({
@@ -158,6 +224,12 @@ function App() {
       },
     },
   });
+  const defaultTheme = createTheme({
+    palette: {
+      mode: mode === "claro" ? "light" : "dark",
+      componentMode: mode === "claro" ? "light" : "dark",
+    },
+  });
 
   const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
     ({ theme, open }) => ({
@@ -207,6 +279,8 @@ function App() {
                 sidebarWidth={sidebarWidth}
                 getModo={getModo}
                 mode={mode}
+                getTema={getTema}
+                selectedTheme={selectedTheme}
               />
               <SideBar
                 open={openSidebar}
@@ -219,13 +293,15 @@ function App() {
                 sx={{ marginTop: sidebarControl === "horizontal" ? "10px" : 0 }}
               >
                 <DrawerHeader />
-                <Box component="main">
-                  <Container maxWidth="lg">
-                    <RoutesContext.Provider value={routes}>
-                      <RoutesElement />
-                    </RoutesContext.Provider>
-                  </Container>
-                </Box>
+                <ThemeProvider theme={defaultTheme}>
+                  <Box component="main">
+                    <Container maxWidth="lg">
+                      <RoutesContext.Provider value={routes}>
+                        <RoutesElement />
+                      </RoutesContext.Provider>
+                    </Container>
+                  </Box>
+                </ThemeProvider>
               </Main>
             </Box>
           </ThemeProvider>

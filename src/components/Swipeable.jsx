@@ -14,6 +14,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
+import { azul, laranja, padrao } from "../tema";
 import {
   Avatar,
   AvatarGroup,
@@ -25,6 +26,7 @@ import {
   Radio,
   RadioGroup,
   Typography,
+  formGroupClasses,
 } from "@mui/material";
 import { ColorModeContext } from "../theme";
 import { useEffect } from "react";
@@ -36,6 +38,8 @@ export default function SwipeableTemporaryDrawer({
   open,
   getModo,
   mode,
+  getTema,
+  selectedTheme,
 }) {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
@@ -44,7 +48,7 @@ export default function SwipeableTemporaryDrawer({
     (state) => state.sidebarControl.orientation
   );
   const appBarControl = useSelector((state) => state.sidebarControl.appBar);
-  const [colorPrimary, setColorPrimary] = React.useState("blue");
+
   const dispatch = useDispatch();
   const [menu, setMenu] = React.useState("vertical");
   const [bar, setBar] = React.useState("fixed");
@@ -52,6 +56,7 @@ export default function SwipeableTemporaryDrawer({
   //   useEffect(() => {
   //     setMode(mode);
   //   }, []);
+  console.log(theme.palette.primary);
 
   useEffect(() => {
     setMenu(sidebarControl);
@@ -61,6 +66,10 @@ export default function SwipeableTemporaryDrawer({
     setBar(appBarControl);
   }, [appBarControl]);
 
+  const mudarTema = (valor) => {
+    getTema(valor);
+  };
+
   const handleClick = (open) => (event) => {
     onSidebarToggle(open);
   };
@@ -68,12 +77,6 @@ export default function SwipeableTemporaryDrawer({
   //   const handleChangeMode = (event) => {
   //     setMode(event.target.value);
   //   };
-
-  const handleChangeColorPrimary = (color) => {
-    setColorPrimary(color);
-    colorMode.toggleComponentMode(color);
-    // console.log(color)
-  };
 
   const handleChangeMenu = (event) => {
     setMenu(event.target.value);
@@ -147,12 +150,22 @@ export default function SwipeableTemporaryDrawer({
                 <FormControlLabel
                   value="claro"
                   control={<Radio />}
-                  label="Claro"
+                  label={
+                    <span style={{ color: theme.palette.primary.main }}>
+                      Claro
+                    </span>
+                  }
+                  disabled={selectedTheme !== padrao}
                 />
                 <FormControlLabel
                   value="escuro"
                   control={<Radio />}
-                  label="Escuro"
+                  label={
+                    <span style={{ color: theme.palette.primary.main }}>
+                      Escuro
+                    </span>
+                  }
+                  disabled={selectedTheme !== padrao}
                 />
               </RadioGroup>
             </FormControl>
@@ -177,9 +190,9 @@ export default function SwipeableTemporaryDrawer({
             <Avatar sx={{ bgcolor: "#004AAD", mr: 2 }}>
               <Button
                 sx={{ width: "100%", height: "100%" }}
-                onClick={() => handleChangeColorPrimary("blue")}
+                onClick={() => mudarTema(azul)}
               >
-                {colorPrimary === "blue" ? (
+                {selectedTheme === azul ? (
                   <CheckIcon sx={{ color: "white" }} />
                 ) : (
                   ""
@@ -189,9 +202,9 @@ export default function SwipeableTemporaryDrawer({
             <Avatar sx={{ bgcolor: "#FD6809", mr: 2 }}>
               <Button
                 sx={{ width: "100%", height: "100%" }}
-                onClick={() => handleChangeColorPrimary("orange")}
+                onClick={() => mudarTema(laranja)}
               >
-                {colorPrimary === "orange" ? (
+                {selectedTheme === laranja ? (
                   <CheckIcon sx={{ color: "white" }} />
                 ) : (
                   ""
@@ -201,9 +214,9 @@ export default function SwipeableTemporaryDrawer({
             <Avatar sx={{ bgcolor: "#716F70", mr: 2 }}>
               <Button
                 sx={{ width: "100%", height: "100%" }}
-                onClick={() => handleChangeColorPrimary("grey")}
+                onClick={() => mudarTema(padrao)}
               >
-                {colorPrimary === "grey" ? (
+                {selectedTheme === padrao ? (
                   <CheckIcon sx={{ color: "white" }} />
                 ) : (
                   ""

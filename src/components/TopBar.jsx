@@ -55,6 +55,8 @@ const Topbar = ({
   sidebarWidth,
   getModo,
   mode,
+  getTema,
+  selectedTheme,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -188,6 +190,8 @@ const Topbar = ({
       open={drawerRight}
       getModo={getModo}
       mode={mode}
+      getTema={getTema}
+      selectedTheme={selectedTheme}
     />
   );
 
