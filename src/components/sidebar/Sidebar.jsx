@@ -1,10 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useSelector, useDispatch } from "react-redux";
-import { Drawer, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-import SettingsIcon from '@mui/icons-material/Settings';
+import {
+  Drawer,
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
+import SettingsIcon from "@mui/icons-material/Settings";
 import { Navigate, useNavigate } from "react-router-dom";
 import { styled, useTheme } from "@mui/material/styles";
 import { setMenu } from "../../store/features/Menu";
@@ -38,8 +44,10 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
 
   const [openIcons, setOpenIcons] = useState({});
   const [selectedRoute, setSelectedRoute] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.matchMedia('(max-width: 900px)').matches)
-  const appBarControl = useSelector((state) => state.sidebarControl.appBar)
+  const [isMobile, setIsMobile] = useState(
+    window.matchMedia("(max-width: 900px)").matches
+  );
+  const appBarControl = useSelector((state) => state.sidebarControl.appBar);
   const [drawerRight, setDrawerRight] = useState(false);
 
   useEffect(() => {
@@ -49,16 +57,15 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
 
   useEffect(() => {
     const handleWindowResize = () => {
-      setIsMobile(window.matchMedia('(max-width: 900px)').matches);
+      setIsMobile(window.matchMedia("(max-width: 900px)").matches);
     };
 
-
-    window.addEventListener('resize', handleWindowResize);
+    window.addEventListener("resize", handleWindowResize);
 
     return () => {
-      window.removeEventListener('resize', handleWindowResize);
+      window.removeEventListener("resize", handleWindowResize);
     };
-  }, [])
+  }, []);
 
   const handleClickMenuItem = (item, subItem) => {
     handleClick(item, subItem, setOpenIcons, setSelectedRoute, menuItems);
@@ -70,18 +77,21 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
   };
 
   const toggleDrawerRight = (event) => {
-    setDrawerRight(event)
-    onClose()
-  }
+    setDrawerRight(event);
+    onClose();
+  };
 
   const handleLogout = async () => {
-    await dispatch(setLogout())
-    navigate('/login')
-  }
+    await dispatch(setLogout());
+    navigate("/login");
+  };
 
   const renderSwipeable = (
-    <SwipeableTemporaryDrawer onSidebarToggle={toggleDrawerRight} open={drawerRight} />
-  )
+    <SwipeableTemporaryDrawer
+      onSidebarToggle={toggleDrawerRight}
+      open={drawerRight}
+    />
+  );
 
   if (error) {
     return <p>Error: {error}</p>;
@@ -92,15 +102,15 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
       <Drawer
         open={open}
         onClose={onClose}
-        variant={isMobile || appBarControl === 'static' ? 'temporary' : "permanent"}
+        variant={
+          isMobile || appBarControl === "static" ? "temporary" : "permanent"
+        }
         sx={{
-          width: isMobile ? 'unset' : sidebarWidth,
+          width: isMobile ? "unset" : sidebarWidth,
           flexShrink: 0,
           "& .MuiDrawer-paper": {
-            width: isMobile ? 'unset' : sidebarWidth,
+            width: isMobile ? "unset" : sidebarWidth,
             boxSizing: "border-box",
-            backgroundColor: colors.primary[500],
-            color: colors.grey[100],
             boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
           },
         }}
@@ -153,29 +163,30 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
             ))}
         </List>
         <EditorItem></EditorItem>
-        {
-          isMobile ?
-            <List style={{ marginTop: "auto" }}>
-              <ListItemButton onClick={() => toggleDrawerRight(true)}>
-                <ListItemIcon>
-                  <SettingsIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Personalizar Sistema</ListItemText>
-              </ListItemButton>
-              <ListItemButton>
-                <ListItemIcon>
-                  <AccountCircleIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Perfil</ListItemText>
-              </ListItemButton>
-              <ListItemButton onClick={handleLogout}>
-                <ListItemIcon>
-                  <LogoutIcon fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>Sair</ListItemText>
-              </ListItemButton>
-            </List> : false
-        }
+        {isMobile ? (
+          <List style={{ marginTop: "auto" }}>
+            <ListItemButton onClick={() => toggleDrawerRight(true)}>
+              <ListItemIcon>
+                <SettingsIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Personalizar Sistema</ListItemText>
+            </ListItemButton>
+            <ListItemButton>
+              <ListItemIcon>
+                <AccountCircleIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Perfil</ListItemText>
+            </ListItemButton>
+            <ListItemButton onClick={handleLogout}>
+              <ListItemIcon>
+                <LogoutIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText>Sair</ListItemText>
+            </ListItemButton>
+          </List>
+        ) : (
+          false
+        )}
       </Drawer>
       {renderSwipeable}
     </div>

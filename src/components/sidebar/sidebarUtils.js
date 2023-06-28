@@ -7,7 +7,7 @@ export const useMenu = () => {
   const [error, setError] = useState(null);
   const menuItems = useSelector((state) => state.menu.list);
   const dispatch = useDispatch();
-  const token = useSelector((state) => state.login.isAuthenticated)
+  const token = useSelector((state) => state.login.isAuthenticated);
   useEffect(() => {
     getMenu();
   }, []);
@@ -18,7 +18,7 @@ export const useMenu = () => {
       method: "POST",
       headers: {
         "Access-Control-Allow-Origin": "*",
-        Authorization: token ? `Bearer ${token}` : '',
+        Authorization: token ? `Bearer ${token}` : "",
       },
     };
 
@@ -64,10 +64,16 @@ export const handleClick = (
       setSelectedRoute(null);
     }
   } else {
-    setOpenIcons((prevOpenIcons) => ({
-      ...prevOpenIcons,
-      [item]: !prevOpenIcons[item],
-    }));
+    setOpenIcons((prevOpenIcons) => {
+      const updatedOpenIcons = { ...prevOpenIcons };
+      Object.keys(updatedOpenIcons).forEach((key) => {
+        if (key !== item) {
+          updatedOpenIcons[key] = false;
+        }
+      });
+      updatedOpenIcons[item] = !prevOpenIcons[item];
+      return updatedOpenIcons;
+    });
 
     const menuItem = menuItems?.find((menuItem) => menuItem.id === item);
     if (menuItem && menuItem.route) {
