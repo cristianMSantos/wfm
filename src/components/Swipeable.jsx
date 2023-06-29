@@ -38,6 +38,9 @@ import { setMode, setTema } from "../store/features/TemaControl";
 export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+  const [isMobile, setIsMobile] = React.useState(
+    window.matchMedia("(max-width: 900px)").matches
+  );
 
   const selectedTheme = useSelector((state) => state.temaControl.tema);
   const mode = useSelector((state) => state.temaControl.mode);
@@ -50,6 +53,18 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
   const dispatch = useDispatch();
   const [menu, setMenu] = React.useState("vertical");
   const [bar, setBar] = React.useState("fixed");
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setIsMobile(window.matchMedia("(max-width: 900px)").matches);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
 
   useEffect(() => {
     setMenu(sidebarControl);
@@ -145,7 +160,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
       >
         <Grid container sx={{ display: "flex", alignItems: "center" }}>
           <Grid item xs={12} md={12}>
-            <Typography>Modo</Typography>
+            <Typography sx={{ opacity: 0.5 }}>Modo</Typography>
             <FormControl>
               <RadioGroup
                 row
@@ -187,29 +202,29 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         }}
       >
         <Grid item xs={12} md={12}>
-          <Typography>Temas</Typography>
+          <Typography sx={{ opacity: 0.5 }}>Temas</Typography>
           <AvatarGroup
             variant="rounded"
             sx={{ display: "flex", justifyContent: "center" }}
           >
-            <Avatar sx={{ bgcolor: "#004AAD", mr: 2 }}>
+            <Avatar sx={{ bgcolor: "#004AAD", mt: 2, mr: 2 }}>
               <Button
                 sx={{ width: "100%", height: "100%" }}
                 onClick={() => mudarTema(azul)}
               >
-                {selectedTheme === azul ? (
+                {selectedTheme.name === "plansul" ? (
                   <CheckIcon sx={{ color: "white" }} />
                 ) : (
                   ""
                 )}
               </Button>
             </Avatar>
-            <Avatar sx={{ bgcolor: "#FD6809", mr: 2 }}>
+            <Avatar sx={{ bgcolor: "#FD6809", mt: 2, mr: 2 }}>
               <Button
                 sx={{ width: "100%", height: "100%" }}
                 onClick={() => mudarTema(laranja)}
               >
-                {selectedTheme === laranja ? (
+                {selectedTheme.name === "plansul-laranja" ? (
                   <CheckIcon sx={{ color: "white" }} />
                 ) : (
                   ""
@@ -220,6 +235,45 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         </Grid>
       </Grid>
       <Divider />
+      {!isMobile ? (
+        <div>
+          <Grid
+            container
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              padding: theme.spacing(2),
+            }}
+          >
+            <Grid item xs={12} md={12}>
+              <Typography sx={{ opacity: 0.5 }}>Menu</Typography>
+              <FormControl>
+                <RadioGroup
+                  row
+                  aria-labelledby="menu"
+                  name="menu-group"
+                  value={menu}
+                  onChange={handleChangeMenu}
+                >
+                  <FormControlLabel
+                    value="vertical"
+                    control={<Radio />}
+                    label="Vertical"
+                  />
+                  <FormControlLabel
+                    value="horizontal"
+                    control={<Radio />}
+                    label="Horizontal"
+                  />
+                </RadioGroup>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <Divider />
+        </div>
+      ) : (
+        false
+      )}
       <Grid
         container
         sx={{
@@ -229,40 +283,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         }}
       >
         <Grid item xs={12} md={12}>
-          <Typography>Menu</Typography>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-labelledby="menu"
-              name="menu-group"
-              value={menu}
-              onChange={handleChangeMenu}
-            >
-              <FormControlLabel
-                value="vertical"
-                control={<Radio />}
-                label="Vertical"
-              />
-              <FormControlLabel
-                value="horizontal"
-                control={<Radio />}
-                label="Horizontal"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: theme.spacing(2),
-        }}
-      >
-        <Grid item xs={12} md={12}>
-          <Typography>Barra de Navegação</Typography>
+          <Typography sx={{ opacity: 0.5 }}>Barra de Navegação</Typography>
           <FormControl>
             <RadioGroup
               row
@@ -285,20 +306,6 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
             </RadioGroup>
           </FormControl>
         </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "end",
-          justifyContent: "flex-end",
-          padding: theme.spacing(2),
-        }}
-      >
-        <Button>
-          <AddIcon sx={{ marginRight: "5px" }}></AddIcon> Adicionar itens
-        </Button>
       </Grid>
     </Box>
   );

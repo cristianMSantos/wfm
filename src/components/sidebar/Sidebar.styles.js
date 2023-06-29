@@ -32,12 +32,12 @@ export const DrawerPaperStyled = (props) => (
       width: props.sidebarWidth,
       flexShrink: 0,
       boxSizing: "border-box",
-      boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
+      // boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
       "&.MuiPaper-root.MuiPaper-elevation.MuiPaper-elevation0.MuiDrawer-paper.MuiDrawer-paperAnchorLeft.MuiDrawer-paperAnchorDockedLeft.css-15b8vjn-MuiPaper-root-MuiDrawer-paper":
         {
           width: props.sidebarWidth,
           boxSizing: "border-box",
-          boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
+          // boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
         },
     }}
     {...props}

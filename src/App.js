@@ -32,7 +32,7 @@ function App() {
   const sidebarControl = useSelector(
     (state) => state.sidebarControl.orientation
   );
-  const sidebarWidth = openSidebar && sidebarControl === "vertical" ? 240 : 0; // Specify the width of the sidebar when it's open and closed
+  const sidebarWidth = openSidebar && sidebarControl === "vertical" ? 200 : 0; // Specify the width of the sidebar when it's open and closed
   const [isMobile, setIsMobile] = useState(
     window.matchMedia("(max-width: 900px)").matches
   );
@@ -91,69 +91,35 @@ function App() {
     setOpenSidebar(false);
   };
 
-  // const getModo = (event) => {
-  //   setMode(event.target.value);
-  //   setModoAuxiliar(event.target.value);
-
-  //   const updatedTheme = { ...selectedTheme };
-
-  //   const tempColorDefault = updatedTheme.colors.default;
-  //   updatedTheme.colors.default = updatedTheme.colors.defaultDark;
-  //   updatedTheme.colors.defaultDark = tempColorDefault;
-
-  //   const tempColorPaper = updatedTheme.colors.paper;
-  //   updatedTheme.colors.paper = updatedTheme.colors.paperDark;
-  //   updatedTheme.colors.paperDark = tempColorPaper;
-
-  //   const tempColorPrimary = updatedTheme.colors.primary;
-  //   updatedTheme.colors.primary = updatedTheme.colors.primaryDark;
-  //   updatedTheme.colors.primaryDark = tempColorPrimary;
-
-  //   const tempColorSecondary = updatedTheme.colors.secondary;
-  //   updatedTheme.colors.secondary = updatedTheme.colors.secondaryDark;
-  //   updatedTheme.colors.secondaryDark = tempColorSecondary;
-
-  //   const tempColorMuiToolbar = updatedTheme.colors.MuiToolbar;
-  //   updatedTheme.colors.MuiToolbar = updatedTheme.colors.MuiToolbarDark;
-  //   updatedTheme.colors.MuiToolbarDark = tempColorMuiToolbar;
-
-  //   const tempColorMuiTypography = updatedTheme.colors.MuiTypography;
-  //   updatedTheme.colors.MuiTypography = updatedTheme.colors.MuiTypographyDark;
-  //   updatedTheme.colors.MuiTypographyDark = tempColorMuiTypography;
-
-  //   const tempColorMuiSvgIcon = updatedTheme.colors.MuiSvgIcon;
-  //   updatedTheme.colors.MuiSvgIcon = updatedTheme.colors.MuiSvgIconDark;
-  //   updatedTheme.colors.MuiSvgIconDark = tempColorMuiSvgIcon;
-
-  //   const tempColorMuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbs;
-  //   updatedTheme.colors.MuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbsDark;
-  //   updatedTheme.colors.MuiBreadcrumbsDark = tempColorMuiBreadcrumbs;
-
-  //   const tempColorMuiListSubheader = updatedTheme.colors.MuiListSubheader;
-  //   updatedTheme.colors.MuiListSubheader =
-  //     updatedTheme.colors.MuiListSubheaderDark;
-  //   updatedTheme.colors.MuiListSubheaderDark = tempColorMuiListSubheader;
-
-  //   const tempColorMuiIconButton = updatedTheme.colors.MuiIconButton;
-  //   updatedTheme.colors.MuiIconButton = updatedTheme.colors.MuiIconButtonDark;
-  //   updatedTheme.colors.MuiIconButtonDark = tempColorMuiIconButton;
-
-  //   const tempColorMuiListItemButton = updatedTheme.colors.MuiListItemButton;
-  //   updatedTheme.colors.MuiListItemButton =
-  //     updatedTheme.colors.MuiListItemButtonDark;
-  //   updatedTheme.colors.MuiListItemButtonDark = tempColorMuiListItemButton;
-  // };
-
-  // const getTema = (valor) => {
-  //   setSelectedTheme(valor);
-  //   if (valor === padrao) {
-  //     setMode(modoAuxiliar);
-  //   } else {
-  //     setMode("claro");
-  //   }
-  // };
-
   const tema = createTheme({
+    typography: {
+      fontFamily: ["Inter", "sans-serif"].join(","),
+      fontSize: 12,
+      h1: {
+        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontSize: 40,
+      },
+      h2: {
+        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontSize: 32,
+      },
+      h3: {
+        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontSize: 24,
+      },
+      h4: {
+        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontSize: 20,
+      },
+      h5: {
+        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontSize: 16,
+      },
+      h6: {
+        fontFamily: ["Inter", "sans-serif"].join(","),
+        fontSize: 14,
+      },
+    },
     palette: {
       background: {
         default: selectedTheme.colors.default,

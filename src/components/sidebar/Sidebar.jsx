@@ -51,6 +51,14 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
   const [drawerRight, setDrawerRight] = useState(false);
 
   useEffect(() => {
+    if(isMobile && selectedRoute){
+      setTimeout(() => {
+        onClose()
+      }, 500)
+    }
+  }, [selectedRoute])
+
+  useEffect(() => {
     const initialOpenState = generateInitialOpenState(menuItems);
     setOpenIcons(initialOpenState);
   }, [menuItems]);
@@ -111,7 +119,8 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
           "& .MuiDrawer-paper": {
             width: isMobile ? "unset" : sidebarWidth,
             boxSizing: "border-box",
-            boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
+            // boxShadow: "0px 5px 15px rgba(0, 0, 0, 0.35) !important",
+            boxShadow: "unset !important",
           },
         }}
         initial="hidden"
@@ -138,7 +147,7 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <ListSubheaderStyled colors={colors}>
+                  <ListSubheaderStyled colors={colors} sx={{ opacity: 0.5 }}>
                     {section}
                   </ListSubheaderStyled>
                 </motion.li>
@@ -165,21 +174,27 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
         {isMobile ? (
           <List style={{ marginTop: "auto" }}>
             <ListItemButton onClick={() => toggleDrawerRight(true)}>
-              <ListItemIcon>
-                <SettingsIcon fontSize="small" />
-              </ListItemIcon>
+              <SettingsIcon fontSize="small" sx={{
+                minWidth: '1.2em',
+                minHeight: '1.2em',
+                marginRight: '.5rem'
+              }} />
               <ListItemText>Personalizar Sistema</ListItemText>
             </ListItemButton>
             <ListItemButton>
-              <ListItemIcon>
-                <AccountCircleIcon fontSize="small" />
-              </ListItemIcon>
+              <AccountCircleIcon fontSize="small" sx={{
+                minWidth: '1.2em',
+                minHeight: '1.2em',
+                marginRight: '.5rem'
+              }} />
               <ListItemText>Perfil</ListItemText>
             </ListItemButton>
             <ListItemButton onClick={handleLogout}>
-              <ListItemIcon>
-                <LogoutIcon fontSize="small" />
-              </ListItemIcon>
+              <LogoutIcon fontSize="small" sx={{
+                minWidth: '1.2em',
+                minHeight: '1.2em',
+                marginRight: '.5rem'
+              }} />
               <ListItemText>Sair</ListItemText>
             </ListItemButton>
           </List>

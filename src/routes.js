@@ -8,6 +8,11 @@ import User from "./views/User";
 import UserList from "./views/UserList";
 import Teste from "./views/Teste";
 import AddItem from "./views/AddItem/AddItem";
+import Dashboard from "./views/Dashboard";
+import SubRecrutamento from "./views/recrutamento/SubRecrutamento";
+import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
+import SubTrafego from "./views/trafego/SubTrafego";
+
 const IsAuthenticated = () => {
   const token = useSelector((state) => state.login.isAuthenticated);
   return !!token;
@@ -18,6 +23,67 @@ const routes = [
     path: "/",
     name: "Home",
     element: IsAuthenticated ? <Home to="/" /> : <Navigate to="/login" />,
+  },
+  // {
+  //     path: "/user",
+  //     name: 'User',
+  //     children: [
+  //         {
+  //             path: "",
+  //             element: <User to="user" replace />
+  //         },
+  //         {
+  //             path: "create",
+  //             element: <UserList />,
+  //         },
+  {
+    path: "/",
+    name: "Home",
+    element: IsAuthenticated ? <Home to="/" /> : <Navigate to="/login" />,
+  },
+  {
+    path: "/dashboard",
+    name: "Dashboard",
+    element: IsAuthenticated ? (
+      <Dashboard to="/dashboard" />
+    ) : (
+      <Navigate to="/login" />
+    ),
+  },
+  {
+    path: "/recrutamento",
+    name: "Recrutamento",
+  },
+  {
+    path: "/recrutamento/subRecrutamento",
+    name: "SubRecrutamento",
+    element: IsAuthenticated ? (
+      <SubRecrutamento to="/recrutamento/subRecrutamento" />
+    ) : (
+      <Navigate to="/login" />
+    ),
+  },
+  {
+    path: "/recrutamento/subRecrutamento2",
+    name: "SubRecrutamento2",
+    element: IsAuthenticated ? (
+      <SubRecrutamento2 to="/recrutamento/subRecrutamento2" />
+    ) : (
+      <Navigate to="/login" />
+    ),
+  },
+  {
+    path: "/trafego",
+    name: "Tráfego",
+  },
+  {
+    path: "/trafego/subTrafego",
+    name: "SubTrafego",
+    element: IsAuthenticated ? (
+      <SubTrafego to="/trafego/subTrafego" />
+    ) : (
+      <Navigate to="/login" />
+    ),
   },
   // {
   //     path: "/user",
