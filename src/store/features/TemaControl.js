@@ -1,31 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
-
-export const sidebarControl = createSlice({
-  name: "sidebarControl",
+import { azul } from "../../tema";
+export const temaControl = createSlice({
+  name: "temaControl",
   initialState: {
-    orientation: "vertical",
-    appBar: "fixed",
+    mode: JSON.parse(localStorage.getItem("current-mode")),
+    tema: JSON.parse(localStorage.getItem("current-theme")),
   },
   reducers: {
-    setOrientation: (state, { payload }) => {
+    setMode: (state, { payload }) => {
       // Redux Toolkit allows us to write "mutating" logic in reducers. It
       // doesn't actually mutate the state because it uses the Immer library,
       // which detects changes to a "draft state" and produces a brand new
       // immutable state based off those changes.
       // Also, no return statement is required from these functions.
-      if (payload) {
-        state.orientation = payload;
-      }
+
+      state.mode = payload;
     },
-    setAppbar: (state, { payload }) => {
+    setTema: (state, { payload }) => {
       if (payload) {
-        state.appBar = payload;
+        state.tema = payload;
       }
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setOrientation, setAppbar } = sidebarControl.actions;
+export const { setMode, setTema } = temaControl.actions;
 
-export default sidebarControl.reducer;
+export default temaControl.reducer;

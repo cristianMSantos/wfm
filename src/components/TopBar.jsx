@@ -53,10 +53,6 @@ const Topbar = ({
   onSidebarToggle,
   onSidebarClose,
   sidebarWidth,
-  getModo,
-  mode,
-  getTema,
-  selectedTheme,
 }) => {
   const theme = useTheme();
   const dispatch = useDispatch();
@@ -188,10 +184,6 @@ const Topbar = ({
     <SwipeableTemporaryDrawer
       onSidebarToggle={toggleDrawerRight}
       open={drawerRight}
-      getModo={getModo}
-      mode={mode}
-      getTema={getTema}
-      selectedTheme={selectedTheme}
     />
   );
 

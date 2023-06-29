@@ -26,8 +26,8 @@ function App() {
   // const [theme, colorMode] = useMode();
   const routes = useContext(RoutesContext);
   const [openSidebar, setOpenSidebar] = useState(true);
-  const [selectedTheme, setSelectedTheme] = useState(azul);
-  const [mode, setMode] = React.useState("claro");
+  // const [selectedTheme, setSelectedTheme] = useState(azul);
+  // const [mode, setMode] = React.useState("claro");
   const [modoAuxiliar, setModoAuxiliar] = React.useState("claro");
   const sidebarControl = useSelector(
     (state) => state.sidebarControl.orientation
@@ -37,6 +37,9 @@ function App() {
     window.matchMedia("(max-width: 900px)").matches
   );
 
+  const selectedTheme = useSelector((state) => state.temaControl.tema);
+  const mode = useSelector((state) => state.temaControl.mode);
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = useSelector((state) => state.login.isAuthenticated);
@@ -44,12 +47,15 @@ function App() {
   const isAuthenticated = !!token;
 
   useEffect(() => {
-    setMode(mode);
-  }, []);
+    // console.log("Modo");
+    // console.log(mode);
+    // console.log("Tema");
+    // console.log(selectedTheme.name);
+  }, [mode]);
 
-  useEffect(() => {
-    console.log(selectedTheme);
-  }, [selectedTheme]);
+  // useEffect(() => {
+  //   console.log(selectedTheme);
+  // }, [selectedTheme]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -85,67 +91,67 @@ function App() {
     setOpenSidebar(false);
   };
 
-  const getModo = (event) => {
-    setMode(event.target.value);
-    setModoAuxiliar(event.target.value);
+  // const getModo = (event) => {
+  //   setMode(event.target.value);
+  //   setModoAuxiliar(event.target.value);
 
-    const updatedTheme = { ...selectedTheme };
+  //   const updatedTheme = { ...selectedTheme };
 
-    const tempColorDefault = updatedTheme.colors.default;
-    updatedTheme.colors.default = updatedTheme.colors.defaultDark;
-    updatedTheme.colors.defaultDark = tempColorDefault;
+  //   const tempColorDefault = updatedTheme.colors.default;
+  //   updatedTheme.colors.default = updatedTheme.colors.defaultDark;
+  //   updatedTheme.colors.defaultDark = tempColorDefault;
 
-    const tempColorPaper = updatedTheme.colors.paper;
-    updatedTheme.colors.paper = updatedTheme.colors.paperDark;
-    updatedTheme.colors.paperDark = tempColorPaper;
+  //   const tempColorPaper = updatedTheme.colors.paper;
+  //   updatedTheme.colors.paper = updatedTheme.colors.paperDark;
+  //   updatedTheme.colors.paperDark = tempColorPaper;
 
-    const tempColorPrimary = updatedTheme.colors.primary;
-    updatedTheme.colors.primary = updatedTheme.colors.primaryDark;
-    updatedTheme.colors.primaryDark = tempColorPrimary;
+  //   const tempColorPrimary = updatedTheme.colors.primary;
+  //   updatedTheme.colors.primary = updatedTheme.colors.primaryDark;
+  //   updatedTheme.colors.primaryDark = tempColorPrimary;
 
-    const tempColorSecondary = updatedTheme.colors.secondary;
-    updatedTheme.colors.secondary = updatedTheme.colors.secondaryDark;
-    updatedTheme.colors.secondaryDark = tempColorSecondary;
+  //   const tempColorSecondary = updatedTheme.colors.secondary;
+  //   updatedTheme.colors.secondary = updatedTheme.colors.secondaryDark;
+  //   updatedTheme.colors.secondaryDark = tempColorSecondary;
 
-    const tempColorMuiToolbar = updatedTheme.colors.MuiToolbar;
-    updatedTheme.colors.MuiToolbar = updatedTheme.colors.MuiToolbarDark;
-    updatedTheme.colors.MuiToolbarDark = tempColorMuiToolbar;
+  //   const tempColorMuiToolbar = updatedTheme.colors.MuiToolbar;
+  //   updatedTheme.colors.MuiToolbar = updatedTheme.colors.MuiToolbarDark;
+  //   updatedTheme.colors.MuiToolbarDark = tempColorMuiToolbar;
 
-    const tempColorMuiTypography = updatedTheme.colors.MuiTypography;
-    updatedTheme.colors.MuiTypography = updatedTheme.colors.MuiTypographyDark;
-    updatedTheme.colors.MuiTypographyDark = tempColorMuiTypography;
+  //   const tempColorMuiTypography = updatedTheme.colors.MuiTypography;
+  //   updatedTheme.colors.MuiTypography = updatedTheme.colors.MuiTypographyDark;
+  //   updatedTheme.colors.MuiTypographyDark = tempColorMuiTypography;
 
-    const tempColorMuiSvgIcon = updatedTheme.colors.MuiSvgIcon;
-    updatedTheme.colors.MuiSvgIcon = updatedTheme.colors.MuiSvgIconDark;
-    updatedTheme.colors.MuiSvgIconDark = tempColorMuiSvgIcon;
+  //   const tempColorMuiSvgIcon = updatedTheme.colors.MuiSvgIcon;
+  //   updatedTheme.colors.MuiSvgIcon = updatedTheme.colors.MuiSvgIconDark;
+  //   updatedTheme.colors.MuiSvgIconDark = tempColorMuiSvgIcon;
 
-    const tempColorMuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbs;
-    updatedTheme.colors.MuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbsDark;
-    updatedTheme.colors.MuiBreadcrumbsDark = tempColorMuiBreadcrumbs;
+  //   const tempColorMuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbs;
+  //   updatedTheme.colors.MuiBreadcrumbs = updatedTheme.colors.MuiBreadcrumbsDark;
+  //   updatedTheme.colors.MuiBreadcrumbsDark = tempColorMuiBreadcrumbs;
 
-    const tempColorMuiListSubheader = updatedTheme.colors.MuiListSubheader;
-    updatedTheme.colors.MuiListSubheader =
-      updatedTheme.colors.MuiListSubheaderDark;
-    updatedTheme.colors.MuiListSubheaderDark = tempColorMuiListSubheader;
+  //   const tempColorMuiListSubheader = updatedTheme.colors.MuiListSubheader;
+  //   updatedTheme.colors.MuiListSubheader =
+  //     updatedTheme.colors.MuiListSubheaderDark;
+  //   updatedTheme.colors.MuiListSubheaderDark = tempColorMuiListSubheader;
 
-    const tempColorMuiIconButton = updatedTheme.colors.MuiIconButton;
-    updatedTheme.colors.MuiIconButton = updatedTheme.colors.MuiIconButtonDark;
-    updatedTheme.colors.MuiIconButtonDark = tempColorMuiIconButton;
+  //   const tempColorMuiIconButton = updatedTheme.colors.MuiIconButton;
+  //   updatedTheme.colors.MuiIconButton = updatedTheme.colors.MuiIconButtonDark;
+  //   updatedTheme.colors.MuiIconButtonDark = tempColorMuiIconButton;
 
-    const tempColorMuiListItemButton = updatedTheme.colors.MuiListItemButton;
-    updatedTheme.colors.MuiListItemButton =
-      updatedTheme.colors.MuiListItemButtonDark;
-    updatedTheme.colors.MuiListItemButtonDark = tempColorMuiListItemButton;
-  };
+  //   const tempColorMuiListItemButton = updatedTheme.colors.MuiListItemButton;
+  //   updatedTheme.colors.MuiListItemButton =
+  //     updatedTheme.colors.MuiListItemButtonDark;
+  //   updatedTheme.colors.MuiListItemButtonDark = tempColorMuiListItemButton;
+  // };
 
-  const getTema = (valor) => {
-    setSelectedTheme(valor);
-    if (valor === padrao) {
-      setMode(modoAuxiliar);
-    } else {
-      setMode("claro");
-    }
-  };
+  // const getTema = (valor) => {
+  //   setSelectedTheme(valor);
+  //   if (valor === padrao) {
+  //     setMode(modoAuxiliar);
+  //   } else {
+  //     setMode("claro");
+  //   }
+  // };
 
   const tema = createTheme({
     palette: {
@@ -226,8 +232,8 @@ function App() {
   });
   const defaultTheme = createTheme({
     palette: {
-      mode: mode === "claro" ? "light" : "dark",
-      componentMode: mode === "claro" ? "light" : "dark",
+      mode: mode === "dark" ? "dark" : "light",
+      componentMode: mode === "dark" ? "dark" : "light",
     },
   });
 
@@ -246,6 +252,7 @@ function App() {
           duration: theme.transitions.duration.enteringScreen,
         }),
         marginLeft: 0,
+        minHeight: "100vh",
       }),
     })
   );
@@ -277,12 +284,9 @@ function App() {
                 onSidebarToggle={handleSidebarOpen}
                 onSidebarClose={handleSidebarClose}
                 sidebarWidth={sidebarWidth}
-                getModo={getModo}
-                mode={mode}
-                getTema={getTema}
-                selectedTheme={selectedTheme}
               />
               <SideBar
+                mode={mode}
                 open={openSidebar}
                 onOpen={handleSidebarOpen}
                 onClose={handleSidebarClose}

@@ -1,7 +1,7 @@
 export const azul = {
   name: "plansul",
   colors: {
-    default: "#ffffff",
+    default: "#e1dede",
     defaultDark: "#ffffff",
     paper: "#022954",
     paperDark: "#022954",
@@ -28,7 +28,7 @@ export const azul = {
 export const laranja = {
   name: "plansul-laranja",
   colors: {
-    default: "#ffffff",
+    default: "#e1dede",
     defaultDark: "#ffffff",
     paper: "#FD6809",
     paperDark: "#FD6809",
@@ -55,16 +55,16 @@ export const laranja = {
 export const padrao = {
   name: "plansul-default",
   colors: {
-    default: "#ffffff",
-    defaultDark: "#434343",
-    paper: "#dee4ea",
-    paperDark: "#434343",
+    default: "#e1dede",
+    defaultDark: "#393838",
+    paper: "#ffffff",
+    paperDark: "#1c1c1c",
     primary: "#000000",
     primaryDark: "#ffffff",
-    secondary: "#dee4ea",
-    secondaryDark: "#434343",
-    MuiToolbar: "#dee4ea",
-    MuiToolbarDark: "#434343",
+    secondary: "#ffffff",
+    secondaryDark: "#1c1c1c",
+    MuiToolbar: "#ffffff",
+    MuiToolbarDark: "#1c1c1c",
     MuiTypography: "#000000",
     MuiTypographyDark: "#ffffff",
     MuiSvgIcon: "#000000",
@@ -76,6 +76,34 @@ export const padrao = {
     MuiIconButton: "#000000",
     MuiIconButtonDark: "#ffffff",
     MuiListItemButton: "#000000",
+    MuiListItemButtonDark: "#ffffff",
+  },
+};
+
+export const padraoDark = {
+  name: "plansul-default_dark",
+  colors: {
+    default: "#393838",
+    defaultDark: "#393838",
+    paper: "#1c1c1c",
+    paperDark: "#1c1c1c",
+    primary: "#ffffff",
+    primaryDark: "#ffffff",
+    secondary: "#1c1c1c",
+    secondaryDark: "#1c1c1c",
+    MuiToolbar: "#1c1c1c",
+    MuiToolbarDark: "#1c1c1c",
+    MuiTypography: "#ffffff",
+    MuiTypographyDark: "#ffffff",
+    MuiSvgIcon: "#ffffff",
+    MuiSvgIconDark: "#ffffff",
+    MuiBreadcrumbs: "#ffffff",
+    MuiBreadcrumbsDark: "#ffffff",
+    MuiListSubheader: "#ffffff",
+    MuiListSubheaderDark: "#ffffff",
+    MuiIconButton: "#ffffff",
+    MuiIconButtonDark: "#ffffff",
+    MuiListItemButton: "#ffffff",
     MuiListItemButtonDark: "#ffffff",
   },
 };

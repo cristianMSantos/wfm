@@ -14,7 +14,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import { azul, laranja, padrao } from "../tema";
+import { azul, laranja, padrao, padraoDark } from "../tema";
 import {
   Avatar,
   AvatarGroup,
@@ -32,17 +32,14 @@ import { ColorModeContext } from "../theme";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAppbar, setOrientation } from "../store/features/SideBarControl";
+import { setMode, setTema } from "../store/features/TemaControl";
 
-export default function SwipeableTemporaryDrawer({
-  onSidebarToggle,
-  open,
-  getModo,
-  mode,
-  getTema,
-  selectedTheme,
-}) {
+export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
   const theme = useTheme();
   const colorMode = React.useContext(ColorModeContext);
+
+  const selectedTheme = useSelector((state) => state.temaControl.tema);
+  const mode = useSelector((state) => state.temaControl.mode);
 
   const sidebarControl = useSelector(
     (state) => state.sidebarControl.orientation
@@ -53,11 +50,6 @@ export default function SwipeableTemporaryDrawer({
   const [menu, setMenu] = React.useState("vertical");
   const [bar, setBar] = React.useState("fixed");
 
-  //   useEffect(() => {
-  //     setMode(mode);
-  //   }, []);
-  console.log(theme.palette.primary);
-
   useEffect(() => {
     setMenu(sidebarControl);
   }, [sidebarControl]);
@@ -66,17 +58,33 @@ export default function SwipeableTemporaryDrawer({
     setBar(appBarControl);
   }, [appBarControl]);
 
-  const mudarTema = (valor) => {
-    getTema(valor);
-  };
-
   const handleClick = (open) => (event) => {
     onSidebarToggle(open);
   };
+  useEffect(() => {
+    if (mode === "light") {
+      dispatch(setTema(padrao));
+    } else if (mode === "dark") {
+      dispatch(setTema(padraoDark));
+    }
+    localStorage.setItem("current-mode", JSON.stringify(mode));
+  }, [mode]);
 
-  //   const handleChangeMode = (event) => {
-  //     setMode(event.target.value);
-  //   };
+  useEffect(() => {
+    localStorage.setItem("current-theme", JSON.stringify(selectedTheme));
+  }, [selectedTheme]);
+
+  const mudarTema = (valor) => {
+    if (valor !== padrao && valor !== padraoDark) {
+      const action = setMode(null);
+      dispatch(action);
+    }
+    dispatch(setTema(valor));
+  };
+
+  const handleChangeMode = (event) => {
+    dispatch(setMode(event.target.value));
+  };
 
   const handleChangeMenu = (event) => {
     setMenu(event.target.value);
@@ -88,8 +96,6 @@ export default function SwipeableTemporaryDrawer({
   const handleChangeBar = (event) => {
     setBar(event.target.value);
     dispatch(setAppbar(event.target.value));
-
-    console.log(event.target.value);
   };
 
   const list = () => (
@@ -145,27 +151,25 @@ export default function SwipeableTemporaryDrawer({
                 aria-labelledby="mode"
                 name="mode-group"
                 value={mode}
-                onChange={getModo}
+                onChange={handleChangeMode}
               >
                 <FormControlLabel
-                  value="claro"
+                  value="light"
                   control={<Radio />}
                   label={
                     <span style={{ color: theme.palette.primary.main }}>
                       Claro
                     </span>
                   }
-                  disabled={selectedTheme !== padrao}
                 />
                 <FormControlLabel
-                  value="escuro"
+                  value="dark"
                   control={<Radio />}
                   label={
                     <span style={{ color: theme.palette.primary.main }}>
                       Escuro
                     </span>
                   }
-                  disabled={selectedTheme !== padrao}
                 />
               </RadioGroup>
             </FormControl>
@@ -205,18 +209,6 @@ export default function SwipeableTemporaryDrawer({
                 onClick={() => mudarTema(laranja)}
               >
                 {selectedTheme === laranja ? (
-                  <CheckIcon sx={{ color: "white" }} />
-                ) : (
-                  ""
-                )}
-              </Button>
-            </Avatar>
-            <Avatar sx={{ bgcolor: "#716F70", mr: 2 }}>
-              <Button
-                sx={{ width: "100%", height: "100%" }}
-                onClick={() => mudarTema(padrao)}
-              >
-                {selectedTheme === padrao ? (
                   <CheckIcon sx={{ color: "white" }} />
                 ) : (
                   ""
