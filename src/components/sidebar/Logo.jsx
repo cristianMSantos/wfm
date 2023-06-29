@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { motion } from "framer-motion";
 import logo from "../../assets/images/logo.png";
 import logoBlue from "../../assets/images/logo_blue.png";
@@ -15,6 +15,22 @@ const LogoContainer = styled(motion.div)`
 const Logo = ({ onClick }) => {
   const selectedTheme = useSelector((state) => state.temaControl.tema);
   const mode = useSelector((state) => state.temaControl.mode);
+  const [isMobile, setIsMobile] = React.useState(
+    window.matchMedia("(max-width: 900px)").matches
+  );
+
+  useEffect(() => {
+    const handleWindowResize = () => {
+      setIsMobile(window.matchMedia("(max-width: 900px)").matches);
+    };
+
+    window.addEventListener("resize", handleWindowResize);
+
+    return () => {
+      window.removeEventListener("resize", handleWindowResize);
+    };
+  }, []);
+
   return (
     <LogoContainer
       onClick={onClick}
@@ -30,7 +46,7 @@ const Logo = ({ onClick }) => {
             : logo
         }
         alt="Logo"
-        style={{ width: "70%", height: "50%" }}
+        style={{ width: "70%", height: isMobile ? "65%" : "auto" }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       />

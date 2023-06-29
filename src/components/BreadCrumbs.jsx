@@ -36,12 +36,16 @@ export default function BreadCrumbs() {
                 {/* <LinkRouter underline="hover" color="inherit" to="/">
                     Home
                 </LinkRouter> */}
-                <Typography color="inherit">
-                    Home
-                </Typography>
+                {pathnames.length <= 0 ? (
+                    <Typography color="inherit">
+                        Home
+                    </Typography>
+                ) : null}
+
                 {pathnames.map((value, index) => {
                     const last = index === pathnames.length - 1;
                     const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+
 
                     return last ? (
                         <Typography color="text.primary" key={to}>

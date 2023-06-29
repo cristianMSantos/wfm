@@ -11,10 +11,9 @@ const IconComponent = ({ iconName }) => {
   return (
     <Icon
       sx={{
-        minWidth: "0",
-        width: "50%",
-        maxWidth: "50px",
-        height: "5%",
+        minWidth: '1.2em',
+        minHeight: '1.2em',
+        marginRight: '.5rem'
       }}
     />
   );
@@ -36,11 +35,10 @@ const SubMenuItem = ({ subItem, onClick }) => {
     <ListItemButton
       key={subItem.id}
       onClick={onClick}
-      sx={{ width: "100%", paddingLeft: "60px" }}
+      sx={{ width: "100%", paddingLeft: "45px" }}
     >
-      <ListItemIcon>
-        <IconComponent iconName={subItem.icon} />
-      </ListItemIcon>
+
+      <IconComponent iconName={subItem.icon} />
       <ListItemText
         primaryTypographyProps={{
           fontSize: "12px",

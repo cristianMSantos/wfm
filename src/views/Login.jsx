@@ -14,6 +14,8 @@ import Typography from '@mui/material/Typography';
 import Checkbox from '@mui/material/Checkbox';
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from '../assets/images/logo.png'
+import { IconButton, InputAdornment } from '@mui/material';
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 const LightTheme = createTheme({
     palette: {
@@ -27,16 +29,24 @@ const LightTheme = createTheme({
 export default function Login() {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState({
-        matricula: false, 
+        matricula: false,
         senha: false
     });
     const [messageError, setMessageError] = React.useState({
-        matricula: null, 
+        matricula: null,
         senha: null
     });
-    
+
+    const [errorLogin, setErrorLogin] = React.useState(false)
+    const [showPassword, setShowPassword] = React.useState(false);
+
     const dispatch = useDispatch()
     const navigate = useNavigate();
+
+    const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -59,28 +69,33 @@ export default function Login() {
             .then((response) => {
                 dispatch(setLogin(response.data.access_token))
                 setLoading(false);
+                setErrorLogin(false);
                 navigate('/');
             })
             .catch((error) => {
-                console.error('Erro ao efetuar o login:', error.response);
+                if (error.response.status === 401) {
+                    setLoading(false);
+                    setErrorLogin(true);
+                }
             })
     };
 
     const handleRules = (event, field) => {
         console.log(event)
-        if(!event){
+        setErrorLogin(false)
+        if (!event) {
             console.log(!!event)
             setError({ ...error, [field]: true });
             setMessageError({ ...messageError, [field]: 'Campo é Obrigatório' });
             return
         }
 
-        if(field === 'matricula'){
-            if(event && event.length < 6 || event && event.length > 6 ) {
+        if (field === 'matricula') {
+            if (event && event.length < 6 || event && event.length > 6) {
                 setError({ ...error, [field]: true });
                 setMessageError({ ...messageError, [field]: 'Matrícula Inválida' });
                 return
-            }else{
+            } else {
                 setError({ ...error, [field]: false });
                 setMessageError({ ...messageError, [field]: null });
                 return
@@ -90,7 +105,7 @@ export default function Login() {
 
         setError({ ...error, [field]: false })
         setMessageError({ ...messageError, [field]: null })
-        
+
 
 
 
@@ -103,7 +118,7 @@ export default function Login() {
                 <Grid item xs={12} md={8} className='grid-img'>
                     <div className='overlay'>
                         <Typography className='login-message' variant="h2" gutterBottom>
-                            Seja bem vindo ao seu novo <span style={{ color: '#073377' }}>Sistema </span> 
+                            Seja bem vindo ao seu novo <span style={{ color: '#073377' }}>Sistema </span>
                             de Gestão <span style={{ color: '#073377' }}>Plansul</span>
                         </Typography>
                     </div>
@@ -134,22 +149,36 @@ export default function Login() {
                                         />
                                         <TextField
                                             required
-                                            error={error['senha']}
-                                            helperText={messageError['senha']}
-                                            onChange={(event) => handleRules(event.target.value, 'senha')}
                                             id="password"
                                             name="password"
-                                            type="password"
                                             label="Senha"
-                                            autoComplete="current-password"
-                                        // variant="filled"
+                                            type={showPassword ? 'text' : 'password'}
+                                            InputProps={{
+                                                endAdornment: (
+                                                    <InputAdornment position="end">
+                                                        <IconButton
+                                                            aria-label="toggle password visibility"
+                                                            onClick={handleClickShowPassword}
+                                                            onMouseDown={handleMouseDownPassword}
+                                                        >
+                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                        </IconButton>
+                                                    </InputAdornment>
+                                                ),
+                                            }}
                                         />
-                                        <FormControlLabel
+                                        {
+                                            errorLogin ?
+                                                <p className='errorLogin'>
+                                                    Usuário ou Senha Incorreto!
+                                                </p> : false
+                                        }
+                                        {/* <FormControlLabel
                                             className='login-remember'
                                             control={<Checkbox value="remember" color="primary" />}
                                             label="Lembrar-me"
-                                        />
-                                        <LoadingButton loading={loading}  type="submit" variant="contained" color="success">
+                                        /> */}
+                                        <LoadingButton loading={loading} type="submit" variant="contained" color="success">
                                             Acessar
                                         </LoadingButton>
                                     </Box>

@@ -12,19 +12,6 @@ import { tokens } from "../../theme";
 import { styled, useTheme } from "@mui/material/styles";
 import SubMenuItem from "./SubMenuItem";
 
-const IconComponent = ({ iconName }) => {
-  const Icon = Icons[iconName];
-  return (
-    <Icon
-      sx={{
-        minWidth: "0",
-        width: "50%",
-        maxWidth: "50px",
-        height: "5%",
-      }}
-    />
-  );
-};
 
 const MenuItem = ({ menuItem, openIcons, onClick, onClickSubItem }) => {
   const theme = useTheme();
@@ -40,10 +27,9 @@ const MenuItem = ({ menuItem, openIcons, onClick, onClickSubItem }) => {
     return (
       <Icon
         sx={{
-          minWidth: "0",
-          width: "50%",
-          maxWidth: "50px",
-          height: "5%",
+          minWidth: '1.2em',
+          minHeight: '1.2em',
+          marginRight: '.5rem'
         }}
       />
     );
@@ -85,18 +71,10 @@ const MenuItem = ({ menuItem, openIcons, onClick, onClickSubItem }) => {
               }}
             />
           ))}
-        <ListItemIcon
-          sx={{
-            minWidth: 50,
-            marginRight: theme.spacing(1),
-            display: "flex",
-          }}
-        >
-          <IconComponent iconName={menuItem.icon} />
-        </ListItemIcon>
+
+        <IconComponent iconName={menuItem.icon} />
         <ListItemText
           primaryTypographyProps={{
-            fontSize: "12px",
             lineHeight: "1",
           }}
           primary={menuItem.text}

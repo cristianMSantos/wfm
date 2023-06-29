@@ -16,17 +16,17 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import { azul, laranja, padrao, padraoDark } from "../tema";
 import {
-  Avatar,
-  AvatarGroup,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  Grid,
-  IconButton,
-  Radio,
-  RadioGroup,
-  Typography,
-  formGroupClasses,
+    Avatar,
+    AvatarGroup,
+    FormControl,
+    FormControlLabel,
+    FormLabel,
+    Grid,
+    IconButton,
+    Radio,
+    RadioGroup,
+    Typography,
+    formGroupClasses,
 } from "@mui/material";
 import { ColorModeContext } from "../theme";
 import { useEffect } from "react";
@@ -35,270 +35,291 @@ import { setAppbar, setOrientation } from "../store/features/SideBarControl";
 import { setMode, setTema } from "../store/features/TemaControl";
 
 export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
-  const theme = useTheme();
-  const colorMode = React.useContext(ColorModeContext);
+    const theme = useTheme();
+    const colorMode = React.useContext(ColorModeContext);
+    const [isMobile, setIsMobile] = React.useState(
+        window.matchMedia("(max-width: 900px)").matches
+    );
 
-  const selectedTheme = useSelector((state) => state.temaControl.tema);
-  const mode = useSelector((state) => state.temaControl.mode);
+    const selectedTheme = useSelector((state) => state.temaControl.tema);
+    const mode = useSelector((state) => state.temaControl.mode);
 
-  const sidebarControl = useSelector(
-    (state) => state.sidebarControl.orientation
-  );
-  const appBarControl = useSelector((state) => state.sidebarControl.appBar);
+    const sidebarControl = useSelector(
+        (state) => state.sidebarControl.orientation
+    );
+    const appBarControl = useSelector((state) => state.sidebarControl.appBar);
 
-  const dispatch = useDispatch();
-  const [menu, setMenu] = React.useState("vertical");
-  const [bar, setBar] = React.useState("fixed");
+    const dispatch = useDispatch();
+    const [menu, setMenu] = React.useState("vertical");
+    const [bar, setBar] = React.useState("fixed");
 
-  useEffect(() => {
-    setMenu(sidebarControl);
-  }, [sidebarControl]);
+    useEffect(() => {
+        const handleWindowResize = () => {
+            setIsMobile(window.matchMedia("(max-width: 900px)").matches);
+        };
 
-  useEffect(() => {
-    setBar(appBarControl);
-  }, [appBarControl]);
+        window.addEventListener("resize", handleWindowResize);
 
-  const handleClick = (open) => (event) => {
-    onSidebarToggle(open);
-  };
-  useEffect(() => {
-    if (mode === "light") {
-      dispatch(setTema(padrao));
-    } else if (mode === "dark") {
-      dispatch(setTema(padraoDark));
-    }
-    localStorage.setItem("current-mode", JSON.stringify(mode));
-  }, [mode]);
+        return () => {
+            window.removeEventListener("resize", handleWindowResize);
+        };
+    }, []);
 
-  useEffect(() => {
-    localStorage.setItem("current-theme", JSON.stringify(selectedTheme));
-  }, [selectedTheme]);
+    useEffect(() => {
+        setMenu(sidebarControl);
+    }, [sidebarControl]);
 
-  const mudarTema = (valor) => {
-    if (valor !== padrao && valor !== padraoDark) {
-      const action = setMode(null);
-      dispatch(action);
-    }
-    dispatch(setTema(valor));
-  };
+    useEffect(() => {
+        setBar(appBarControl);
+    }, [appBarControl]);
 
-  const handleChangeMode = (event) => {
-    dispatch(setMode(event.target.value));
-  };
+    const handleClick = (open) => (event) => {
+        onSidebarToggle(open);
+    };
+    useEffect(() => {
+        if (mode === "light") {
+            dispatch(setTema(padrao));
+        } else if (mode === "dark") {
+            dispatch(setTema(padraoDark));
+        }
+        localStorage.setItem("current-mode", JSON.stringify(mode));
+    }, [mode]);
 
-  const handleChangeMenu = (event) => {
-    setMenu(event.target.value);
-    dispatch(setOrientation(event.target.value));
+    useEffect(() => {
+        localStorage.setItem("current-theme", JSON.stringify(selectedTheme));
+    }, [selectedTheme]);
 
-    // console.log(event.target.value)
-  };
+    const mudarTema = (valor) => {
+        if (valor !== padrao && valor !== padraoDark) {
+            const action = setMode(null);
+            dispatch(action);
+        }
+        dispatch(setTema(valor));
+    };
 
-  const handleChangeBar = (event) => {
-    setBar(event.target.value);
-    dispatch(setAppbar(event.target.value));
-  };
+    const handleChangeMode = (event) => {
+        dispatch(setMode(event.target.value));
+    };
 
-  const list = () => (
-    <Box
-      sx={{
-        width: 250,
-        backgroundColor: theme.palette.mode,
-        ...theme.typography.fontSize,
-        color: theme.palette.mode,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-      }}
-      role="presentation"
-      //   onKeyDown={handleClick(false)}
-    >
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: theme.spacing(2),
-        }}
-      >
-        <Grid item xs={10} md={10}>
-          <Typography>Personalizar Sistema</Typography>
-        </Grid>
-        <Grid item xs={2} md={2}>
-          <IconButton
-            aria-label="close"
-            onClick={handleClick(false)}
-            edge="end"
-          >
-            <CloseIcon />
-          </IconButton>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: theme.spacing(2),
-        }}
-      >
-        <Grid container sx={{ display: "flex", alignItems: "center" }}>
-          <Grid item xs={12} md={12}>
-            <Typography>Modo</Typography>
-            <FormControl>
-              <RadioGroup
-                row
-                aria-labelledby="mode"
-                name="mode-group"
-                value={mode}
-                onChange={handleChangeMode}
-              >
-                <FormControlLabel
-                  value="light"
-                  control={<Radio />}
-                  label={
-                    <span style={{ color: theme.palette.primary.main }}>
-                      Claro
-                    </span>
-                  }
-                />
-                <FormControlLabel
-                  value="dark"
-                  control={<Radio />}
-                  label={
-                    <span style={{ color: theme.palette.primary.main }}>
-                      Escuro
-                    </span>
-                  }
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: theme.spacing(2),
-        }}
-      >
-        <Grid item xs={12} md={12}>
-          <Typography>Temas</Typography>
-          <AvatarGroup
-            variant="rounded"
-            sx={{ display: "flex", justifyContent: "center" }}
-          >
-            <Avatar sx={{ bgcolor: "#004AAD", mr: 2 }}>
-              <Button
-                sx={{ width: "100%", height: "100%" }}
-                onClick={() => mudarTema(azul)}
-              >
-                {selectedTheme === azul ? (
-                  <CheckIcon sx={{ color: "white" }} />
-                ) : (
-                  ""
-                )}
-              </Button>
-            </Avatar>
-            <Avatar sx={{ bgcolor: "#FD6809", mr: 2 }}>
-              <Button
-                sx={{ width: "100%", height: "100%" }}
-                onClick={() => mudarTema(laranja)}
-              >
-                {selectedTheme === laranja ? (
-                  <CheckIcon sx={{ color: "white" }} />
-                ) : (
-                  ""
-                )}
-              </Button>
-            </Avatar>
-          </AvatarGroup>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: theme.spacing(2),
-        }}
-      >
-        <Grid item xs={12} md={12}>
-          <Typography>Menu</Typography>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-labelledby="menu"
-              name="menu-group"
-              value={menu}
-              onChange={handleChangeMenu}
+    const handleChangeMenu = (event) => {
+        setMenu(event.target.value);
+        dispatch(setOrientation(event.target.value));
+
+        // console.log(event.target.value)
+    };
+
+    const handleChangeBar = (event) => {
+        setBar(event.target.value);
+        dispatch(setAppbar(event.target.value));
+    };
+
+    const list = () => (
+        <Box
+            sx={{
+                width: 250,
+                backgroundColor: theme.palette.mode,
+                ...theme.typography.fontSize,
+                color: theme.palette.mode,
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "center",
+            }}
+            role="presentation"
+        //   onKeyDown={handleClick(false)}
+        >
+            <Grid
+                container
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: theme.spacing(2),
+                }}
             >
-              <FormControlLabel
-                value="vertical"
-                control={<Radio />}
-                label="Vertical"
-              />
-              <FormControlLabel
-                value="horizontal"
-                control={<Radio />}
-                label="Horizontal"
-              />
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-      </Grid>
-      <Divider />
-      <Grid
-        container
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          padding: theme.spacing(2),
-        }}
-      >
-        <Grid item xs={12} md={12}>
-          <Typography>Barra de Navegação</Typography>
-          <FormControl>
-            <RadioGroup
-              row
-              aria-labelledby="bar"
-              name="bar-group"
-              value={bar}
-              onChange={handleChangeBar}
+                <Grid item xs={10} md={10}>
+                    <Typography>Personalizar Sistema</Typography>
+                </Grid>
+                <Grid item xs={2} md={2}>
+                    <IconButton
+                        aria-label="close"
+                        onClick={handleClick(false)}
+                        edge="end"
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </Grid>
+            </Grid>
+            <Divider />
+            <Grid
+                container
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: theme.spacing(2),
+                }}
             >
-              <FormControlLabel
-                value="static"
-                control={<Radio />}
-                label="Estático"
-              />
-              <FormControlLabel
-                value="fixed"
-                control={<Radio />}
-                label="Fixa"
-              />
-              {/* <FormControlLabel value="hide" control={<Radio />} label="Esconder" /> */}
-            </RadioGroup>
-          </FormControl>
-        </Grid>
-      </Grid>
-    </Box>
-  );
+                <Grid container sx={{ display: "flex", alignItems: "center" }}>
+                    <Grid item xs={12} md={12}>
+                        <Typography sx={{ opacity: 0.5 }}>Modo</Typography>
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                aria-labelledby="mode"
+                                name="mode-group"
+                                value={mode}
+                                onChange={handleChangeMode}
+                            >
+                                <FormControlLabel
+                                    value="light"
+                                    control={<Radio />}
+                                    label={
+                                        <span style={{ color: theme.palette.primary.main }}>
+                                            Claro
+                                        </span>
+                                    }
+                                />
+                                <FormControlLabel
+                                    value="dark"
+                                    control={<Radio />}
+                                    label={
+                                        <span style={{ color: theme.palette.primary.main }}>
+                                            Escuro
+                                        </span>
+                                    }
+                                />
+                            </RadioGroup>
+                        </FormControl>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Divider />
+            <Grid
+                container
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: theme.spacing(2),
+                }}
+            >
+                <Grid item xs={12} md={12}>
+                    <Typography sx={{ opacity: 0.5 }}>Temas</Typography>
+                    <AvatarGroup
+                        variant="rounded"
+                        sx={{ display: "flex", justifyContent: "center" }}
+                    >
+                        <Avatar sx={{ bgcolor: "#004AAD", mt: 2, mr: 2 }}>
+                            <Button
+                                sx={{ width: "100%", height: "100%" }}
+                                onClick={() => mudarTema(azul)}
+                            >
+                                {selectedTheme.name === 'plansul' ? (
+                                    <CheckIcon sx={{ color: "white" }} />
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        </Avatar>
+                        <Avatar sx={{ bgcolor: "#FD6809", mt: 2, mr: 2 }}>
+                            <Button
+                                sx={{ width: "100%", height: "100%" }}
+                                onClick={() => mudarTema(laranja)}
+                            >
+                                {selectedTheme.name === 'plansul-laranja' ? (
+                                    <CheckIcon sx={{ color: "white" }} />
+                                ) : (
+                                    ""
+                                )}
+                            </Button>
+                        </Avatar>
+                    </AvatarGroup>
+                </Grid>
+            </Grid>
+            <Divider />
+            {
+                !isMobile ?
+                    <div>
+                        <Grid
+                            container
+                            sx={{
+                                display: "flex",
+                                alignItems: "center",
+                                padding: theme.spacing(2),
+                            }}
+                        >
+                            <Grid item xs={12} md={12}>
+                                <Typography sx={{ opacity: 0.5 }}>Menu</Typography>
+                                <FormControl>
+                                    <RadioGroup
+                                        row
+                                        aria-labelledby="menu"
+                                        name="menu-group"
+                                        value={menu}
+                                        onChange={handleChangeMenu}
+                                    >
+                                        <FormControlLabel
+                                            value="vertical"
+                                            control={<Radio />}
+                                            label="Vertical"
+                                        />
+                                        <FormControlLabel
+                                            value="horizontal"
+                                            control={<Radio />}
+                                            label="Horizontal"
+                                        />
+                                    </RadioGroup>
+                                </FormControl>
+                            </Grid>
+                        </Grid>
+                        <Divider />
+                    </div>
+                     : false
+            }
+            <Grid
+                container
+                sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    padding: theme.spacing(2),
+                }}
+            >
+                <Grid item xs={12} md={12}>
+                    <Typography sx={{ opacity: 0.5 }}>Barra de Navegação</Typography>
+                    <FormControl>
+                        <RadioGroup
+                            row
+                            aria-labelledby="bar"
+                            name="bar-group"
+                            value={bar}
+                            onChange={handleChangeBar}
+                        >
+                            <FormControlLabel
+                                value="static"
+                                control={<Radio />}
+                                label="Estático"
+                            />
+                            <FormControlLabel
+                                value="fixed"
+                                control={<Radio />}
+                                label="Fixa"
+                            />
+                            {/* <FormControlLabel value="hide" control={<Radio />} label="Esconder" /> */}
+                        </RadioGroup>
+                    </FormControl>
+                </Grid>
+            </Grid>
+        </Box>
+    );
 
-  return (
-    <div>
-      {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
-      <SwipeableDrawer
-        anchor="right"
-        open={open}
-        onClose={handleClick(false)}
-        onOpen={handleClick(true)}
-      >
-        {list()}
-      </SwipeableDrawer>
-    </div>
-  );
+    return (
+        <div>
+            {/* <Button onClick={toggleDrawer(anchor, true)}>{anchor}</Button> */}
+            <SwipeableDrawer
+                anchor="right"
+                open={open}
+                onClose={handleClick(false)}
+                onOpen={handleClick(true)}
+            >
+                {list()}
+            </SwipeableDrawer>
+        </div>
+    );
 }

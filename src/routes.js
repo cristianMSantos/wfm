@@ -7,6 +7,10 @@ import Home from './views/Home';
 import User from './views/User';
 import UserList from "./views/UserList";
 import Teste from "./views/Teste";
+import Dashboard from "./views/Dashboard";
+import SubRecrutamento from "./views/recrutamento/SubRecrutamento";
+import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
+import SubTrafego from "./views/trafego/SubTrafego";
 
 const IsAuthenticated = () => {
     const token = useSelector((state) => state.login.isAuthenticated)
@@ -19,6 +23,34 @@ const routes = [
         path: "/",
         name: 'Home',
         element: IsAuthenticated ? <Home to="/" /> : <Navigate to="/login" />,
+    },
+    {
+        path: "/dashboard",
+        name: 'Dashboard',
+        element: IsAuthenticated ? <Dashboard to="/dashboard" /> : <Navigate to="/login" />,
+    },
+    {
+        path: "/recrutamento",
+        name: 'Recrutamento'
+    },
+    {
+        path: "/recrutamento/subRecrutamento",
+        name: 'SubRecrutamento',
+        element: IsAuthenticated ? <SubRecrutamento to="/recrutamento/subRecrutamento" /> : <Navigate to="/login" />,
+    },
+    {
+        path: "/recrutamento/subRecrutamento2",
+        name: 'SubRecrutamento2',
+        element: IsAuthenticated ? <SubRecrutamento2 to="/recrutamento/subRecrutamento2" /> : <Navigate to="/login" />,
+    },
+    {
+        path: "/trafego",
+        name: 'Tráfego'
+    },
+    {
+        path: "/trafego/subTrafego",
+        name: 'SubTrafego',
+        element: IsAuthenticated ? <SubTrafego to="/trafego/subTrafego" /> : <Navigate to="/login" />,
     },
     // {
     //     path: "/user",
