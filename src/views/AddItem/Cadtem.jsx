@@ -32,6 +32,7 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSelector, useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
+import api from "../../axios";
 
 const CadItem = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -44,9 +45,11 @@ const CadItem = () => {
   const [addingNewGrupo, setAddingNewGrupo] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [IconComponent, setIconComponent] = useState(Icons.Add);
+  const [SubItemIconComponent, setSubtemIconComponent] = useState(Icons.Add);
+  const [subitemSelectedIcon, setSubitemSelectedIcon] = useState(null);
   const [isSubItemChecked, setIsSubItemChecked] = useState(false);
   const [nomeSubitem, setNomeSubitem] = useState("");
-
+  const token = useSelector((state) => state.login.isAuthenticated);
   useEffect(() => {
     const sectionsArray = menuItems
       .map((menuItem) => menuItem.section)
@@ -79,6 +82,14 @@ const CadItem = () => {
     handleCloseDialog();
   };
 
+  const handleSubitemIconSelect = (icon) => {
+    if (typeof icon === "string" || icon instanceof String) {
+      setSubitemSelectedIcon(icon);
+      setSubtemIconComponent(Icons[icon]);
+    }
+    handleCloseDialog();
+  };
+
   const handleNewGrupoChange = (event) => {
     setNewGrupo(event.target.value);
   };
@@ -105,6 +116,45 @@ const CadItem = () => {
 
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
+  };
+  const handleSubmit = async () => {
+    // Create the object from form data
+    const formData = {
+      nome: nome,
+      grupo: grupo,
+      subitem: isSubItemChecked
+        ? {
+            nomeSubitem: nomeSubitem,
+            subitemSelectedIcon: subitemSelectedIcon,
+          }
+        : null,
+      selectedIcon: selectedIcon,
+    };
+    const options = {
+      url: `sidebar/createMenu`,
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: token ? `Bearer ${token}` : "",
+        data: {
+          nome: nome,
+          grupo: grupo,
+          subitem: isSubItemChecked
+            ? {
+                nomeSubitem: nomeSubitem,
+                subitemSelectedIcon: subitemSelectedIcon,
+              }
+            : null,
+          selectedIcon: selectedIcon,
+        },
+      },
+    };
+
+    try {
+      const response = await api(options);
+    } catch (error) {
+      console.error("Error fetching menu:", error.response);
+    }
   };
 
   return (
@@ -202,7 +252,7 @@ const CadItem = () => {
             >
               <Typography>Escolher ícone:</Typography>
               <IconButton onClick={handleOpenDialog}>
-                {IconComponent && <IconComponent />}
+                {SubItemIconComponent && <SubItemIconComponent />}
               </IconButton>
             </Box>
           </CardActions>
@@ -227,6 +277,7 @@ const CadItem = () => {
         variant="contained"
         color="primary"
         sx={{ gridColumn: "span 1" }}
+        onClick={handleSubmit}
       >
         Salvar
       </Button>
@@ -234,7 +285,11 @@ const CadItem = () => {
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Escolher ícone</DialogTitle>
         <DialogContent>
-          <IconSelector onSelectIcon={handleIconSelect} />
+          <IconSelector
+            onSelectIcon={handleIconSelect}
+            onSelectSubIcon={handleSubitemIconSelect}
+            isSubItemChecked={isSubItemChecked}
+          />
         </DialogContent>
       </Dialog>
     </Box>

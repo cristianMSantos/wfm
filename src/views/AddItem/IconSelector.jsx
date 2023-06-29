@@ -24,7 +24,7 @@ import {
   Checkbox,
 } from "@mui/material";
 
-const IconSelector = ({ onSelectIcon }) => {
+const IconSelector = ({ onSelectIcon, onSelectSubIcon, isSubItemChecked }) => {
   const allIcons = Object.keys(Icons);
   const [selectedIcon, setSelectedIcon] = useState(null);
   const [searchText, setSearchText] = useState("");
@@ -35,7 +35,11 @@ const IconSelector = ({ onSelectIcon }) => {
 
   const handleIconSelect = (icon) => {
     setSelectedIcon(icon);
-    onSelectIcon(icon); // Pass the Icon component instead of the icon string
+    if (isSubItemChecked) {
+      onSelectSubIcon(icon);
+    } else {
+      onSelectIcon(icon);
+    }
   };
 
   const handleSearchChange = (event) => {
