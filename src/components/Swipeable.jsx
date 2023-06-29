@@ -5,6 +5,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import Paper from "@mui/material/Paper";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import CloseIcon from "@mui/icons-material/Close";
+import AddIcon from "@mui/icons-material/Add";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import Divider from "@mui/material/Divider";
@@ -284,6 +285,20 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
             </RadioGroup>
           </FormControl>
         </Grid>
+      </Grid>
+      <Divider />
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          alignItems: "end",
+          justifyContent: "flex-end",
+          padding: theme.spacing(2),
+        }}
+      >
+        <Button>
+          <AddIcon sx={{ marginRight: "5px" }}></AddIcon> Adicionar itens
+        </Button>
       </Grid>
     </Box>
   );

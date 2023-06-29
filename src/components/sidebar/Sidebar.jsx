@@ -162,7 +162,6 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
               </React.Fragment>
             ))}
         </List>
-        <EditorItem></EditorItem>
         {isMobile ? (
           <List style={{ marginTop: "auto" }}>
             <ListItemButton onClick={() => toggleDrawerRight(true)}>
