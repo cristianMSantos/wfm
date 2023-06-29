@@ -3,8 +3,12 @@ import { azul } from "../../tema";
 export const temaControl = createSlice({
   name: "temaControl",
   initialState: {
-    mode: JSON.parse(localStorage.getItem("current-mode")),
-    tema: JSON.parse(localStorage.getItem("current-theme")),
+    mode: localStorage.getItem("current-mode")
+      ? JSON.parse(localStorage.getItem("current-mode"))
+      : null,
+    tema: localStorage.getItem("current-theme")
+      ? JSON.parse(localStorage.getItem("current-theme"))
+      : azul,
   },
   reducers: {
     setMode: (state, { payload }) => {
