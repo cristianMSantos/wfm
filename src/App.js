@@ -201,12 +201,6 @@ function App() {
       mode: mode === "dark" ? "dark" : "light",
       componentMode: mode === "dark" ? "dark" : "light",
     },
-    palette: {
-      primary: {
-        main: selectedTheme.colors.paper,
-        contrastText: selectedTheme.colors.primary,
-      },
-    },
   });
 
   const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(

@@ -323,14 +323,14 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         }}
       >
         <Grid item xs={12} md={12}>
-          <IconButton onClick={handleAddMenuClick}>
+          <Button onClick={handleAddMenuClick}>
             <AddIcon
               sx={{
                 marginRight: "10px",
               }}
             ></AddIcon>
             <Typography>Adicionar menu</Typography>
-          </IconButton>
+          </Button>
         </Grid>
       </Grid>
     </Box>

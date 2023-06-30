@@ -23,6 +23,8 @@ export const azul = {
     MuiIconButtonDark: "#ffffff",
     MuiListItemButton: "#ffffff",
     MuiListItemButtonDark: "#ffffff",
+    primaryContent: "#022954",
+    primaryContentContrast: "#ffffff",
   },
 };
 export const laranja = {
@@ -50,6 +52,8 @@ export const laranja = {
     MuiIconButtonDark: "#ffffff",
     MuiListItemButton: "#ffffff",
     MuiListItemButtonDark: "#ffffff",
+    primaryContent: "#FD6809",
+    primaryContentContrast: "#ffffff",
   },
 };
 export const padrao = {
@@ -77,6 +81,8 @@ export const padrao = {
     MuiIconButtonDark: "#ffffff",
     MuiListItemButton: "#000000",
     MuiListItemButtonDark: "#ffffff",
+    primaryContent: "#000000",
+    primaryContentContrast: "#ffffff",
   },
 };
 
@@ -105,5 +111,7 @@ export const padraoDark = {
     MuiIconButtonDark: "#ffffff",
     MuiListItemButton: "#ffffff",
     MuiListItemButtonDark: "#ffffff",
+    primaryContent: "#1c1c1c",
+    primaryContentContrast: "#ffffff",
   },
 };

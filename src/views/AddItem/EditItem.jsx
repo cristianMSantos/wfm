@@ -36,6 +36,9 @@ const EditItem = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const menuItems = useSelector((state) => state.menu.list);
   const [expandedItems, setExpandedItems] = useState([]);
+  const [nome, setNome] = useState({});
+  const [IconComponent, setIconComponent] = useState(Icons.Add);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [expandedSubItems, setExpandedSubItems] = useState([]);
   const [grupo, setGrupo] = useState("");
   const [addingNewGrupo, setAddingNewGrupo] = useState(false);
@@ -68,9 +71,11 @@ const EditItem = () => {
       setExpandedSubItems((prevExpanded) => [...prevExpanded, subItemId]);
     }
   };
+
   const handleNewGrupoChange = (event) => {
     setNewGrupo(event.target.value);
   };
+
   const handleAddNewGrupo = () => {
     if (newGrupo.trim() !== "") {
       setGrupo(newGrupo);
@@ -79,10 +84,12 @@ const EditItem = () => {
       setAddingNewGrupo(false);
     }
   };
+
   const handleCancelAddNewGrupo = () => {
     setNewGrupo("");
     setAddingNewGrupo(false);
   };
+
   const handleGrupoChange = (event) => {
     const value = event.target.value;
     if (value === "__add_new__") {
@@ -92,6 +99,21 @@ const EditItem = () => {
       setGrupo(value);
       setAddingNewGrupo(false);
     }
+  };
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleNomeChange = (itemId, value) => {
+    setNome((prevNome) => ({
+      ...prevNome,
+      [itemId]: value,
+    }));
   };
 
   return (
@@ -125,40 +147,61 @@ const EditItem = () => {
                 <TextField
                   variant="filled"
                   type="text"
-                  value={item.text}
+                  value={nome[item.id] || item.text}
                   label="Nome"
+                  onChange={(event) => {
+                    handleNomeChange(item.id, event.target.value);
+                  }}
                 />
-                <FormControl fullWidth>
-                  <InputLabel id="grupo-label">Grupo</InputLabel>
-                  {!addingNewGrupo ? (
-                    <Select
-                      labelId="grupo-label"
-                      value={grupo}
-                      onChange={handleGrupoChange}
-                    >
-                      {sections.map((section) => (
-                        <MenuItem key={section} value={section}>
-                          {section}
-                        </MenuItem>
-                      ))}
-                      <MenuItem value="__add_new__">+ Adicionar novo</MenuItem>
-                    </Select>
-                  ) : (
-                    <Box display="flex" alignItems="center">
-                      <TextField
-                        variant="filled"
-                        type="text"
-                        value={newGrupo}
-                        onChange={handleNewGrupoChange}
-                      />
-                      <Button onClick={handleAddNewGrupo}>Adicionar</Button>
-                      <Button onClick={handleCancelAddNewGrupo}>
-                        Cancelar
-                      </Button>
-                    </Box>
-                  )}
-                </FormControl>
+                <TextField
+                  variant="filled"
+                  type="text"
+                  value={"/" + (nome[item.id] || item.text)}
+                  label="Rota"
+                />
               </Box>
+
+              <Box
+                sx={{
+                  gridColumn: "span 2",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
+                <Typography>Escolher ícone:</Typography>
+                <IconButton onClick={handleOpenDialog}>
+                  {IconComponent && <IconComponent />}
+                </IconButton>
+              </Box>
+
+              <FormControl fullWidth>
+                <InputLabel id="grupo-label">Grupo</InputLabel>
+                {!addingNewGrupo ? (
+                  <Select
+                    labelId="grupo-label"
+                    value={grupo || item.section}
+                    onChange={handleGrupoChange}
+                  >
+                    {sections.map((section) => (
+                      <MenuItem key={section} value={section}>
+                        {section}
+                      </MenuItem>
+                    ))}
+                    <MenuItem value="__add_new__">+ Adicionar novo</MenuItem>
+                  </Select>
+                ) : (
+                  <Box display="flex" alignItems="center">
+                    <TextField
+                      variant="filled"
+                      type="text"
+                      value={newGrupo}
+                      onChange={handleNewGrupoChange}
+                    />
+                    <Button onClick={handleAddNewGrupo}>Adicionar</Button>
+                    <Button onClick={handleCancelAddNewGrupo}>Cancelar</Button>
+                  </Box>
+                )}
+              </FormControl>
 
               {item.subItems && (
                 <Box mt={2}>
