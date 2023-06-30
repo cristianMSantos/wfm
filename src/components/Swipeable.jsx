@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
-import { styled, useTheme } from "@mui/material/styles";
+import { styled, useTheme, alpha } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check";
 import Paper from "@mui/material/Paper";
 import SwipeableDrawer from "@mui/material/SwipeableDrawer";
@@ -315,10 +315,24 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         </Grid>
       </Grid>
       <Divider></Divider>
-      <IconButton onClick={handleAddMenuClick}>
-        <AddIcon sx={{ marginRight: "10px" }}></AddIcon>
-        <Typography>Adicionar menu</Typography>
-      </IconButton>
+      <Grid
+        container
+        sx={{
+          display: "flex",
+          padding: theme.spacing(2),
+        }}
+      >
+        <Grid item xs={12} md={12}>
+          <IconButton onClick={handleAddMenuClick}>
+            <AddIcon
+              sx={{
+                marginRight: "10px",
+              }}
+            ></AddIcon>
+            <Typography>Adicionar menu</Typography>
+          </IconButton>
+        </Grid>
+      </Grid>
     </Box>
   );
 

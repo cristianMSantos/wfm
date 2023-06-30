@@ -39,7 +39,6 @@ const Logo = ({ onClick }) => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      {console.log(mode)}
       <motion.img
         src={
           selectedTheme.name == "plansul-default" && mode == "light"
