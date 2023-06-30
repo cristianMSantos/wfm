@@ -114,7 +114,7 @@ const IconSelector = ({ onSelectIcon, onSelectSubIcon, isSubItemChecked }) => {
               color: selectedIcon === icon ? "primary" : "inherit",
             }}
           />
-          <div style={{ textAlign: "center", fontSize: "8px" }}>{icon}</div>
+          {/* <div style={{ textAlign: "center", fontSize: "8px" }}>{icon}</div> */}
         </IconButton>
       );
     });
@@ -206,7 +206,6 @@ const IconSelector = ({ onSelectIcon, onSelectSubIcon, isSubItemChecked }) => {
           overflowY: "auto",
           boxShadow: "rgba(0, 0, 0, 0.35) 0px 5px 15px",
           borderRadius: "16px",
-          padding: "30px",
         }}
       >
         {renderIcons()}

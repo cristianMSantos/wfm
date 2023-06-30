@@ -1,4 +1,5 @@
 import * as React from "react";
+import { useNavigate } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { styled, useTheme } from "@mui/material/styles";
 import CheckIcon from "@mui/icons-material/Check";
@@ -34,9 +35,11 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setAppbar, setOrientation } from "../store/features/SideBarControl";
 import { setMode, setTema } from "../store/features/TemaControl";
+import { Add } from "@mui/icons-material";
 
 export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
   const theme = useTheme();
+  const navigate = useNavigate();
   const colorMode = React.useContext(ColorModeContext);
   const [isMobile, setIsMobile] = React.useState(
     window.matchMedia("(max-width: 900px)").matches
@@ -100,6 +103,10 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
 
   const handleChangeMode = (event) => {
     dispatch(setMode(event.target.value));
+  };
+  const handleAddMenuClick = () => {
+    // Handle the click event of the "Adicionar menu" button
+    navigate("/adicionaritens");
   };
 
   const handleChangeMenu = (event) => {
@@ -307,6 +314,11 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
           </FormControl>
         </Grid>
       </Grid>
+      <Divider></Divider>
+      <IconButton onClick={handleAddMenuClick}>
+        <AddIcon sx={{ marginRight: "10px" }}></AddIcon>
+        <Typography>Adicionar menu</Typography>
+      </IconButton>
     </Box>
   );
 

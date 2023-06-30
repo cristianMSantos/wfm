@@ -27,8 +27,6 @@ const AddItem = () => {
             <Tabs value={activeTab} onChange={handleTabChange} centered>
               <Tab label="Cadastrar Item" />
               <Tab label="Editar Item" />
-              <Tab label="Cadastrar SubItem" />
-              <Tab label="Editar SubItem" />
             </Tabs>
           </Box>
           <Box hidden={activeTab !== 0}>
@@ -36,12 +34,6 @@ const AddItem = () => {
           </Box>
           <Box hidden={activeTab !== 1}>
             <EditItem></EditItem>
-          </Box>
-          <Box hidden={activeTab !== 2}>
-            <CadSubItem></CadSubItem>
-          </Box>
-          <Box hidden={activeTab !== 3}>
-            <EditSubItem></EditSubItem>
           </Box>
         </CardContent>
       </Card>

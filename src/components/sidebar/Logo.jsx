@@ -30,7 +30,8 @@ const Logo = ({ onClick }) => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
-
+  console.log(selectedTheme.name);
+  console.log(mode);
   return (
     <LogoContainer
       onClick={onClick}
