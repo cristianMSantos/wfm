@@ -32,12 +32,27 @@ import {
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSelector, useDispatch } from "react-redux";
 
+const CustomIcon = ({ iconName }) => {
+  // Convert PascalCase icon name to camelCase
+  console.log(iconName);
+  const iconNameCamelCase = `${iconName
+    .charAt(0)
+    .toLowerCase()}${iconName.slice(1)}`;
+
+  // Check if the icon component exists in the imported Icons object
+  const IconComponent = Icons[iconName];
+
+  // Render the icon component if it exists, or fallback to a default icon
+  return IconComponent ? <IconComponent /> : <Icons.Add />;
+};
+
 const EditItem = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const menuItems = useSelector((state) => state.menu.list);
   const [expandedItems, setExpandedItems] = useState([]);
   const [nome, setNome] = useState({});
-  const [IconComponent, setIconComponent] = useState(Icons.Add);
+  const [selectedIcon, setSelectedIcon] = useState(null);
+  const [IconComponent, setIconComponent] = useState(Icons.WifiTetheringSharp);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [expandedSubItems, setExpandedSubItems] = useState([]);
   const [grupo, setGrupo] = useState("");
@@ -116,6 +131,13 @@ const EditItem = () => {
     }));
   };
 
+  const handleIconSelect = (icon) => {
+    if (typeof icon === "string" || icon instanceof String) {
+      setSelectedIcon(icon);
+    }
+    handleCloseDialog();
+  };
+
   return (
     <Box
       sx={{
@@ -156,7 +178,20 @@ const EditItem = () => {
                 <TextField
                   variant="filled"
                   type="text"
-                  value={"/" + (nome[item.id] || item.text)}
+                  value={
+                    "/" +
+                    (nome[item.id]
+                      ? nome[item.id]
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .replace(/[^\w\s]/gi, "")
+                          .toLowerCase()
+                      : item.text
+                          .normalize("NFD")
+                          .replace(/[\u0300-\u036f]/g, "")
+                          .replace(/[^\w\s]/gi, "")
+                          .toLowerCase())
+                  }
                   label="Rota"
                 />
               </Box>
@@ -170,7 +205,11 @@ const EditItem = () => {
               >
                 <Typography>Escolher ícone:</Typography>
                 <IconButton onClick={handleOpenDialog}>
-                  {IconComponent && <IconComponent />}
+                  {selectedIcon ? (
+                    <CustomIcon iconName={selectedIcon} />
+                  ) : (
+                    <CustomIcon iconName={item.icon} />
+                  )}
                 </IconButton>
               </Box>
 
@@ -235,6 +274,12 @@ const EditItem = () => {
           </Collapse>
         </Card>
       ))}
+      <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>Escolher ícone</DialogTitle>
+        <DialogContent>
+          <IconSelector onSelectIcon={handleIconSelect} />
+        </DialogContent>
+      </Dialog>
     </Box>
   );
 };

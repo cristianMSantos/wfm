@@ -156,6 +156,13 @@ const CadItem = () => {
       console.error("Error fetching menu:", error.response);
     }
   };
+  const normalizeAndRemoveSpecialChars = (str) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .toLowerCase();
+  };
 
   return (
     <Box
@@ -264,8 +271,10 @@ const CadItem = () => {
         variant="filled"
         type="text"
         label="Rota"
-        value={`/${nome.toLowerCase()}${
-          isSubItemChecked ? `/${nomeSubitem.toLowerCase()}` : ""
+        value={`/${normalizeAndRemoveSpecialChars(nome)}${
+          isSubItemChecked
+            ? `/${normalizeAndRemoveSpecialChars(nomeSubitem)}`
+            : ""
         }`}
         InputProps={{
           readOnly: true,
