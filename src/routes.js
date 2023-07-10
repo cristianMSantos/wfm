@@ -66,19 +66,6 @@ const routes = [
     name: "SubTrafego",
     element: <SubTrafego to="/trafego/subTrafego" />
   },
-  {
-    path: "/dap",
-    name: "DAP",
-  },
-  {
-    path: "/dap/relatorios",
-    name: "Relatórios",
-    element: IsAuthenticated ? (
-      <SubRelatorios to="/dap/relatorios" />
-    ) : (
-      <Navigate to="/login" />
-    ),
-  },
   // {
   //     path: "/user",
   //     name: 'User',

@@ -33,7 +33,7 @@ const MenuAccordionItem = ({ menu, sections, onUpdate }) => {
   };
 
   const handleIconSelectorClose = (icon) => {
-
+    // console.log(icon);
     if (typeof icon === "string" || icon instanceof String) {
       setNewItemIcon(icon);
       setIconComponent(Icons[icon]);
