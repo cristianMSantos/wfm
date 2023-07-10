@@ -28,11 +28,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Grid
 } from "@mui/material";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSelector, useDispatch } from "react-redux";
 import AddIcon from "@mui/icons-material/Add";
 import api from "../../axios";
+import { useTheme } from "@mui/material/styles";
 
 const CadItem = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -50,6 +52,8 @@ const CadItem = () => {
   const [isSubItemChecked, setIsSubItemChecked] = useState(false);
   const [nomeSubitem, setNomeSubitem] = useState("");
   const token = useSelector((state) => state.login.isAuthenticated);
+  const theme = useTheme();
+
   useEffect(() => {
     const sectionsArray = menuItems
       .map((menuItem) => menuItem.section)
@@ -119,35 +123,32 @@ const CadItem = () => {
   };
   const handleSubmit = async () => {
     // Create the object from form data
+
     const formData = {
-      nome: nome,
-      grupo: grupo,
-      subitem: isSubItemChecked
+      id: nome,
+      icon: selectedIcon,
+      text: nome,
+      hasSubItems: isSubItemChecked,
+      ...(!isSubItemChecked && { route: `/${nome.toLowerCase()}${isSubItemChecked ? `/${nomeSubitem.toLowerCase()}` : ""}` }),
+      subItems: isSubItemChecked
         ? {
-            nomeSubitem: nomeSubitem,
-            subitemSelectedIcon: subitemSelectedIcon,
-          }
+          id: nomeSubitem,
+          icon: subitemSelectedIcon,
+          text: nomeSubitem,
+          route: `/${nome.toLowerCase()}${isSubItemChecked ? `/${nomeSubitem.toLowerCase()}` : ""}`,
+        }
         : null,
-      selectedIcon: selectedIcon,
+      section: grupo,
     };
+
     const options = {
       url: `sidebar/createMenu`,
       method: "POST",
       headers: {
         "Access-Control-Allow-Origin": "*",
         Authorization: token ? `Bearer ${token}` : "",
-        data: {
-          nome: nome,
-          grupo: grupo,
-          subitem: isSubItemChecked
-            ? {
-                nomeSubitem: nomeSubitem,
-                subitemSelectedIcon: subitemSelectedIcon,
-              }
-            : null,
-          selectedIcon: selectedIcon,
-        },
       },
+      data: formData
     };
 
     try {
@@ -157,130 +158,124 @@ const CadItem = () => {
     }
   };
 
+
   return (
-    <Box
-      display="grid"
-      gap="30px"
-      gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-      sx={{
-        marginTop: "10px",
-        "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-      }}
-    >
-      <TextField
-        variant="filled"
-        type="text"
-        value={nome}
-        onChange={handleNomeChange}
-        label="Nome"
-        sx={{
-          gridColumn: "span 2",
-          //   "& .MuiInputBase-input": {
-          //     fontSize: "0.5rem",
-          //   },
-        }}
-      />
-      <FormControl
-        fullWidth
-        sx={{
-          gridColumn: "span 2",
-        }}
-      >
-        <InputLabel id="grupo-label">Grupo</InputLabel>
-        {!addingNewGrupo ? (
-          <Select
-            labelId="grupo-label"
-            value={grupo}
-            onChange={handleGrupoChange}
-          >
-            {sections.map((section) => (
-              <MenuItem key={section} value={section}>
-                {section}
-              </MenuItem>
-            ))}
-            <MenuItem value="__add_new__">+ Adicionar novo</MenuItem>
-          </Select>
-        ) : (
-          <Box display="flex">
-            <TextField
-              variant="filled"
-              type="text"
-              value={newGrupo}
-              onChange={handleNewGrupoChange}
-            />
-            <Button onClick={handleAddNewGrupo}>Adicionar</Button>
-            <Button onClick={handleCancelAddNewGrupo}>Cancelar</Button>
+    <Box sx={{ flexGrow: 1 }}>
+      <Grid container spacing={2} sx={{ padding: theme.spacing(2) }}>
+        <Grid item xs={12} md={5}>
+          <TextField
+            fullWidth
+            variant="filled"
+            type="text"
+            value={nome}
+            onChange={handleNomeChange}
+            label="Nome"
+            sx={{
+              gridColumn: "span 2",
+              //   "& .MuiInputBase-input": {
+              //     fontSize: "0.5rem",
+              //   },
+            }}
+          />
+        </Grid>
+        <Grid item xs={12} md={5}>
+          <FormControl fullWidth>
+            <InputLabel id="grupo-label">Grupo</InputLabel>
+            {!addingNewGrupo ? (
+              <Select
+                labelId="grupo-label"
+                value={grupo}
+                label="Grupo"
+                onChange={handleGrupoChange}
+              >
+                {sections.map((section) => (
+                  <MenuItem key={section} value={section}>
+                    {section}
+                  </MenuItem>
+                ))}
+                <MenuItem value="__add_new__">+ Adicionar novo</MenuItem>
+              </Select>
+            ) : (
+              <Box display="flex">
+                <TextField
+                  variant="filled"
+                  type="text"
+                  value={newGrupo}
+                  onChange={handleNewGrupoChange}
+                />
+                <Button onClick={handleAddNewGrupo}>Adicionar</Button>
+                <Button onClick={handleCancelAddNewGrupo}>Cancelar</Button>
+              </Box>
+            )}
+          </FormControl>
+        </Grid>
+        <Grid item xs={12} md={2}>
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Typography>Ícone do Menu:</Typography>
+            <IconButton onClick={handleOpenDialog}>
+              {IconComponent && <IconComponent />}
+            </IconButton>
           </Box>
-        )}
-      </FormControl>
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <FormControlLabel
+            control={<Checkbox color="primary" />}
+            label="Adicionar sub-item"
+            checked={isSubItemChecked}
+            onChange={handleSubItemChange}
+            sx={{ display: "flex", justifyContent: "end" }}
+          />
+          <Collapse in={isSubItemChecked}>
+            <Divider></Divider>
+            <Grid container spacing={2} sx={{ padding: theme.spacing(4) }}>
+              <Grid item xs={12} md={12}>
+                <Typography variant="subtitle2">Cadastro de SubMenu</Typography>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <TextField
+                  fullWidth
+                  variant="filled"
+                  type="text"
+                  value={nomeSubitem}
+                  onChange={handleNomeSubitemChange}
+                  label="Nome SubMenu"
+                />
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Box sx={{ display: "flex", alignItems: "center", justifyContent: 'end' }}>
+                  <Typography>Ícone do SubMenu:</Typography>
+                  <IconButton onClick={handleOpenDialog}>
+                    {SubItemIconComponent && <SubItemIconComponent />}
+                  </IconButton>
+                </Box>
+              </Grid>
 
-      <Box sx={{ gridColumn: "span 1", display: "flex", alignItems: "center" }}>
-        <Typography>Escolher ícone:</Typography>
-        <IconButton onClick={handleOpenDialog}>
-          {IconComponent && <IconComponent />}
-        </IconButton>
-      </Box>
-
-      <FormControlLabel
-        control={<Checkbox color="primary" />}
-        label="Adicionar sub-item"
-        checked={isSubItemChecked}
-        onChange={handleSubItemChange}
-        sx={{ gridColumn: "span 1", display: "flex", justifyContent: "center" }}
-      />
-
-      <Collapse in={isSubItemChecked} sx={{ gridColumn: "span 4" }}>
-        <Divider></Divider>
-        <Card>
-          <CardContent>Cadastrar Sub-Item</CardContent>
-          <CardActions>
-            <TextField
-              fullWidth
-              variant="filled"
-              type="text"
-              value={nomeSubitem}
-              onChange={handleNomeSubitemChange}
-              label="Nome Subitem"
-              sx={{ gridColumn: "span 2" }}
-            />
-            <Box
-              sx={{
-                gridColumn: "span 1",
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Typography>Escolher ícone:</Typography>
-              <IconButton onClick={handleOpenDialog}>
-                {SubItemIconComponent && <SubItemIconComponent />}
-              </IconButton>
-            </Box>
-          </CardActions>
-        </Card>
-      </Collapse>
-      <Divider sx={{ gridColumn: "span 4" }}></Divider>
-      <TextField
-        fullWidth
-        variant="filled"
-        type="text"
-        label="Rota"
-        value={`/${nome.toLowerCase()}${
-          isSubItemChecked ? `/${nomeSubitem.toLowerCase()}` : ""
-        }`}
-        InputProps={{
-          readOnly: true,
-        }}
-        sx={{ gridColumn: "span 4" }}
-      />
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        sx={{ gridColumn: "span 1" }}
-        onClick={handleSubmit}
-      >
-        Salvar
-      </Button>
+            </Grid>
+            <Divider></Divider>
+          </Collapse>
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            fullWidth
+            variant="filled"
+            type="text"
+            label="Rota"
+            value={`/${nome.toLowerCase()}${isSubItemChecked ? `/${nomeSubitem.toLowerCase()}` : ""}`}
+            InputProps={{ readOnly: true }}
+          />
+        </Grid>
+        <Grid item xs={12} md={12}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ gridColumn: "span 1" }}
+            onClick={handleSubmit}
+          >
+            Salvar
+          </Button>
+        </Grid>
+      </Grid>
 
       <Dialog open={isDialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Escolher ícone</DialogTitle>

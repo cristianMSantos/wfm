@@ -13,6 +13,7 @@ import SubRecrutamento from "./views/recrutamento/SubRecrutamento";
 import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
 import SubTrafego from "./views/trafego/SubTrafego";
 import Login from "./views/Login";
+import Acessos from "./views/admin/Acessos";
 
 const routes = [
   {
@@ -100,6 +101,11 @@ const routes = [
     path: "/adicionaritens",
     name: "AddItem",
     element: <AddItem to="/adicionaritens" />
+  },
+  {
+    path: "/acessos",
+    name: "Acessos",
+    element: <Acessos to="/acessos" />
   },
 ];
 
