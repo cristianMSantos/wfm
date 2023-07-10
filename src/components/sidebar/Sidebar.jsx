@@ -56,6 +56,9 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
         onClose()
       }, 500)
     }
+
+    console.log(selectedRoute)
+    selectedRoute && navigate(selectedRoute)
   }, [selectedRoute])
 
   useEffect(() => {
@@ -76,8 +79,6 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
   }, []);
 
   const handleClickMenuItem = (item, subItem) => {
-    console.log('item: ' + item)
-    console.log('subItem: ' + subItem)
     handleClick(item, subItem, setOpenIcons, setSelectedRoute, menuItems);
   };
 
@@ -132,7 +133,6 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
         sidebarWidth={isMobile ? 0 : sidebarWidth}
         colors={colors}
       >
-        {selectedRoute && <Navigate to={selectedRoute} replace={true} />}
         <LogoContainer
           onClick={() => handleClickMenuItem("logo", null)}
           initial={{ scale: 0 }}
