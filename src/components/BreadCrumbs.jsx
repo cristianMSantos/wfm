@@ -25,8 +25,6 @@ export default function BreadCrumbs() {
     }
 
     function LinkRouter(props) {
-        // console.log(props)
-        // return <Link {...props} onClick={(event) => handleClick(event, props.to)}>{breadcrumbNameMap[props.to]}</Link>
         return <Link {...props} component={RouterLink} />;
     }
 
@@ -52,14 +50,12 @@ export default function BreadCrumbs() {
                             {breadcrumbNameMap[to]}
                         </Typography>
                     ) : (
-                        <Typography color="inherit" key={to}>
+                         <LinkRouter underline="hover" color="inherit" to={to} key={to}>
                             {breadcrumbNameMap[to]}
-                        </Typography>
+                        </LinkRouter>
                     );
 
-                    {/* <LinkRouter underline="hover" color="inherit" to={to} key={to}>
-                            {breadcrumbNameMap[to]}
-                        </LinkRouter> */}
+                  
                 })}
             </Breadcrumbs>
         </div>

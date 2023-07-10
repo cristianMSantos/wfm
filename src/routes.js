@@ -13,6 +13,7 @@ import SubRecrutamento from "./views/recrutamento/SubRecrutamento";
 import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
 import SubTrafego from "./views/trafego/SubTrafego";
 import SubRelatorios from "./views/dap/Relatorios";
+import Login from "./views/Login";
 
 const IsAuthenticated = () => {
   const token = useSelector((state) => state.login.isAuthenticated);
@@ -23,7 +24,7 @@ const routes = [
   {
     path: "/",
     name: "Home",
-    element: IsAuthenticated ? <Home to="/" /> : <Navigate to="/login" />,
+    element: <Home to="/" />,
   },
   // {
   //     path: "/user",
@@ -38,40 +39,23 @@ const routes = [
   //             element: <UserList />,
   //         },
   {
-    path: "/",
-    name: "Home",
-    element: IsAuthenticated ? <Home to="/" /> : <Navigate to="/login" />,
-  },
-  {
     path: "/dashboard",
     name: "Dashboard",
-    element: IsAuthenticated ? (
-      <Dashboard to="/dashboard" />
-    ) : (
-      <Navigate to="/login" />
-    ),
-  },
-  {
-    path: "/recrutamento",
-    name: "Recrutamento",
+    element: <Dashboard to="/dashboard" />
   },
   {
     path: "/recrutamento/subRecrutamento",
     name: "SubRecrutamento",
-    element: IsAuthenticated ? (
-      <SubRecrutamento to="/recrutamento/subRecrutamento" />
-    ) : (
-      <Navigate to="/login" />
-    ),
+    element: <SubRecrutamento to="/recrutamento/subRecrutamento" />
   },
   {
     path: "/recrutamento/subRecrutamento2",
     name: "SubRecrutamento2",
-    element: IsAuthenticated ? (
-      <SubRecrutamento2 to="/recrutamento/subRecrutamento2" />
-    ) : (
-      <Navigate to="/login" />
-    ),
+    element: <SubRecrutamento2 to="/recrutamento/subRecrutamento2" />
+  },
+  {
+    path: "/recrutamento",
+    name: "Recrutamento",
   },
   {
     path: "/trafego",
@@ -80,11 +64,7 @@ const routes = [
   {
     path: "/trafego/subTrafego",
     name: "SubTrafego",
-    element: IsAuthenticated ? (
-      <SubTrafego to="/trafego/subTrafego" />
-    ) : (
-      <Navigate to="/login" />
-    ),
+    element: <SubTrafego to="/trafego/subTrafego" />
   },
   {
     path: "/dap",
@@ -117,40 +97,28 @@ const routes = [
   {
     path: "/user",
     name: "User",
-    element: IsAuthenticated ? <User to="/user" /> : <Navigate to="/login" />,
+    element: <User to="/user" />,
   },
   {
     path: "/user/create",
     name: "User Create",
-    element: IsAuthenticated ? (
-      <UserList to="/user" />
-    ) : (
-      <Navigate to="/login" />
-    ),
+    element: <UserList to="/user" />
   },
   {
     path: "/user/list",
     name: "User List",
-    element: IsAuthenticated ? (
-      <UserList to="/user" />
-    ) : (
-      <Navigate to="/login" />
-    ),
+    element: <UserList to="/user" />
   },
   {
     path: "/teste",
     name: "Teste",
-    element: IsAuthenticated ? <Teste to="/teste" /> : <Navigate to="/login" />,
+    element: <Teste to="/teste" />,
   },
 
   {
     path: "/adicionaritens",
     name: "AddItem",
-    element: IsAuthenticated ? (
-      <AddItem to="/adicionaritens" />
-    ) : (
-      <Navigate to="/login" />
-    ),
+    element: <AddItem to="/adicionaritens" />
   },
 ];
 

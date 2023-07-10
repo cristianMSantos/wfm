@@ -87,10 +87,16 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
       dispatch(setTema(padraoDark));
     }
     localStorage.setItem("current-mode", JSON.stringify(mode));
+    // caches.open('current-mode').then(cache => {
+    //   cache.put('/current-mode', new Response(mode));
+    // });
   }, [mode]);
 
   useEffect(() => {
-    localStorage.setItem("current-theme", JSON.stringify(selectedTheme));
+    // localStorage.setItem("current-theme", JSON.stringify(selectedTheme));
+    caches.open('current-theme').then(cache => {
+      cache.put('/current-theme', new Response(JSON.stringify(selectedTheme)));
+    });
   }, [selectedTheme]);
 
   const mudarTema = (valor) => {
@@ -104,7 +110,8 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
   const handleChangeMode = (event) => {
     dispatch(setMode(event.target.value));
   };
-  const handleAddMenuClick = () => {
+  const handleAddMenuClick = (event) => {
+    event.preventDefault()
     // Handle the click event of the "Adicionar menu" button
     navigate("/adicionaritens");
   };
@@ -133,7 +140,7 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
         justifyContent: "center",
       }}
       role="presentation"
-      //   onKeyDown={handleClick(false)}
+    //   onKeyDown={handleClick(false)}
     >
       <Grid
         container

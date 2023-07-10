@@ -1,7 +1,8 @@
 import "./App.css";
 import { alpha } from "@mui/material/styles";
 import React, { useState, createContext, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useTransition, animated } from '@react-spring/web';
+import { useLocation, useNavigate } from "react-router-dom";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Container, Box } from "@mui/material";
@@ -45,17 +46,16 @@ function App() {
   const token = useSelector((state) => state.login.isAuthenticated);
   const appBarControl = useSelector((state) => state.sidebarControl.appBar);
   const isAuthenticated = !!token;
+  const location = useLocation();
 
-  useEffect(() => {
-    // console.log("Modo");
-    // console.log(mode);
-    // console.log("Tema");
-    // console.log(selectedTheme.name);
-  }, [mode]);
+  // console.log(location.pathname)
 
-  // useEffect(() => {
-  //   console.log(selectedTheme);
-  // }, [selectedTheme]);
+
+  const transitions = useTransition(location, {
+    key: location.pathname,
+    from: { opacity: 0, width: "0%" },
+    enter: { opacity: 1, width: "100%" },
+  })
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -264,11 +264,17 @@ function App() {
               >
                 <DrawerHeader />
                 <ThemeProvider theme={defaultTheme}>
-                  <Box component="main" sx={{ width: "100%", height: "100%" }}>
+                  <Box component="main">
                     <Container maxWidth="lg">
-                      <RoutesContext.Provider value={routes}>
-                        <RoutesElement />
-                      </RoutesContext.Provider>
+                      {
+                        transitions((props, item) => (
+                           <animated.div style={props}>
+                            <RoutesContext.Provider value={routes}>
+                              <RoutesElement />
+                            </RoutesContext.Provider>
+                          </animated.div>
+                        ))
+                      }
                     </Container>
                   </Box>
                 </ThemeProvider>
