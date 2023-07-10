@@ -12,6 +12,7 @@ import Dashboard from "./views/Dashboard";
 import SubRecrutamento from "./views/recrutamento/SubRecrutamento";
 import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
 import SubTrafego from "./views/trafego/SubTrafego";
+import SubRelatorios from "./views/dap/Relatorios";
 
 const IsAuthenticated = () => {
   const token = useSelector((state) => state.login.isAuthenticated);
@@ -81,6 +82,19 @@ const routes = [
     name: "SubTrafego",
     element: IsAuthenticated ? (
       <SubTrafego to="/trafego/subTrafego" />
+    ) : (
+      <Navigate to="/login" />
+    ),
+  },
+  {
+    path: "/dap",
+    name: "DAP",
+  },
+  {
+    path: "/dap/relatorios",
+    name: "Relatórios",
+    element: IsAuthenticated ? (
+      <SubRelatorios to="/dap/relatorios" />
     ) : (
       <Navigate to="/login" />
     ),

@@ -113,5 +113,6 @@ export const padraoDark = {
     MuiListItemButtonDark: "#ffffff",
     primaryContent: "#1c1c1c",
     primaryContentContrast: "#ffffff",
+    MuiTableHead: '#ffffff'
   },
 };
