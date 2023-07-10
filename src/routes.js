@@ -12,8 +12,11 @@ import Dashboard from "./views/Dashboard";
 import SubRecrutamento from "./views/recrutamento/SubRecrutamento";
 import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
 import SubTrafego from "./views/trafego/SubTrafego";
+<<<<<<< HEAD
 import SubRelatorios from "./views/dap/Relatorios";
 import Login from "./views/Login";
+=======
+>>>>>>> parent of 9f4ceaf (feat: add dap)
 
 const IsAuthenticated = () => {
   const token = useSelector((state) => state.login.isAuthenticated);
@@ -65,19 +68,6 @@ const routes = [
     path: "/trafego/subTrafego",
     name: "SubTrafego",
     element: <SubTrafego to="/trafego/subTrafego" />
-  },
-  {
-    path: "/dap",
-    name: "DAP",
-  },
-  {
-    path: "/dap/relatorios",
-    name: "Relatórios",
-    element: IsAuthenticated ? (
-      <SubRelatorios to="/dap/relatorios" />
-    ) : (
-      <Navigate to="/login" />
-    ),
   },
   // {
   //     path: "/user",
