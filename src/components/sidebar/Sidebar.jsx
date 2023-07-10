@@ -79,8 +79,6 @@ const Sidebar = ({ open, onClose, sidebarWidth }) => {
   }, []);
 
   const handleClickMenuItem = (item, subItem) => {
-    console.log('item: ' + item)
-    console.log('subItem: ' + subItem)
     handleClick(item, subItem, setOpenIcons, setSelectedRoute, menuItems);
   };
 
