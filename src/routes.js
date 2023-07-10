@@ -12,7 +12,13 @@ import Dashboard from "./views/Dashboard";
 import SubRecrutamento from "./views/recrutamento/SubRecrutamento";
 import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
 import SubTrafego from "./views/trafego/SubTrafego";
+import SubRelatorios from "./views/dap/Relatorios";
 import Login from "./views/Login";
+
+const IsAuthenticated = () => {
+  const token = useSelector((state) => state.login.isAuthenticated);
+  return !!token;
+};
 
 const routes = [
   {
