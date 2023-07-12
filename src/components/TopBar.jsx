@@ -65,7 +65,7 @@ const Topbar = ({
     const appBarControl = useSelector((state) => state.sidebarControl.appBar);
     const colors = tokens(theme.palette.mode);
 
-    let fullName = user ? user.nome.toLowerCase().split(" ") : "";
+    let fullName = user ? user.no_operador.toLowerCase().split(" ") : "";
     fullName = fullName ? fullName.map(function (parte) {
         let primeiraLetra = parte.charAt(0).toUpperCase();
         return primeiraLetra + parte.slice(1);
