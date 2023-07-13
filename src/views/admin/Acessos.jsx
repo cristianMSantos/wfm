@@ -8,6 +8,7 @@ import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
+import CustomDataGrid from "../../components/CustomDataGrid";
 
 export default function Acessos() {
     const theme = useTheme();
@@ -28,7 +29,7 @@ export default function Acessos() {
                         </TabList>
                     </Box>
                     <TabPanel value="1">
-                        <CardHeader
+                        {/* <CardHeader
                             avatar={
                                 <Avatar aria-label="recipe">
                                     R
@@ -40,12 +41,14 @@ export default function Acessos() {
                                 </IconButton>
                             }
                             title="Cadastro de Acessos">
-                        </CardHeader>
+                        </CardHeader> */}
                         <CardContent>
                             <StepperAccess />
                         </CardContent>
                     </TabPanel>
-                    <TabPanel value="2">Listagem</TabPanel>
+                    <TabPanel value="2">
+                        <CustomDataGrid />
+                    </TabPanel>
                 </TabContext>
             </Card>
         </Box>
