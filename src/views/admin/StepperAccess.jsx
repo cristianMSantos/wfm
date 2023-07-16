@@ -10,7 +10,7 @@ import axios from 'axios'
 import { useSelector } from "react-redux";
 import Alert from "../../components/Alert";
 
-export default function StepperAccess() {
+export default function StepperAccess({ getListAccess }) {
     const theme = useTheme();
     const token = useSelector((state) => state.login.isAuthenticated);
     const [activeStep, setActiveStep] = React.useState(0);
@@ -35,6 +35,7 @@ export default function StepperAccess() {
     const [openAlert, setOpenAlert] = React.useState(false);
     const [alertType, setAlertType] = React.useState(undefined);
     const [messageAlert, setMessageAlert] = React.useState('');
+    const [hasAccess, setHasAccess] = React.useState(undefined);
 
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -59,9 +60,24 @@ export default function StepperAccess() {
     const handleCalaboradorChange = async (event, value) => {
         setColaboradorSelected(value)
         if (value) {
+            value.map(e => {
+                if (e.has_access) {
+                    setHasAccess(e.has_access)
+                    setError({ ...error, ['colaborador']: true });
+                    setMessageError({ ...messageError, ['colaborador']: 'Colaborador já cadastrado!' });
+                } else {
+                    setHasAccess(e.has_access)
+                    setError({ ...error, ['colaborador']: false });
+                    setMessageError({ ...messageError, ['colaborador']: null });
+                }
+            })
+        }
+
+        if (value.length <= 0) {
             setError({ ...error, ['colaborador']: false });
             setMessageError({ ...messageError, ['colaborador']: null });
         }
+
     };
 
     const handlePerfilChange = async (event, value) => {
@@ -108,11 +124,14 @@ export default function StepperAccess() {
 
     const getColaborador = async (event) => {
 
+        console.log(source)
+
         if (source) {
             source.cancel();
         }
 
-        setSource(axios.CancelToken.source());
+        const CancelToken = axios.CancelToken
+        setSource(CancelToken.source());
 
         const options = {
             url: `adm/listFuncionarios`,
@@ -129,6 +148,7 @@ export default function StepperAccess() {
 
         try {
             const response = await api(options);
+            setSource('')
             setColaboradorOptions(response.data);
         } catch (error) {
             console.log(error.response);
@@ -148,7 +168,6 @@ export default function StepperAccess() {
         const options = {
             url: `adm/access/create`,
             method: "POST",
-            cancelToken: source.token,
             data: formData,
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -156,7 +175,9 @@ export default function StepperAccess() {
             },
         };
 
-        if (colaboradorSelected && perfilSelected) {
+        console.log(!hasAccess)
+
+        if (colaboradorSelected && perfilSelected && !hasAccess) {
             try {
                 const response = await api(options).then(() => {
                     setLoadingSave(false)
@@ -164,6 +185,7 @@ export default function StepperAccess() {
                     setMessageAlert('Acesso cadastrado!')
                     setOpenAlert(true)
                     handleReset()
+                    getListAccess()
                 });
             } catch (error) {
                 console.log(error.response);
@@ -172,6 +194,11 @@ export default function StepperAccess() {
                 setMessageAlert('Falha no cadastro de acessos!')
                 setOpenAlert(true)
             }
+        }
+
+        if (hasAccess) {
+            setActiveStep(0)
+            setLoadingSave(false)
         }
 
         if (!colaboradorSelected || colaboradorSelected.length <= 0) {

@@ -30,10 +30,17 @@ export default function Acessos() {
     const [resultAlertDialog, setResultAlertDialog] = React.useState(false);
     const [alertType, setAlertType] = React.useState(undefined);
     const [messageAlert, setMessageAlert] = React.useState('');
-    const [rowEditing, setRowEditing] = React.useState(undefined);
+    const [rowEditing, setRowEditing] = React.useState({
+        edit: false,
+        delete: false,
+    });
+    const [saveDisable, setSaveDisable] = React.useState(true);
+    const [loadingTable, setLoadingTable] = React.useState(false);
 
 
     const getListAccess = async () => {
+        console.log('getListAccess')
+        setLoadingTable(true)
         const options = {
             url: `adm/listAccess`,
             method: "GET",
@@ -52,6 +59,7 @@ export default function Acessos() {
             })
 
             setRows(response)
+            setLoadingTable(false)
         } catch (error) {
             setAlertType('error')
             setMessageAlert('Falha na busca de acessos!')
@@ -76,10 +84,40 @@ export default function Acessos() {
             setMessageAlert('Acesso atualizado!');
             setOpenAlert(true);
             setResultAlertDialog(false)
+            setRowEditing({ ...rowEditing, ['edit']: false, ['delete']: false })
+            getListAccess()
         } catch (error) {
             setAlertType('error')
             setMessageAlert('Falha na atualização!')
             setOpenAlert(true)
+            setRowEditing({ ...rowEditing, ['edit']: false, ['delete']: false })
+        }
+    }
+
+    const deleteEdit = async (row) => {
+        const options = {
+            url: `adm/access/delete`,
+            method: "DELETE",
+            data: row,
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: token ? `Bearer ${token}` : "",
+            },
+        };
+
+        try {
+            const response = await api(options);
+            setAlertType('success');
+            setMessageAlert('Acesso excluido!');
+            setOpenAlert(true);
+            setResultAlertDialog(false)
+            setRowEditing({ ...rowEditing, ['edit']: false, ['delete']: false })
+            getListAccess()
+        } catch (error) {
+            setAlertType('error')
+            setMessageAlert('Falha na exclusão!')
+            setOpenAlert(true)
+            setRowEditing({ ...rowEditing, ['edit']: false, ['delete']: false })
         }
     }
 
@@ -100,30 +138,35 @@ export default function Acessos() {
     };
 
     const handleSaveClick = (id, row) => () => {
-        setRowEditing(row)
+        setRowEditing({ ...rowEditing, ['edit']: row })
         setAlertDialog(true)
     };
 
     const handleRowModesModelChange = (newRowModesModel) => {
         setRowModesModel(newRowModesModel);
-      };    
+    };
 
     useEffect(() => {
-        console.log(resultAlertDialog)
+        console.log(rowEditing)
         if (resultAlertDialog) {
             console.log('SALVAR');
             setRowModesModel({
                 ...rowModesModel,
-                [rowEditing.id]: { mode: 'view' },
+                [rowEditing['edit'].id]: { mode: 'view' },
             });
+
+            if (rowEditing['delete']) {
+                deleteEdit(rowEditing['delete'])
+            }
             //   (async () => {
             //      saveEdit(rowEditing)
             //   })()
         }
     }, [resultAlertDialog]);
 
-    const handleDeleteClick = (id) => () => {
-        console.log('handleDeleteClick')
+    const handleDeleteClick = (id, row) => () => {
+        setRowEditing({ ...rowEditing, ['delete']: row })
+        setAlertDialog(true)
     };
 
     const handleCancelClick = (id) => () => {
@@ -143,7 +186,9 @@ export default function Acessos() {
     const processRowUpdate = (newRow) => {
         const updatedRow = { ...newRow, isNew: false };
         setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-        saveEdit(newRow)
+        if (rowEditing['edit']) {
+            saveEdit(newRow)
+        }
         return updatedRow;
     };
 
@@ -194,6 +239,7 @@ export default function Acessos() {
                 if (isInEditMode) {
                     return [
                         <IconButton
+                            // disabled={saveDisable}
                             label="Save"
                             sx={{
                                 color: 'primary.main',
@@ -224,7 +270,7 @@ export default function Acessos() {
                     </IconButton>,
                     <IconButton
                         label="Delete"
-                        onClick={handleDeleteClick(id)}
+                        onClick={handleDeleteClick(id, row)}
                         color="inherit"
                     >
                         <DeleteIcon />
@@ -261,13 +307,14 @@ export default function Acessos() {
                             title="Cadastro de Acessos">
                         </CardHeader> */}
                             <CardContent>
-                                <StepperAccess />
+                                <StepperAccess getListAccess={getListAccess} />
                             </CardContent>
                         </TabPanel>
                         <TabPanel value="2">
                             <CustomDataGrid
                                 rows={rows}
                                 columns={columns}
+                                loading={loadingTable}
                                 rowModesModel={rowModesModel}
                                 processRowUpdate={processRowUpdate}
                                 onRowEditStart={onRowEditStart}

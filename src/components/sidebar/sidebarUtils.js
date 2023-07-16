@@ -8,6 +8,8 @@ export const useMenu = () => {
   const menuItems = useSelector((state) => state.menu.list);
   const dispatch = useDispatch();
   const token = useSelector((state) => state.login.isAuthenticated);
+  const user = useSelector((state) => state.user.user);
+
   useEffect(() => {
     getMenu();
   }, []);
@@ -22,15 +24,21 @@ export const useMenu = () => {
       },
     };
 
-    try {
-      const response = await api(options);
-      dispatch(setMenu(response.data));
-    } catch (error) {
-      console.error("Error fetching menu:", error.response);
-      setError(
-        "Falha ao montar o menu. Entre em contato com o time de desenvolvimento."
-      );
-    }
+    const optionsB = {
+      url: `/auth/me`,
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
+
+    let user = await api(optionsB)
+    let response = await api(options);
+
+    response = response.data.filter(e => e.perfil === null || Array.isArray(e.perfil) && e.perfil.includes(user.data.co_perfil))
+    dispatch(setMenu(response));
+
   };
 
   return { menuItems, error };

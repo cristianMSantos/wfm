@@ -39,8 +39,8 @@ export default function AlertDialogSlide({ open, setAlertDialog, setResultAlertD
           </DialogContentText>
         </DialogContent> */}
                 <DialogActions>
-                    <Button onClick={handleCancel}>Cancelar</Button>
-                    <Button onClick={handleSave}>Salvar</Button>
+                    <Button onClick={handleCancel}>Não</Button>
+                    <Button onClick={handleSave}>Sim</Button>
                 </DialogActions>
             </Dialog>
         </div>
