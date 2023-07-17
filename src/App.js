@@ -56,7 +56,7 @@ function App() {
     from: { opacity: 0, width: "0%" },
     enter: { opacity: 1, width: "100%" },
   })
-
+  
   useEffect(() => {
     const handleWindowResize = () => {
       setIsMobile(window.matchMedia("(max-width: 900px)").matches);
@@ -265,7 +265,7 @@ function App() {
                 <DrawerHeader />
                 <ThemeProvider theme={defaultTheme}>
                   <Box component="main">
-                    <Container maxWidth="lg">
+                    <Container maxWidth="lg" sx={{ padding: 0 }}>
                       {
                         transitions((props, item) => (
                            <animated.div style={props}>

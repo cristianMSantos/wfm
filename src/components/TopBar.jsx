@@ -419,7 +419,7 @@ const Topbar = ({
                 sx={{
                     width: `calc(100% - ${isMobile || appBarControl === "static" ? 0 : sidebarWidth
                         }px)`,
-                    height: "10%",
+                    // height: "10%",
                     "&.MuiPaper-root.MuiAppBar-root":
                     {
                         boxShadow: 'unset !important'

@@ -1,5 +1,5 @@
 import React from "react";
-import { useRoutes } from "react-router-dom";
+import { Outlet, Route, useRoutes } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
@@ -14,6 +14,28 @@ import SubRecrutamento2 from "./views/recrutamento/SubRecrutamento2";
 import SubTrafego from "./views/trafego/SubTrafego";
 import Login from "./views/Login";
 import Acessos from "./views/admin/Acessos";
+import ProtectedRoute from "./ProtectedRoute";
+
+// const ProtectedRoute = ({
+//   perfilNecessario,
+//   redirectPath = '/',
+//   children,
+// }) => {
+//   const perfilUsuario = useSelector((state) => state.user.user);
+//   console.log(perfilUsuario)
+
+//   if (!perfilUsuario) {
+//     return <Navigate to={redirectPath} replace />;
+//   }
+
+//   if(perfilUsuario.co_perfil === perfilNecessario){
+//     return children ? children : <Outlet />;
+//   }
+
+//   return children ? children : <Outlet />;
+
+// };
+
 
 const routes = [
   {
@@ -105,7 +127,13 @@ const routes = [
   {
     path: "/acessos",
     name: "Acessos",
-    element: <Acessos to="/acessos" />
+    element: (
+      <ProtectedRoute
+        perfilNecessario={1}
+      >
+        <Acessos />
+      </ProtectedRoute>
+    ),
   },
 ];
 

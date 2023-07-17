@@ -288,8 +288,8 @@ export default function Acessos() {
                     <TabContext value={valueTab}>
                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                             <TabList onChange={handleChangeTab} aria-label="lab API tabs example" centered>
-                                <Tab label="Cadastro de Acessos" value="1" />
-                                <Tab label="Listagem de Acessos " value="2" />
+                                <Tab label="Cadastro" value="1" />
+                                <Tab label="Listagem" value="2" />
                             </TabList>
                         </Box>
                         <TabPanel value="1">

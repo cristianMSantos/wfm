@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 
 export const LogoContainer = styled(motion.div)`
   width: 100%;
-  height: 10%;
+  height: 9.6%;
   display: flex;
   justify-content: center;
   align-items: center;
