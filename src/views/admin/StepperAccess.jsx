@@ -124,8 +124,6 @@ export default function StepperAccess({ getListAccess }) {
 
     const getColaborador = async (event) => {
 
-        console.log(source)
-
         if (source) {
             source.cancel();
         }
@@ -174,8 +172,6 @@ export default function StepperAccess({ getListAccess }) {
                 Authorization: token ? `Bearer ${token}` : "",
             },
         };
-
-        console.log(!hasAccess)
 
         if (colaboradorSelected && perfilSelected && !hasAccess) {
             try {
@@ -267,8 +263,8 @@ export default function StepperAccess({ getListAccess }) {
                                                         required
                                                         value={colaboradorSelected}
                                                         onChange={handleCalaboradorChange}
-                                                        isOptionEqualToValue={(option, value) => option.no_operador === value.no_operador}
-                                                        getOptionLabel={(option) => option.no_operador}
+                                                        isOptionEqualToValue={(option, value) => option.no_operador === value.no_operador ||  option.matricula_pl === value.matricula_pl}
+                                                        getOptionLabel={(option) => option.matricula_pl + ' - ' + option.no_operador}
                                                         options={colaboradorOptions}
                                                         loading={loading}
                                                         noOptionsText='Nenhum Resultado'
