@@ -33,11 +33,16 @@ export const useMenu = () => {
       },
     };
 
-    let user = await api(optionsB)
-    let response = await api(options);
+    let user = await api(optionsB).then((response) => response.data).catch((error) => console.error(error.response))
+    let response = await api(options).then((response) => response.data).catch((error) => console.error(error.response));
 
-    response = response.data.filter(e => e.perfil === null || Array.isArray(e.perfil) && e.perfil.includes(user.data.co_perfil))
-    dispatch(setMenu(response));
+    try {
+      response = response.filter(e => e.perfil === null || Array.isArray(e.perfil) && e.perfil.includes(user.co_perfil))
+      dispatch(setMenu(response));
+    }
+    catch (error) {
+      console.error(error.response)
+    };
 
   };
 
