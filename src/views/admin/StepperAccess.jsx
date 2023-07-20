@@ -23,7 +23,7 @@ export default function StepperAccess({ getListAccess }) {
     const [loading, setLoading] = React.useState(false);
     const [loadingSave, setLoadingSave] = React.useState(false);
     const [perfis, setPerfis] = React.useState([]);
-    const [source, setSource] = React.useState('');
+    const [source, setSource] = React.useState(null);
     const [error, setError] = React.useState({
         colaborador: false,
         perfil: false
@@ -128,13 +128,14 @@ export default function StepperAccess({ getListAccess }) {
             source.cancel();
         }
 
-        const CancelToken = axios.CancelToken
-        setSource(CancelToken.source());
+        const CancelToken = axios.CancelToken;
+        const newSource = CancelToken.source();
+        setSource(newSource);
 
         const options = {
             url: `adm/listFuncionarios`,
             method: "POST",
-            cancelToken: source.token,
+            cancelToken: newSource.token,
             data: {
                 search: event
             },
@@ -146,7 +147,6 @@ export default function StepperAccess({ getListAccess }) {
 
         try {
             const response = await api(options);
-            setSource('')
             setColaboradorOptions(response.data);
         } catch (error) {
             console.log(error.response);
@@ -263,7 +263,7 @@ export default function StepperAccess({ getListAccess }) {
                                                         required
                                                         value={colaboradorSelected}
                                                         onChange={handleCalaboradorChange}
-                                                        isOptionEqualToValue={(option, value) => option.no_operador === value.no_operador ||  option.matricula_pl === value.matricula_pl}
+                                                        isOptionEqualToValue={(option, value) => option.no_operador === value.no_operador || option.matricula_pl === value.matricula_pl}
                                                         getOptionLabel={(option) => option.matricula_pl + ' - ' + option.no_operador}
                                                         options={colaboradorOptions}
                                                         loading={loading}
