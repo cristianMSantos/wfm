@@ -8,6 +8,12 @@
 
 .grid-container {
     background-color: #073377;
+    overflow: hidden;
+}
+
+.animation-right {
+    animation: go-right 1s ease;
+    animation-fill-mode: forwards;
 }
 
 .login-message {
@@ -77,6 +83,20 @@
     margin-right: 14px;
     margin-bottom: 0;
     margin-left: 14px;
+}
+
+
+@keyframes go-right {
+    0%, 100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+
+    50% {
+        transform: translateX(100%);
+        opacity: 0;
+        visibility: hidden;
+    }
 }
 
 @media screen and (max-width: 900px) {

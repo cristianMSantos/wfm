@@ -29,33 +29,52 @@ const LightTheme = createTheme({
 export default function Login() {
     const [loading, setLoading] = React.useState(false);
     const [error, setError] = React.useState({
+        confirmPassword: false,
         matricula: false,
         senha: false
     });
     const [messageError, setMessageError] = React.useState({
+        confirmPassword: null,
         matricula: null,
         senha: null
     });
 
     const [errorLogin, setErrorLogin] = React.useState(false)
     const [showPassword, setShowPassword] = React.useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
+    const [showResetPassword, setShowResetPassword] = React.useState(false);
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const handleClickShowPassword = () => setShowPassword(!showPassword);
+    const handleClickShowPasswordConfirm = () => setShowPasswordConfirm(!showPasswordConfirm);
     const handleMouseDownPassword = (event) => {
         event.preventDefault();
     };
+    const handleMouseDownPasswordConfirm = (event) => {
+        event.preventDefault();
+    };
+
+    const moveLogin = () => {
+        let loginContainer = document.getElementsByClassName('form-inputs');
+
+        // Remover a classe para reiniciar a animação
+        loginContainer[0].classList.remove("animation-right");
+
+        // Adicionar a classe novamente após um pequeno atraso
+        setTimeout(() => {
+            loginContainer[0].classList.add("animation-right");
+        }, 100);
+
+    }
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
 
-        setLoading(true);
-
         const options = {
-            url: `/auth/login`,
+            url: showResetPassword ? `/auth/reset` : `/auth/login`,
             method: 'POST',
             data: {
                 loginPassword: data.get('password'),
@@ -65,23 +84,43 @@ export default function Login() {
                 'Access-Control-Allow-Origin': '*'
             }
         }
-        return await api(options)
-            .then((response) => {
-                dispatch(setLogin(response.data.access_token))
-                setLoading(false);
-                setErrorLogin(false);
-                navigate('/');
-            })
-            .catch((error) => {
-                if (error.response.status === 401) {
-                    setLoading(false);
-                    setErrorLogin(true);
-                }
-            })
+
+        if (!Object.values(error).includes(true)) {
+            setLoading(true);
+            return await api(options)
+                .then((response) => {
+                    if (showResetPassword) {
+                        setShowResetPassword(false)
+                        setLoading(false);
+                        setErrorLogin(false);
+                        moveLogin()
+                    } else {
+                        dispatch(setLogin(response.data.access_token))
+                        setLoading(false);
+                        setErrorLogin(false);
+                        navigate('/');
+                    }
+                })
+                .catch((error) => {
+                    if (error.response.status === 401) {
+                        setLoading(false);
+                        setErrorLogin(true);
+                    }
+
+                    if (error.response.status === 403 && error.response.data.error === 'Reset Password') {
+                        moveLogin()
+
+                        //delay para mostrar as mudanças após a animação
+                        setTimeout(() => {
+                            setShowResetPassword(true)
+                            setLoading(false);
+                        }, 500);
+                    }
+                })
+        }
     };
 
     const handleRules = (event, field) => {
-        console.log(event)
         setErrorLogin(false)
         if (!event) {
             console.log(!!event)
@@ -102,14 +141,33 @@ export default function Login() {
             }
         }
 
+        if (field === 'senha') {
+            if (event && document.getElementById('confirmPassword') && event !== document.getElementById('confirmPassword').value) {
+                console.log('socorro')
+                setError({ ...error, ['confirmPassword']: true });
+                setMessageError({ ...messageError, ['confirmPassword']: 'As senhas não conferem' });
+            } else {
+                setError({ ...error, ['confirmPassword']: false });
+                setMessageError({ ...messageError, ['confirmPassword']: null });
+                return
+            }
+        }
 
-        setError({ ...error, [field]: false })
-        setMessageError({ ...messageError, [field]: null })
+        if (field === 'confirmPassword') {
+            if (event !== document.getElementById('password').value) {
+                setError({ ...error, [field]: true });
+                setMessageError({ ...messageError, [field]: 'As senhas não conferem' });
+                return
+            } else {
+                setError({ ...error, [field]: false });
+                setMessageError({ ...messageError, [field]: null });
+                return
+            }
+        }
 
 
-
-
-        // setMatricula(event.target.value)
+        // setError({ ...error, [field]: false })
+        // setMessageError({ ...messageError, [field]: null })
     }
 
     return (
@@ -130,12 +188,12 @@ export default function Login() {
                                 <Grid item xs={6} md={6} className='grid-logo'>
                                     <img className='img-logo' src={Logo} style={{ width: '100%' }}></img>
                                 </Grid>
-                                <Grid item xs={8} md={8}>
+                                <Grid item xs={8} md={8} className='form-inputs'>
                                     <Box sx={{
                                         '& .MuiTextField-root': { mb: 1, width: '100%' },
                                         '& .MuiLoadingButton-root': { mb: 1, width: '100%', backgroundColor: '#0D5710', color: 'white' },
                                     }}>
-                                        <h3 className='login-title'>Login</h3>
+                                        <h3 className='login-title'>{showResetPassword ? 'Resetar Senha' : 'Login'}</h3>
                                         <TextField
                                             error={error['matricula']}
                                             helperText={messageError['matricula']}
@@ -145,9 +203,13 @@ export default function Login() {
                                             name="matricula"
                                             label="Matricula"
                                             autoComplete="matricula"
+                                            InputProps={{
+                                                readOnly: showResetPassword,
+                                            }}
                                         // variant="filled"
                                         />
                                         <TextField
+                                            onChange={(event) => handleRules(event.target.value, 'senha')}
                                             required
                                             id="password"
                                             name="password"
@@ -168,6 +230,33 @@ export default function Login() {
                                             }}
                                         />
                                         {
+                                            showResetPassword ?
+                                                <TextField
+                                                    error={error['confirmPassword']}
+                                                    helperText={messageError['confirmPassword']}
+                                                    onChange={(event) => handleRules(event.target.value, 'confirmPassword')}
+                                                    required
+                                                    id="confirmPassword"
+                                                    name="confirmPassword"
+                                                    label="Confirmar Senha"
+                                                    type={showPasswordConfirm ? 'text' : 'password'}
+                                                    InputProps={{
+                                                        endAdornment: (
+                                                            <InputAdornment position="end">
+                                                                <IconButton
+                                                                    aria-label="toggle password visibility"
+                                                                    onClick={handleClickShowPasswordConfirm}
+                                                                    onMouseDown={handleMouseDownPasswordConfirm}
+                                                                >
+                                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                </IconButton>
+                                                            </InputAdornment>
+                                                        ),
+                                                    }}
+                                                />
+                                                : null
+                                        }
+                                        {
                                             errorLogin ?
                                                 <p className='errorLogin'>
                                                     Usuário ou Senha Incorreto!
@@ -179,7 +268,7 @@ export default function Login() {
                                             label="Lembrar-me"
                                         /> */}
                                         <LoadingButton loading={loading} type="submit" variant="contained" color="success">
-                                            Acessar
+                                            {showResetPassword ? 'Salvar' : 'Acessar'}
                                         </LoadingButton>
                                     </Box>
                                 </Grid>
