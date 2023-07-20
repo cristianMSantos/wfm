@@ -65,7 +65,7 @@ export default function Login() {
         // Adicionar a classe novamente após um pequeno atraso
         setTimeout(() => {
             loginContainer[0].classList.add("animation-right");
-        }, 100);
+        }, 100); 
 
     }
 
