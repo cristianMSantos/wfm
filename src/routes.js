@@ -74,7 +74,14 @@ const routes = [
   {
     path: "/recrutamento/subRecrutamento2",
     name: "SubRecrutamento2",
-    element: <SubRecrutamento2 to="/recrutamento/subRecrutamento2" />
+    element: (
+      <ProtectedRoute
+        perfilNecessario={[1,2]}
+      >
+        <SubRecrutamento2 />
+      </ProtectedRoute>
+    ),
+    // element: <SubRecrutamento2 to="/recrutamento/subRecrutamento2" />
   },
   {
     path: "/recrutamento",
@@ -135,7 +142,7 @@ const routes = [
     name: "Acessos",
     element: (
       <ProtectedRoute
-        perfilNecessario={1}
+        perfilNecessario={[1]}
       >
         <Acessos />
       </ProtectedRoute>

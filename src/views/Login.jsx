@@ -16,6 +16,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Logo from '../assets/images/logo.png'
 import { IconButton, InputAdornment } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
+import { setUser } from '../store/features/User';
 
 const LightTheme = createTheme({
     palette: {
@@ -39,7 +40,7 @@ export default function Login() {
         senha: null
     });
 
-    const [errorLogin, setErrorLogin] = React.useState(false)
+    const [errorLogin, setErrorLogin] = React.useState(false);
     const [showPassword, setShowPassword] = React.useState(false);
     const [showPasswordConfirm, setShowPasswordConfirm] = React.useState(false);
     const [showResetPassword, setShowResetPassword] = React.useState(false);
@@ -65,7 +66,7 @@ export default function Login() {
         // Adicionar a classe novamente após um pequeno atraso
         setTimeout(() => {
             loginContainer[0].classList.add("animation-right");
-        }, 100); 
+        }, 100);
 
     }
 
@@ -85,10 +86,16 @@ export default function Login() {
             }
         }
 
+        if (showResetPassword && document.getElementById('password').value === 'plansul123') {
+            setError({ ...error, ['senha']: true });
+            setMessageError({ ...messageError, ['senha']: 'A senha não pode ser a padrão!' });
+            return
+        }
+
         if (!Object.values(error).includes(true)) {
             setLoading(true);
             return await api(options)
-                .then((response) => {
+                .then(async (response) => {
                     if (showResetPassword) {
                         setShowResetPassword(false)
                         setLoading(false);
@@ -98,8 +105,27 @@ export default function Login() {
                         dispatch(setLogin(response.data.access_token))
                         setLoading(false);
                         setErrorLogin(false);
+
+                        const options = {
+                            url: `/auth/me`,
+                            method: "POST",
+                            headers: {
+                                "Access-Control-Allow-Origin": "*",
+                                Authorization: response.data.access_token ? `Bearer ${response.data.access_token}` : "",
+                            },
+                        };
+                        await api(options)
+                            .then((response) => {
+                                dispatch(setUser(response.data));
+
+                            })
+                            .catch((error) => {
+                                console.error("Erro ao buscar o usuário:", error.response);
+                            });
                         navigate('/');
-                    }
+                    };
+
+
                 })
                 .catch((error) => {
                     if (error.response.status === 401) {
@@ -142,15 +168,36 @@ export default function Login() {
         }
 
         if (field === 'senha') {
+
             if (event && document.getElementById('confirmPassword') && event !== document.getElementById('confirmPassword').value) {
-                console.log('socorro')
-                setError({ ...error, ['confirmPassword']: true });
-                setMessageError({ ...messageError, ['confirmPassword']: 'As senhas não conferem' });
-            } else {
-                setError({ ...error, ['confirmPassword']: false });
-                setMessageError({ ...messageError, ['confirmPassword']: null });
+                if (showResetPassword && event === 'plansul123') {
+                    setError({ ...error, ['senha']: true });
+                    setMessageError({ ...messageError, ['senha']: 'A senha não pode ser a padrão!' });
+                } else {
+                    setError({ ...error, [field]: false, ['confirmPassword']: true });
+                    setMessageError({ ...messageError, [field]: null, ['confirmPassword']: 'As senhas não conferem' });
+                }
+
                 return
             }
+
+            if (event && document.getElementById('confirmPassword') && event === document.getElementById('confirmPassword').value) {
+
+                if (showResetPassword && event === 'plansul123') {
+                    setError({ ...error, ['senha']: true, ['confirmPassword']: false, [field]: false });
+                    setMessageError({ ...messageError, ['senha']: 'A senha não pode ser a padrão!' });
+                } else {
+                    setError({ ...error, [field]: false });
+                    setMessageError({ ...messageError, [field]: null, ['confirmPassword']: null, [field]: null });
+                }
+                return
+            }
+
+
+            setError({ ...error, [field]: false });
+            setMessageError({ ...messageError, [field]: null });
+            return
+
         }
 
         if (field === 'confirmPassword') {
@@ -209,6 +256,8 @@ export default function Login() {
                                         // variant="filled"
                                         />
                                         <TextField
+                                            error={error['senha']}
+                                            helperText={messageError['senha']}
                                             onChange={(event) => handleRules(event.target.value, 'senha')}
                                             required
                                             id="password"

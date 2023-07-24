@@ -48,7 +48,7 @@ const ProtectedRoute = ({ perfilNecessario, children }) => {
 
     // Depois que a requisição for concluída e o perfil do usuário estiver disponível
     // Você pode verificar se o perfil é válido para renderizar a rota protegida ou redirecionar para outra página.
-    if (!perfilUsuario || perfilUsuario.co_perfil !== perfilNecessario) {
+    if (!perfilUsuario || !perfilNecessario.includes(perfilUsuario.co_perfil)) {
 
         if (!openAlert) {
             setOpenAlert(true);

@@ -381,27 +381,10 @@ const Topbar = ({
         }
     }, [isMobile]);
 
-    useEffect(() => {
-        getUser();
-    }, []);
 
-    const getUser = async () => {
-        const options = {
-            url: `/auth/me`,
-            method: "POST",
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                Authorization: token ? `Bearer ${token}` : "",
-            },
-        };
-        return await api(options)
-            .then((response) => {
-                dispatch(setUser(response.data));
-            })
-            .catch((error) => {
-                console.error("Erro ao buscar o usuário:", error.response);
-            });
-    };
+    useEffect(() => {
+        console.log(user)
+    }, [])
 
     const handleSidebarToggle = () => {
         if (sidebarOpen) {

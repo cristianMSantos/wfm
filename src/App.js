@@ -21,6 +21,8 @@ import Login from "./views/Login";
 import { setLogout } from "./store/features/Login";
 import { RoutesContext, RoutesElement } from "./routes";
 import { azul, laranja, padrao } from "./tema";
+import { setUser } from "./store/features/User";
+import api from "./axios";
 export const SidebarContext = createContext();
 
 function App() {
@@ -56,8 +58,30 @@ function App() {
     from: { opacity: 0, width: "0%" },
     enter: { opacity: 1, width: "100%" },
   })
-  
+
+  const getUser = async () => {
+    const options = {
+      url: `/auth/me`,
+      method: "POST",
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: token ? `Bearer ${token}` : "",
+      },
+    };
+    return await api(options)
+      .then((response) => {
+        dispatch(setUser(response.data));
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar o usuário:", error.response);
+      });
+  };
+
   useEffect(() => {
+    if(token){
+      getUser()
+    }
+
     const handleWindowResize = () => {
       setIsMobile(window.matchMedia("(max-width: 900px)").matches);
     };
@@ -268,7 +292,7 @@ function App() {
                     <Container maxWidth="lg" sx={{ padding: 0 }}>
                       {
                         transitions((props, item) => (
-                           <animated.div style={props}>
+                          <animated.div style={props}>
                             <RoutesContext.Provider value={routes}>
                               <RoutesElement />
                             </RoutesContext.Provider>

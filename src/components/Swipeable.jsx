@@ -93,10 +93,10 @@ export default function SwipeableTemporaryDrawer({ onSidebarToggle, open }) {
   }, [mode]);
 
   useEffect(() => {
-    // localStorage.setItem("current-theme", JSON.stringify(selectedTheme));
-    caches.open('current-theme').then(cache => {
-      cache.put('/current-theme', new Response(JSON.stringify(selectedTheme)));
-    });
+    localStorage.setItem("current-theme", JSON.stringify(selectedTheme));
+    // caches.open('current-theme').then(cache => {
+    //   cache.put('/current-theme', new Response(JSON.stringify(selectedTheme)));
+    // });
   }, [selectedTheme]);
 
   const mudarTema = (valor) => {

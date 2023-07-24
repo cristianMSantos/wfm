@@ -36,10 +36,9 @@ export default function Acessos() {
     });
     const [saveDisable, setSaveDisable] = React.useState(true);
     const [loadingTable, setLoadingTable] = React.useState(false);
-
+    const [perfis, setPerfis] = React.useState([]);
 
     const getListAccess = async () => {
-        console.log('getListAccess')
         setLoadingTable(true)
         const options = {
             url: `adm/listAccess`,
@@ -64,6 +63,28 @@ export default function Acessos() {
             setAlertType('error')
             setMessageAlert('Falha na busca de acessos!')
             setOpenAlert(true)
+        }
+    }
+
+    const getPerfis = async () => {
+        const options = {
+            url: `adm/listPerfis`,
+            method: "GET",
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                Authorization: token ? `Bearer ${token}` : "",
+            },
+        };
+
+        try {
+            const response = await api(options);
+            setPerfis(response.data.map(e => {
+                return {
+                    value: e.co_perfil, label: e.no_perfil
+                }
+            }));
+        } catch (error) {
+            console.log(error.response);
         }
     }
 
@@ -123,6 +144,7 @@ export default function Acessos() {
 
     useEffect(() => {
         getListAccess()
+        getPerfis()
     }, [])
 
     const handleChangeTab = (event, newValue) => {
@@ -147,9 +169,7 @@ export default function Acessos() {
     };
 
     useEffect(() => {
-        console.log(rowEditing)
         if (resultAlertDialog) {
-            console.log('SALVAR');
             setRowModesModel({
                 ...rowModesModel,
                 [rowEditing['edit'].id]: { mode: 'view' },
@@ -192,7 +212,6 @@ export default function Acessos() {
         return updatedRow;
     };
 
-
     const columns = [
         {
             field: 'no_operador',
@@ -212,10 +231,7 @@ export default function Acessos() {
             width: 180,
             editable: true,
             type: 'singleSelect',
-            valueOptions: [
-                { value: 1, label: 'ADMINISTRADOR' },
-                { value: 2, label: 'RECRUTAMENTO' },
-            ],
+            valueOptions: perfis
         },
         {
             field: 'mat_criacao',
