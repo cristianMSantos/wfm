@@ -1,107 +1,159 @@
 import * as React from 'react';
-import api from "../../../axios";
+import { DataGrid } from '@mui/x-data-grid';
+import { ExportToExcel } from "../../ExportToExcel.jsx";
+import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setRelatorios } from "../../../store/features/dap/Relatorios";
-import { styled } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import { ptBR } from '@mui/x-data-grid';
 
 export default function RelatoriosTable() {
-  const [error, setError] = useState(null);
-  const dispatch = useDispatch();
-  const token = useSelector((state) => state.login.isAuthenticated);
+  const [cells, setCells] = useState([]);
+  let [columnsExcel, setColumnsExcel] = useState();
+  const [cellsExcel, setCellsExcel] = useState([]);
+  const dataReport = useSelector((state) => state.relatorios.dataReport);
+  const [rows, setRows] = useState([]);
+  const [selectedRows, setSelectedRows] = useState([]);
+
   useEffect(() => {
-    getReportData();
-  }, []);
+    setCells(dataReport);
+  }, [dataReport]);
 
-  const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-      backgroundColor: theme.palette.common.black,
-      color: theme.palette.common.white,
-    },
-    [`&.${tableCellClasses.body}`]: {
-      fontSize: 14,
-    },
-  }));
-  
-  const StyledTableRow = styled(TableRow)(({ theme }) => ({
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    // hide last border
-    '&:last-child td, &:last-child th': {
-      border: 0,
-    },
-  }));
-  
-  function createData(name, calories, fat, carbs, protein) {
-    return { name, calories, fat, carbs, protein };
+  useEffect(() => {
+    handleColumnsCellsToExcel();
+  }, [cells]);
+
+  useEffect(() => {
+    setRows(
+      cells.map((e, index) => ({
+        id: index, // Index compared with row ID captured on 'handleSelectRow' handle
+        matricula: e.Mat_Dac,
+        nome: e.Nome,
+        al: e.AL,
+        at: e.AT,
+        fga: e.FGA,
+        fgc: e.FGC,
+        fti: e.FTI,
+        inss: e.INSS,
+        mater: e.MATER,
+        militar: e.MILITAR,
+        su: e.SU,
+        supervisor: e.Nome_Gestor1,
+        quantidadeAl: e.QTD_AL,
+        quantidadeAt: e.QTD_AT,
+        quantidadeFga: e.QTD_FGA,
+        quantidadeFgc: e.QTD_FGC,
+        quantidadeFti: e.QTD_FTI,
+        quantidadeOutros: e.QTD_MATER,
+        quantidadeInss: e.QTD_INSS,
+        quantidadeMater: e.QTD_MATER,
+        quantidadeMilitar: e.QTD_MILITAR,
+        quantidadeSu: e.QTD_SU,
+      }))
+    );
+  }, [cells]);
+
+  const handleColumnsCellsToExcel = () => {
+    setColumnsExcel([
+      { header: 'Matrícula', key: 'matricula', width: 10 },
+      { header: 'Nome', key: 'nome', width: 50 },
+      { header: 'AL', key: 'al', width: 20 },
+      { header: 'Atestado', key: 'at', width: 20 },
+      { header: 'FGA', key: 'fga', width: 20 },
+      { header: 'FGC', key: 'fgc', width: 20 },
+      { header: 'FTI', key: 'fti', width: 20 },
+      { header: 'INSS', key: 'inss', width: 20 },
+      { header: 'MATER', key: 'mater', width: 20 },
+      { header: 'MILITAR', key: 'militar', width: 20 },
+      { header: 'SU', key: 'su', width: 20 },
+      { header: 'Supervisor', key: 'supervisor', width: 50 },
+      { header: 'Quantidade AL', key: 'quantidadeAl', width: 20 },
+      { header: 'Quantidade AT', key: 'quantidadeAt', width: 20 },
+      { header: 'Quantidade FGA', key: 'quantidadeFga', width: 20 },
+      { header: 'Quantidade FGC', key: 'quantidadeFgc', width: 20 },
+      { header: 'Quantidade FTI', key: 'quantidadeFti', width: 20 },
+      { header: 'Quantidade INSS', key: 'quantidadeInss', width: 20 },
+      { header: 'Quantidade MATER', key: 'quantidadeMater', width: 20 },
+      { header: 'Quantidade MILITAR', key: 'quantidadeMilitar', width: 20 },
+      { header: 'Quantidade SU', key: 'quantidadeSu', width: 20 },
+    ]);
+
+    setCellsExcel(
+      cells.map(e => ({
+        matricula: e.Mat_Dac,
+        nome: e.Nome,
+        al: e.AL,
+        at: e.AT,
+        fga: e.FGA,
+        fgc: e.FGC,
+        fti: e.FTI,
+        inss: e.INSS,
+        mater: e.MATER,
+        militar: e.MILITAR,
+        su: e.SU,
+        supervisor: e.Nome_Gestor1,
+        quantidadeAl: e.QTD_AL,
+        quantidadeAt: e.QTD_AT,
+        quantidadeFga: e.QTD_FGA,
+        quantidadeFgc: e.QTD_FGC,
+        quantidadeFti: e.QTD_FTI,
+        quantidadeOutros: e.QTD_MATER,
+        quantidadeInss: e.QTD_INSS,
+        quantidadeMater: e.QTD_MATER,
+        quantidadeMilitar: e.QTD_MILITAR,
+        quantidadeSu: e.QTD_SU,
+      }))
+    );
   }
-  
-  const rows = useSelector((state) => state.relatorios.dataReport)
 
-  const getReportData = async () => {
-    const options = {
-      url: `relatoriosDap/getRelatoriosDap`,
-      method: "GET",
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        Authorization: token ? `Bearer ${token}` : "",
-      },
-    };
+  const columns = [
+    { field: 'matricula', headerName: 'Matrícula', width: 80 },
+    { field: 'nome', headerName: 'Nome', width: 370 },
+    { field: 'al', headerName: 'AL', width: 150 },
+    { field: 'at', headerName: 'Atestado', width: 150 },
+    { field: 'fga', headerName: 'FGA', width: 150 },
+    { field: 'fgc', headerName: 'FGC', width: 150 },
+    { field: 'fti', headerName: 'FTI', width: 150 },
+    { field: 'inss', headerName: 'INSS', width: 550 },
+    { field: 'mater', headerName: 'MATER', width: 550 },
+    { field: 'militar', headerName: 'MILITAR', width: 150 },
+    { field: 'su', headerName: 'SU', width: 150 },
+    { field: 'supervisor', headerName: 'Supervisor', width: 370 },
+    { field: 'quantidadeAl', headerName: 'Quantidade AL', width: 120 },
+    { field: 'quantidadeAt', headerName: 'Quantidade AT', width: 120 },
+    { field: 'quantidadeFga', headerName: 'Quantidade FGA', width: 120 },
+    { field: 'quantidadeFgc', headerName: 'Quantidade FGC', width: 120 },
+    { field: 'quantidadeFti', headerName: 'Quantidade FTI', width: 120 },
+    { field: 'quantidadeInss', headerName: 'Quantidade INSS', width: 150 },
+    { field: 'quantidadeMater', headerName: 'Quantidade MATER', width: 150 },
+    { field: 'quantidadeMilitar', headerName: 'Quantidade MILITAR', width: 150 },
+    { field: 'quantidadeSu', headerName: 'Quantidade SU', width: 120 },
+    
+  ];
 
-    try {
-      const response = await api(options);
-      // console.log('response: ' + response.data[0].matricula)
-      dispatch(setRelatorios(response.data));
-
-    } catch (error) {
-      console.error("Error fetching menu:", error.response);
-      setError(
-        "Falha ao montar o menu. Entre em contato com o time de desenvolvimento."
-      );
-    }
+  // Select the row ID and send like parameter to ExportToExcel component to compere with de index of the cell.
+  const handleSelectRow = (selection) => {
+    setSelectedRows(selection);
   };
 
   return (
-    <TableContainer component={Paper}>
-      <Table sx={{ minWidth: 700 }} aria-label="customized table">
-        <TableHead>
-          <TableRow>
-            <StyledTableCell>Matrícula</StyledTableCell>
-            <StyledTableCell align="right">Nome</StyledTableCell>
-            <StyledTableCell align="right">Atestado</StyledTableCell>
-            <StyledTableCell align="right">Faltas</StyledTableCell>
-            <StyledTableCell align="right">FGA</StyledTableCell>
-            <StyledTableCell align="right">FGC</StyledTableCell>
-            <StyledTableCell align="right">Observação</StyledTableCell>
-            <StyledTableCell align="right">Quantidade AT</StyledTableCell>
-            <StyledTableCell align="right">Quantidade FTI</StyledTableCell>
-            <StyledTableCell align="right">Quantidade FGA</StyledTableCell> 
-            <StyledTableCell align="right">Quantidade FGC</StyledTableCell> 
-            <StyledTableCell align="right">Quantidade Outros</StyledTableCell> 
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.matricula}>
-              <StyledTableCell component="th" scope="row">
-                {row.matricula}
-              </StyledTableCell>
-              <StyledTableCell align="right">{row.nome}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
-            </StyledTableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+    <>
+    <div style={{ display: 'flex', justifyContent: 'flex-start', marginBottom: 10 }}>  
+      <ExportToExcel
+        columnsExcel={columnsExcel} cellsExcel={cellsExcel} selectedRows={selectedRows}
+      />
+    </div>
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        localeText={ptBR}
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 5 },
+          },
+        }}
+        pageSizeOptions={[5, 10, 25, 50, 100]}
+        checkboxSelection
+        onRowSelectionModelChange={handleSelectRow}
+      />
+    </>
   );
 }

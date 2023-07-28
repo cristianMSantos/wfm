@@ -12,7 +12,7 @@ import RelatoriosFilter from '../../components/dap/relatorios/RelatoriosFilter.j
 import React from "react";
 import { tokens } from "../../theme";
 
-export default function SubRelatorios(){
+export default function SubRelatorios() {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const currencies = [

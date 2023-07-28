@@ -1,4 +1,23 @@
-import { createSlice } from "@reduxjs/toolkit";
+import api from "../../../axios";
+import { createSlice, createAsyncThunk  } from "@reduxjs/toolkit";
+
+export const fetchTableDatas = createAsyncThunk(
+  "relatorios/fetchTableDatas",
+  async (payload) => {
+    const options = {
+      url: `relatoriosDap/getRelatoriosDap`,
+      method: "POST",
+      data: payload[0],
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        Authorization: payload[1].token ? `Bearer ${payload[1].token}` : "",
+      },
+    };
+
+    const response = await api(options);
+    return response.data;
+  }
+);
 
 export const relatorios = createSlice({
   name: "relatorios",
@@ -6,16 +25,21 @@ export const relatorios = createSlice({
     dataReport: []
   },
   reducers: {
-    setRelatorios: (state, { payload }) => {
-        console.log('payl: ' + payload)
-      if (payload) {
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchTableDatas.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchTableDatas.fulfilled, (state, { payload }) => {
+        state.loading = false;
         state.dataReport = payload;
-      }
-    },
+      })
+      .addCase(fetchTableDatas.rejected, (state, { error }) => {
+        state.loading = false;
+        state.error = error.message;
+      });
   },
 });
-
-// Action creators are generated for each case reducer function
-export const { setRelatorios } = relatorios.actions;
 
 export default relatorios.reducer;
