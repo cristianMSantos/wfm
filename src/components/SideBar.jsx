@@ -20,6 +20,8 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import DashboardOutlinedIcon from '@mui/icons-material/DashboardOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 import DataThresholdingOutlinedIcon from '@mui/icons-material/DataThresholdingOutlined';
+import DescriptionOutlinedIcon from '@mui/icons-material/DescriptionOutlined';
+import FolderSharedOutlinedIcon from '@mui/icons-material/FolderSharedOutlined';
 
 
 // INSIRA UM NOVO ÍCONE AQUI!!!!!!!!!!!!!!!!!!!
@@ -58,6 +60,21 @@ const menuItems = [
           icon: <StarBorder />,
           text: 'Starred',
           route: '/user',
+        },
+      ],
+      section: 'Departamentos',
+    },
+    {
+      id: 'dap',
+      icon: <FolderSharedOutlinedIcon />,
+      text: 'DAP',
+      hasSubItems: true,
+      subItems: [
+        {
+          id: 'relatorios',
+          icon: <DescriptionOutlinedIcon />,
+          text: 'Relatórios',
+          route: '/dap/relatorios',
         },
       ],
       section: 'Departamentos',
