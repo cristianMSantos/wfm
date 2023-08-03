@@ -1,7 +1,7 @@
 import "./App.css";
 import { alpha } from "@mui/material/styles";
 import React, { useState, createContext, useEffect, useContext } from "react";
-import { useTransition, animated } from '@react-spring/web';
+import { useTransition, animated } from "@react-spring/web";
 import { useLocation, useNavigate } from "react-router-dom";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -52,12 +52,11 @@ function App() {
 
   // console.log(location.pathname)
 
-
   const transitions = useTransition(location, {
     key: location.pathname,
     from: { opacity: 0, width: "0%" },
     enter: { opacity: 1, width: "100%" },
-  })
+  });
 
   const getUser = async () => {
     const options = {
@@ -78,8 +77,8 @@ function App() {
   };
 
   useEffect(() => {
-    if(token){
-      getUser()
+    if (token) {
+      getUser();
     }
 
     const handleWindowResize = () => {
@@ -224,7 +223,41 @@ function App() {
     palette: {
       mode: mode === "dark" ? "dark" : "light",
       componentMode: mode === "dark" ? "dark" : "light",
+      primary: {
+        main:
+          selectedTheme.name == "plansul-default_dark" ||
+          selectedTheme.name == "plansul-default"
+            ? selectedTheme.colors.primary
+            : selectedTheme.colors.MuiToolbar,
+        contrastText:
+          selectedTheme.name == "plansul-default_dark" ||
+          selectedTheme.name == "plansul-default"
+            ? selectedTheme.colors.secondary
+            : selectedTheme.colors.primary,
+      },
     },
+    // components: {
+    //   MuiDataGrid: {
+    //     styleOverrides: {
+    //       root: {
+    //         "& .MuiDataGrid-columnHeaders": {
+    //           backgroundColor:
+    //             selectedTheme.name == "plansul-default_dark" ||
+    //             selectedTheme.name == "plansul-default"
+    //               ? selectedTheme.colors.primary
+    //               : selectedTheme.colors.MuiToolbar,
+    //           border: "none",
+    //         },
+    //         // "& .MuiDataGrid-columnHeaderTitle": {
+    //         //   opacity: "0.5",
+    //         //   fontWeight: "500",
+    //         //   fontFamily: "inter",
+    //         //   color: mode === "light" ? "#ffffff" : "#000000",
+    //         // },
+    //       },
+    //     },
+    //   },
+    // },
   });
 
   const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
@@ -289,17 +322,15 @@ function App() {
                 <DrawerHeader />
                 <ThemeProvider theme={defaultTheme}>
                   <Box component="main">
-                    <Container maxWidth="lg" sx={{ padding: 0 }}>
-                      {
-                        transitions((props, item) => (
-                          <animated.div style={props}>
-                            <RoutesContext.Provider value={routes}>
-                              <RoutesElement />
-                            </RoutesContext.Provider>
-                          </animated.div>
-                        ))
-                      }
-                    </Container>
+                    <Box sx={{ padding: 0 }}>
+                      {transitions((props, item) => (
+                        <animated.div style={props}>
+                          <RoutesContext.Provider value={routes}>
+                            <RoutesElement />
+                          </RoutesContext.Provider>
+                        </animated.div>
+                      ))}
+                    </Box>
                   </Box>
                 </ThemeProvider>
               </Main>
