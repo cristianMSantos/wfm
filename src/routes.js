@@ -16,6 +16,7 @@ import SubRelatorios from "./views/dap/Relatorios";
 import Login from "./views/Login";
 import Acessos from "./views/admin/Acessos";
 import ProtectedRoute from "./ProtectedRoute";
+import Ocorrencias from "./views/dap/Ocorrencias";
 
 // const ProtectedRoute = ({
 //   perfilNecessario,
@@ -36,7 +37,6 @@ import ProtectedRoute from "./ProtectedRoute";
 //   return children ? children : <Outlet />;
 
 // };
-
 
 const IsAuthenticated = () => {
   const token = useSelector((state) => state.login.isAuthenticated);
@@ -64,20 +64,18 @@ const routes = [
   {
     path: "/dashboard",
     name: "Dashboard",
-    element: <Dashboard to="/dashboard" />
+    element: <Dashboard to="/dashboard" />,
   },
   {
     path: "/recrutamento/subRecrutamento",
     name: "SubRecrutamento",
-    element: <SubRecrutamento to="/recrutamento/subRecrutamento" />
+    element: <SubRecrutamento to="/recrutamento/subRecrutamento" />,
   },
   {
     path: "/recrutamento/subRecrutamento2",
     name: "SubRecrutamento2",
     element: (
-      <ProtectedRoute
-        perfilNecessario={[1,2]}
-      >
+      <ProtectedRoute perfilNecessario={[1, 2]}>
         <SubRecrutamento2 />
       </ProtectedRoute>
     ),
@@ -94,7 +92,7 @@ const routes = [
   {
     path: "/trafego/subTrafego",
     name: "SubTrafego",
-    element: <SubTrafego to="/trafego/subTrafego" />
+    element: <SubTrafego to="/trafego/subTrafego" />,
   },
   {
     path: "/dap",
@@ -104,10 +102,17 @@ const routes = [
     path: "/dap/relatorios",
     name: "Relatórios",
     element: (
-      <ProtectedRoute
-        perfilNecessario={[1,4]}
-      >
+      <ProtectedRoute perfilNecessario={[1, 4]}>
         <SubRelatorios to="/dap/relatorios" />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/dap/ocorrencias",
+    name: "Ocorrências",
+    element: (
+      <ProtectedRoute perfilNecessario={[1, 4]}>
+        <Ocorrencias to="/dap/ocorrencias" />
       </ProtectedRoute>
     ),
   },
@@ -134,12 +139,12 @@ const routes = [
   {
     path: "/user/create",
     name: "User Create",
-    element: <UserList to="/user" />
+    element: <UserList to="/user" />,
   },
   {
     path: "/user/list",
     name: "User List",
-    element: <UserList to="/user" />
+    element: <UserList to="/user" />,
   },
   {
     path: "/teste",
@@ -150,15 +155,13 @@ const routes = [
   {
     path: "/adicionaritens",
     name: "AddItem",
-    element: <AddItem to="/adicionaritens" />
+    element: <AddItem to="/adicionaritens" />,
   },
   {
     path: "/acessos",
     name: "Acessos",
     element: (
-      <ProtectedRoute
-        perfilNecessario={[1]}
-      >
+      <ProtectedRoute perfilNecessario={[1]}>
         <Acessos />
       </ProtectedRoute>
     ),

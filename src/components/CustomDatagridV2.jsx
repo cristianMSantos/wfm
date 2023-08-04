@@ -5,16 +5,25 @@ import {
   gridPageCountSelector,
   GridPagination,
   GridToolbarContainer,
-  GridToolbarExport,
   useGridApiContext,
   useGridSelector,
   GridToolbarQuickFilter,
+  GridToolbarExportContainer,
+  GridCsvExportMenuItem,
+  GridPrintExportMenuItem,
 } from "@mui/x-data-grid";
 import { Grid } from "@mui/material";
 import MuiPagination from "@mui/material/Pagination";
 import { ptBR } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 // import GridActionsComponent from "./GridActionsComponent";
+
+const GridToolbarExport = ({ csvOptions, printOptions, ...other }) => (
+  <GridToolbarExportContainer {...other}>
+    <GridCsvExportMenuItem options={csvOptions} />
+    <GridPrintExportMenuItem options={printOptions} />
+  </GridToolbarExportContainer>
+);
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",

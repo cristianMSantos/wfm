@@ -236,28 +236,40 @@ function App() {
             : selectedTheme.colors.primary,
       },
     },
-    // components: {
-    //   MuiDataGrid: {
-    //     styleOverrides: {
-    //       root: {
-    //         "& .MuiDataGrid-columnHeaders": {
-    //           backgroundColor:
-    //             selectedTheme.name == "plansul-default_dark" ||
-    //             selectedTheme.name == "plansul-default"
-    //               ? selectedTheme.colors.primary
-    //               : selectedTheme.colors.MuiToolbar,
-    //           border: "none",
-    //         },
-    //         // "& .MuiDataGrid-columnHeaderTitle": {
-    //         //   opacity: "0.5",
-    //         //   fontWeight: "500",
-    //         //   fontFamily: "inter",
-    //         //   color: mode === "light" ? "#ffffff" : "#000000",
-    //         // },
-    //       },
-    //     },
-    //   },
-    // },
+    components: {
+      MuiCardHeader: {
+        styleOverrides: {
+          root: {
+            backgroundColor: selectedTheme.colors.MuiToolbar,
+            "& .MuiCardHeader-title": {
+              color: selectedTheme.colors.primary,
+              fontSize: "0.9rem",
+              fontWeight: "bold",
+            },
+          },
+        },
+      },
+      //   MuiDataGrid: {
+      //     styleOverrides: {
+      //       root: {
+      //         "& .MuiDataGrid-columnHeaders": {
+      //           backgroundColor:
+      //             selectedTheme.name == "plansul-default_dark" ||
+      //             selectedTheme.name == "plansul-default"
+      //               ? selectedTheme.colors.primary
+      //               : selectedTheme.colors.MuiToolbar,
+      //           border: "none",
+      //         },
+      //         // "& .MuiDataGrid-columnHeaderTitle": {
+      //         //   opacity: "0.5",
+      //         //   fontWeight: "500",
+      //         //   fontFamily: "inter",
+      //         //   color: mode === "light" ? "#ffffff" : "#000000",
+      //         // },
+      //       },
+      //     },
+      //   },
+    },
   });
 
   const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
