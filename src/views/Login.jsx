@@ -220,31 +220,47 @@ export default function Login() {
     return (
         <Box className="content">
             <div className="wrap">
-                <Grid container className='grid-container' sx={{ height: '100%', width: '100%' }}>
-                    <Grid item xs={12} md={6} className='grid-slider'>
+                <Grid container className='grid-container'
+                    columns={{ xs: 4, sm: 12, md: 12 }}
+                    sx={{ height: '100%', width: '100%' }}
+                >
+                    <Grid item xs={6} sm={6} md={6} className='grid-slider'>
                         <Box className="logo" sx={{ display: 'flex' }}>
                             <img className='img-logo' src={Logo}></img>
                         </Box>
                         <Box className='slideshow'>
-                            <Box className='one'>
-                                <h2><span>RH</span></h2>
-                                <p>Sign up to attend any of hundreds of events nationwide</p>
-                            </Box>
+                            <div className='slide one'>
+                                <h2 className='wfm-departaments'>
+                                    <span>DAP</span>
+                                </h2>
+                                <p>Gerencie Talentos e Potencialize Equipes para um Futuro Brilhante.</p>
+                            </div>
+                            <div className='slide two'>
+                                <h2 className='wfm-departaments'>
+                                    <span>R&S</span>
+                                </h2>
+                                <p>Descubra os Melhores Talentos para Impulsionar o Sucesso da sua Equipe.</p>
+                            </div>
+                            <div className='slide three'>
+                                <h2 className='wfm-departaments'>
+                                    <span>Planejamento</span>
+                                </h2>
+                                <p>Estratégias Eficientes para otimizar Recursos e Alcançar Objetivos.</p>
+                            </div>
                             {/* <Box className='two'>
                                 <h2><span>CP</span></h2>
                                 <p>Sign up to attend any of hundreds of events nationwide</p>
                             </Box> */}
                         </Box>
                     </Grid>
-                    <Grid item xs={12} md={6} className="grid-login">
+                    <Grid item xs={6} sm={6} md={6} className="grid-login">
                         <Box component="form" onSubmit={handleSubmit} className="box-login">
                             <ThemeProvider theme={LightTheme}>
                                 <Grid container className="container-login" spacing={2}>
                                     <Box className='wfm-container'>
                                         <h1 className='wfm-h1'>WFM</h1>
                                     </Box>
-                         
-                                    <Grid item xs={9} md={9} className='form-inputs'>
+                                    <Grid item xs={9} sm={9} md={9} className='form-inputs'>
                                         <Box sx={{
                                             '& .MuiTextField-root': { mb: 2, width: '100%' },
                                             '& .MuiLoadingButton-root': { mb: 2, width: '100%', backgroundColor: '#0D5710', color: 'white' },
@@ -344,7 +360,7 @@ export default function Login() {
                                             control={<Checkbox value="remember" color="primary" />}
                                             label="Lembrar-me"
                                         /> */}
-                                            <LoadingButton loading={loading} type="submit" variant="contained" color="success">
+                                            <LoadingButton className='button-save' loading={loading} type="submit" variant="contained">
                                                 {showResetPassword ? 'Salvar' : 'Acessar'}
                                             </LoadingButton>
                                         </Box>

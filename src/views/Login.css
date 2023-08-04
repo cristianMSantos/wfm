@@ -12,7 +12,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, rgba(81, 195, 184, 1) 100%);
+    /* background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, rgba(81, 195, 184, 1) 100%); */
+    background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, rgb(32 127 209) 100%);
 }
 
 .grid-container {
@@ -53,14 +54,12 @@
 }
 
 .grid-slider {
-    background: linear-gradient(0deg, rgba(62, 181, 169, 1) 0%, rgba(111, 226, 204, 1) 100%);
+    /* background: linear-gradient(0deg, rgba(62, 181, 169, 1) 0%, rgba(111, 226, 204, 1) 100%); */
+    background: linear-gradient(0deg, rgba(32, 127, 209, 1) 0%, rgba(62, 181, 169, 1) 100%);
 }
 
 /* SLIDESHOW */
 .slideshow {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     position: relative;
     margin: 0 auto;
     width: 100%;
@@ -68,27 +67,86 @@
     /* padding: 10px; */
     border-radius: 10px 0 0 10px;
 
-    background-repeat: no-repeat;
-    -webkit-background-size: contain;
-    -moz-background-size: contain;
-    -o-background-size: contain;
-    background-size: contain;
-    background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/dots.png");
-    background-repeat: no-repeat;
-    background-position: 0% 90%;
 }
 
 .slideshow h2 {
+    position: absolute;
+    right: 0;
+    top: 30%;
+    left: 0;
+    bottom: 0;
     margin: .0em auto .0em auto;
     text-align: center;
-    font-size: 1.4em;
+    font-size: 3em;
     color: #fff;
     line-height: .5em;
 }
 
 .slideshow p {
     color: #fff;
-    display: none;
+    /* display: none; */
+}
+
+.slideshow div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1em 3em;
+    background-repeat: no-repeat;
+}
+
+.slideshow .one {
+    height: calc(100% - 50px);
+    background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/dots.png");
+    background-repeat: no-repeat;
+    background-position: 50% 130%;
+}
+
+.slideshow .two {
+    height: calc(100% - 50px);
+    background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/gears.png");
+    background-repeat: no-repeat;
+    background-position: 50% 130%;
+}
+
+.slideshow .three {
+    height: calc(100% - 50px);
+    background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/dots.png");
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.slide {
+    opacity: 0;
+    /* Valor inicial */
+    animation: fade 15s ease-in-out infinite;
+}
+
+.slide.one {
+    animation-delay: 0s;
+}
+
+.slide.two {
+    animation-delay: 5s;
+}
+
+.slide.three {
+    animation-delay: 10s;
+}
+
+@keyframes fade {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    20%, 40%, 80% {
+        opacity: 0;
+    }
 }
 
 .animation-right {
@@ -114,9 +172,21 @@
     border-bottom: 1px solid #5FD1C1;
 }
 
+.wfm-departaments span {
+    font-size: 3rem;
+    /* padding-bottom: 4px;
+    padding-top: 4px;
+    border-bottom: 1px solid #FFFFFF;
+    border-top: 1px solid #FFFFFF; */
+}
+
 .login-remember {
     display: flex !important;
     color: var(--color);
+}
+
+.button-save {
+    background-color: rgb(62, 181, 169) !important;
 }
 
 .grid-img {
@@ -196,5 +266,27 @@
         color: white;
         font-size: 2rem;
         letter-spacing: 0.3rem;
+    }
+
+    .wrap {
+        width: 100%;
+        height: 100%;
+    }
+
+    .grid-container {
+        /* background-color: #073377; */
+        overflow: hidden;
+        border-radius: 0px;
+    }
+
+    .slideshow .one {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    .slideshow h2 {
+        position: unset;
     }
 }
