@@ -2,9 +2,9 @@ import React from "react"
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import {
     Button,
+    Box,
     Card,
     CardContent,
-    Divider
 } from "@mui/material";
 import CircularProgress from '@mui/material/CircularProgress';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
@@ -21,13 +21,13 @@ import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import 'dayjs/locale/pt-br';
 
-export default function RelatoriosFilter() {
+export default function RelatoriosFilter({ setIsLoading, setIsDataAvailable }) {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const [month, setMonth] = useState(dayjs());
     const [year, setYear] = useState(dayjs());
-    const [isLoading, setIsLoading] = useState(false);
-    const [isDataAvailable, setIsDataAvailable] = useState(false);
+    // const [isLoading, setIsLoading] = useState(false);
+    // const [isDataAvailable, setIsDataAvailable] = useState(false);
     const token = useSelector((state) => state.login.isAuthenticated);
     const dispatch = useDispatch();
     // const currencies = [
@@ -77,119 +77,116 @@ export default function RelatoriosFilter() {
         
     return (
         <>
-            <Card
+            <Box
                 component="form"
                 autoComplete="off"
                 sx={{ height: '100%' }}
                 colors={colors}
                 onSubmit={handleSearch}
             >
-                <CardContent>
-                    <Grid
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            alignItems: 'center',
-                            padding: 2
-                        }}
-                        colors={colors}
-                        container
-                        spacing={{ xs: 2, md: 3 }}
-                        // columns={{ xs: 4, sm: 8, md: 3 }}
-                    >
-                        <Grid md={6}>
-                            {/* <TextField
-                                id="outlined-select-currency"
-                                select
-                                label="Contratos"
-                                helperText="Selecione o contrato"
-                                colors={colors}
-                                fullWidth
-                            >
-                                {currencies.map((option) => (
-                                    <MenuItem key={option.value} value={option.value}>
-                                        {option.label}
-                                    </MenuItem>
-                                ))}
-                            </TextField> */}
-                            <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
-                                <DemoContainer components={['DatePicker', 'DatePicker']}>
-                                    <DatePicker
-                                        label={'Mês:'}
-                                        openTo="month"
-                                        views={['month']}
-                                        value={month} 
-                                        onChange={(newDate) => setMonth(newDate)}
-                                    />
-                                    <DatePicker
-                                        label={'Ano:'}
-                                        openTo="year"
-                                        views={['year']}
-                                        value={year} 
-                                        onChange={(newDate) => setYear(newDate)}
-                                    />
-                                </DemoContainer>
-                            </LocalizationProvider>
-                        </Grid>
-                        {/* <Grid md={6}>
-                            <TextField
-                                id="outlined-select-currency-native"
-                                select
-                                label="Gestor"
-                                SelectProps={{
-                                    native: true,
-                                }}
-                                helperText="Selecione o gestor"
-                                fullWidth
-                            >
-                                {currencies.map((option) => (
-                                    <option key={option.value} value={option.value}>
-                                        {option.label}
-                                    </option>
-                                ))}
-                            </TextField>
-                        </Grid> */}
+                <Grid
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        padding: 2
+                    }}
+                    colors={colors}
+                    container
+                    spacing={{ xs: 2, md: 3 }}
+                    // columns={{ xs: 4, sm: 8, md: 3 }}
+                >
+                    <Grid md={6}>
+                        {/* <TextField
+                            id="outlined-select-currency"
+                            select
+                            label="Contratos"
+                            helperText="Selecione o contrato"
+                            colors={colors}
+                            fullWidth
+                        >
+                            {currencies.map((option) => (
+                                <MenuItem key={option.value} value={option.value}>
+                                    {option.label}
+                                </MenuItem>
+                            ))}
+                        </TextField> */}
+                        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                            <DemoContainer components={['DatePicker', 'DatePicker']}>
+                                <DatePicker
+                                    label={'Mês:'}
+                                    openTo="month"
+                                    views={['month']}
+                                    value={month} 
+                                    onChange={(newDate) => setMonth(newDate)}
+                                />
+                                <DatePicker
+                                    label={'Ano:'}
+                                    openTo="year"
+                                    views={['year']}
+                                    value={year} 
+                                    onChange={(newDate) => setYear(newDate)}
+                                />
+                            </DemoContainer>
+                        </LocalizationProvider>
                     </Grid>
-                    <Grid
-                        container
-                        justifyContent="center"
-                        spacing={3}
-                        sx={{ padding: 2 }}
-                    >
-                        <Grid item>
-                            <Button
-                                variant="contained"
-                                size="medium"
-                                onClick={handleCleanFields}
-                            >
-                                Limpar Campos
-                            </Button>
-                        </Grid>
-                        <Grid item>
-                            <Button
-                                variant="contained"
-                                size="medium"
-                                sx={{ padding: '6px 33.79px' }}
-                                type="submit"
-                            >
-                                Pesquisar
-                            </Button>
-                        </Grid>
+                    {/* <Grid md={6}>
+                        <TextField
+                            id="outlined-select-currency-native"
+                            select
+                            label="Gestor"
+                            SelectProps={{
+                                native: true,
+                            }}
+                            helperText="Selecione o gestor"
+                            fullWidth
+                        >
+                            {currencies.map((option) => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
+                        </TextField>
+                    </Grid> */}
+                </Grid>
+                <Grid
+                    container
+                    justifyContent="center"
+                    spacing={3}
+                    sx={{ padding: 2 }}
+                >
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            size="medium"
+                            onClick={handleCleanFields}
+                        >
+                            Limpar Campos
+                        </Button>
                     </Grid>
-                    <Divider sx={{ m: '30px 50px'}}></Divider>
-                    {isLoading ? (
-                        <CircularProgress />
-                    ) : (
-                        <>
-                            {isDataAvailable ? (
-                                <RelatoriosTable />
-                            ) : (
-                                <RelatoriosGuideSearch />
-                            )}
-                        </>
-                    )}
-                </CardContent>
-            </Card>
+                    <Grid item>
+                        <Button
+                            variant="contained"
+                            size="medium"
+                            sx={{ padding: '6px 33.79px' }}
+                            type="submit"
+                        >
+                            Pesquisar
+                        </Button>
+                    </Grid>
+                </Grid>
+                {/* {isLoading ? (
+                    <CircularProgress />
+                ) : (
+                    <>
+                        {isDataAvailable ? (
+                            <RelatoriosTable />
+                        ) : (
+                            <RelatoriosGuideSearch />
+                        )}
+                    </>
+                )} */}
+            </Box>
         </>
     )
 }

@@ -16,14 +16,21 @@ import { Grid } from "@mui/material";
 import MuiPagination from "@mui/material/Pagination";
 import { ptBR } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
+import { ExportToExcel } from "./ExportToExcel.jsx";
 // import GridActionsComponent from "./GridActionsComponent";
 
-const GridToolbarExport = ({ csvOptions, printOptions, ...other }) => (
-  <GridToolbarExportContainer {...other}>
+const GridToolbarExport = ({csvOptions, printOptions, columnsExcel, cellsExcel, selectedRows}) => (
+  <GridToolbarExportContainer>
     <GridCsvExportMenuItem options={csvOptions} />
     <GridPrintExportMenuItem options={printOptions} />
+    <ExportToExcel
+      columnsExcel={columnsExcel}
+      cellsExcel={cellsExcel}
+      selectedRows={selectedRows}
+    />
   </GridToolbarExportContainer>
 );
+
 const StyledGridOverlay = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
@@ -115,27 +122,31 @@ function CustomPagination(props) {
   return <GridPagination ActionsComponent={Pagination} {...props} />;
 }
 
-function CustomToolbar() {
-  return (
-    <GridToolbarContainer>
-      <Grid container>
-        <Grid sm={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
-          <GridToolbarQuickFilter></GridToolbarQuickFilter>
-        </Grid>
+const CustomToolbar = ({columnsExcel, cellsExcel, selectedRows}) => (
+  < GridToolbarContainer >
+    <Grid container>
+      <Grid item sm={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
+        <GridToolbarQuickFilter></GridToolbarQuickFilter>
       </Grid>
-      <Grid container>
-        <Grid sm={8} sx={{ display: "flex", justifyContent: "flex-start" }}>
-          <GridToolbarExport />
-        </Grid>
-        <Grid sm={4}>
-          <CustomPagination />
-        </Grid>
+    </Grid>
+    <Grid container>
+      <Grid item sm={8} sx={{ display: "flex", justifyContent: "flex-start" }}>
+        <GridToolbarExport
+          columnsExcel={columnsExcel}
+          cellsExcel={cellsExcel}
+          selectedRows={selectedRows}
+        />
       </Grid>
-    </GridToolbarContainer>
-  );
-}
+      <Grid item sm={4}>
+        <CustomPagination />
+      </Grid>
+    </Grid>
+  </GridToolbarContainer >
+)
+
 
 const CustomDataGrid = styled(DataGrid)(({ theme }) => ({
+  width: '100%',
   "& .MuiDataGrid-columnHeaders": {
     backgroundColor:
       theme.palette.mode === "light" ? "hsl(0, 1%, 92%)" : "hsl(0, 1%, 22%)",
@@ -169,11 +180,16 @@ export default function CustomPaginationGrid({
   processRowUpdate,
   onRowEditStart,
   handleRowModesModelChange,
+  columnsExcel,
+  cellsExcel,
+  selectedRows,
+  handleSelectRow
 }) {
   const data = { rows, columns };
   const onRowEditCommit = (event) => {
     console.log(event);
   };
+
   return (
     <Box
       sx={{
@@ -193,31 +209,42 @@ export default function CustomPaginationGrid({
       }}
     >
       {/* <GridActionsComponent /> */}
-      <CustomDataGrid
-        pagination
-        hideFooter
-        slots={{
-          pagination: CustomPagination,
-          toolbar: CustomToolbar,
-          noRowsOverlay: CustomNoRowsOverlay,
-        }}
-        {...data}
-        initialState={{
-          pagination: { paginationModel: { pageSize: 5 } },
-        }}
-        localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
-        editMode="row"
-        loading={loading}
-        rowModesModel={rowModesModel}
-        disableColumnFilter
-        disableColumnSelector
-        disableDensitySelector
-        onRowEditStart={onRowEditStart}
-        handleRowModesModelChange={handleRowModesModelChange}
-        onRowEditCommit={onRowEditCommit}
-        processRowUpdate={processRowUpdate}
-        checkboxSelection
-      />
+      <Grid container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Grid item xs={12} md={12}>
+          <CustomDataGrid
+            pagination
+            hideFooter
+            slots={{
+              pagination: CustomPagination,
+              toolbar: () => (
+                <CustomToolbar
+                  columnsExcel={columnsExcel}
+                  cellsExcel={cellsExcel}
+                  selectedRows={selectedRows}
+                />
+              ),
+              noRowsOverlay: CustomNoRowsOverlay,
+            }}
+            {...data}
+            initialState={{
+              pagination: { paginationModel: { pageSize: 5 } },
+            }}
+            localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
+            editMode="row"
+            loading={loading}
+            rowModesModel={rowModesModel}
+            // disableColumnFilter
+            // disableColumnSelector
+            // disableDensitySelector
+            onRowSelectionModelChange={handleSelectRow}
+            onRowEditStart={onRowEditStart}
+            handleRowModesModelChange={handleRowModesModelChange}
+            onRowEditCommit={onRowEditCommit}
+            processRowUpdate={processRowUpdate}
+            checkboxSelection
+          />
+        </Grid>
+      </Grid>
     </Box>
   );
 }

@@ -15,7 +15,8 @@ export function ExportToExcel({ columnsExcel, cellsExcel, selectedRows }) {
     const worksheet = workbook.addWorksheet('Dados');
 
     // Filter the selected lines before export
-    if (selectedRows.length !== 0) {
+    if (selectedRows.length > 0) {
+      console.log(selectedRows)
       filteredCellsExcel = cellsExcel.filter((cell, index) => selectedRows.includes(index));
 
     } else {
@@ -53,8 +54,8 @@ export function ExportToExcel({ columnsExcel, cellsExcel, selectedRows }) {
 
       // Alternate de background color between gray and white for each line
       row.fill = (index % 2 === 0) ?
-      { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } } :
-      { type: 'pattern', pattern: 'solid', fgColor: { argb: 'DADADA' } };
+        { type: 'pattern', pattern: 'solid', fgColor: { argb: 'FFFFFFFF' } } :
+        { type: 'pattern', pattern: 'solid', fgColor: { argb: 'DADADA' } };
     });
 
     // Create the excel document
@@ -66,11 +67,10 @@ export function ExportToExcel({ columnsExcel, cellsExcel, selectedRows }) {
 
   return (
     <Button
-      variant="outlined"
-      startIcon={<ImportExportRoundedIcon />}
+      // variant="outlined"
       onClick={handleExport}
     >
-      Exportar Excel
+      Exportar para Excel
     </Button>
   );
 };
