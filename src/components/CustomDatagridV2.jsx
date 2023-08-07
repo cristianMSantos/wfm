@@ -210,7 +210,7 @@ export default function CustomPaginationGrid({
     >
       {/* <GridActionsComponent /> */}
       <Grid container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Grid item xs={12} md={12}>
+        <Grid xs={12} md={12}>
           <CustomDataGrid
             pagination
             hideFooter
