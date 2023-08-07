@@ -13,7 +13,7 @@
     justify-content: center;
     align-items: center;
     /* background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, rgba(81, 195, 184, 1) 100%); */
-    background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, rgb(32 127 209) 100%);
+    background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, #022954 100%)
 }
 
 .grid-container {
@@ -55,7 +55,7 @@
 
 .grid-slider {
     /* background: linear-gradient(0deg, rgba(62, 181, 169, 1) 0%, rgba(111, 226, 204, 1) 100%); */
-    background: linear-gradient(0deg, rgba(32, 127, 209, 1) 0%, rgba(62, 181, 169, 1) 100%);
+    background: linear-gradient(0deg, rgba(32, 127, 209, 1) 0%, #4fa7db 100%);
 }
 
 /* SLIDESHOW */
@@ -102,6 +102,7 @@
 
 .slideshow .one {
     height: calc(100% - 50px);
+    flex-wrap: wrap;
     background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/dots.png");
     background-repeat: no-repeat;
     background-position: 50% 130%;
@@ -109,6 +110,7 @@
 
 .slideshow .two {
     height: calc(100% - 50px);
+    flex-wrap: wrap;
     background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/gears.png");
     background-repeat: no-repeat;
     background-position: 50% 130%;
@@ -116,6 +118,7 @@
 
 .slideshow .three {
     height: calc(100% - 50px);
+    flex-wrap: wrap;
     background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/dots.png");
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -169,7 +172,7 @@
 
 .login-title span {
     padding-bottom: 4px;
-    border-bottom: 1px solid #5FD1C1;
+    border-bottom: 1px solid #4fa7db;
 }
 
 .wfm-departaments span {
@@ -186,7 +189,7 @@
 }
 
 .button-save {
-    background-color: rgb(62, 181, 169) !important;
+    background-color: #4fa7db !important;
 }
 
 .grid-img {
@@ -215,7 +218,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    width: 125px;
+    width: 140px;
     height: 50px;
     margin-left: 10px;
 }
