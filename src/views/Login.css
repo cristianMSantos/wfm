@@ -6,9 +6,150 @@
     --background-img: rgba(255, 255, 255, 0.65);
 }
 
+.content {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, rgba(81, 195, 184, 1) 100%); */
+    background: linear-gradient(180deg, rgba(34, 46, 64, 1) 0%, #022954 100%)
+}
+
 .grid-container {
-    background-color: #073377;
+    /* background-color: #073377; */
     overflow: hidden;
+    border-radius: 10px;
+}
+
+.container-login {
+    width: 100% !important;
+    height: 100% !important;
+    flex-direction: column !important;
+    justify-content: center;
+    align-items: center;
+}
+
+.wfm-container {
+    display: flex;
+    flex-grow: 1;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.wfm-h1 {
+    color: white;
+    font-size: 3rem;
+    letter-spacing: 0.3rem;
+}
+
+.wrap {
+    width: 900px;
+    height: 550px;
+}
+
+.grid-login {
+    background: linear-gradient(42deg, rgba(42, 46, 54, 1) 0%, rgba(97, 107, 125, 1) 100%);
+}
+
+.grid-slider {
+    /* background: linear-gradient(0deg, rgba(62, 181, 169, 1) 0%, rgba(111, 226, 204, 1) 100%); */
+    background: linear-gradient(0deg, rgba(32, 127, 209, 1) 0%, #4fa7db 100%);
+}
+
+/* SLIDESHOW */
+.slideshow {
+    position: relative;
+    margin: 0 auto;
+    width: 100%;
+    height: calc(100% - 50px);
+    /* padding: 10px; */
+    border-radius: 10px 0 0 10px;
+
+}
+
+.slideshow h2 {
+    position: absolute;
+    right: 0;
+    top: 30%;
+    left: 0;
+    bottom: 0;
+    margin: .0em auto .0em auto;
+    text-align: center;
+    font-size: 3em;
+    color: #fff;
+    line-height: .5em;
+}
+
+.slideshow p {
+    color: #fff;
+    /* display: none; */
+}
+
+.slideshow div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 1em 3em;
+    background-repeat: no-repeat;
+}
+
+.slideshow .one {
+    height: calc(100% - 50px);
+    flex-wrap: wrap;
+    background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/dots.png");
+    background-repeat: no-repeat;
+    background-position: 50% 130%;
+}
+
+.slideshow .two {
+    height: calc(100% - 50px);
+    flex-wrap: wrap;
+    background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/gears.png");
+    background-repeat: no-repeat;
+    background-position: 50% 130%;
+}
+
+.slideshow .three {
+    height: calc(100% - 50px);
+    flex-wrap: wrap;
+    background-image: url("http://res.cloudinary.com/dpcloudinary/image/upload/v1506186248/dots.png");
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+}
+
+.slide {
+    opacity: 0;
+    /* Valor inicial */
+    animation: fade 15s ease-in-out infinite;
+}
+
+.slide.one {
+    animation-delay: 0s;
+}
+
+.slide.two {
+    animation-delay: 5s;
+}
+
+.slide.three {
+    animation-delay: 10s;
+}
+
+@keyframes fade {
+    0%, 100% {
+        opacity: 1;
+    }
+
+    20%, 40%, 80% {
+        opacity: 0;
+    }
 }
 
 .animation-right {
@@ -29,9 +170,26 @@
     color: var(--color);
 }
 
+.login-title span {
+    padding-bottom: 4px;
+    border-bottom: 1px solid #4fa7db;
+}
+
+.wfm-departaments span {
+    font-size: 3rem;
+    /* padding-bottom: 4px;
+    padding-top: 4px;
+    border-bottom: 1px solid #FFFFFF;
+    border-top: 1px solid #FFFFFF; */
+}
+
 .login-remember {
     display: flex !important;
     color: var(--color);
+}
+
+.button-save {
+    background-color: #4fa7db !important;
 }
 
 .grid-img {
@@ -60,6 +218,9 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
+    width: 140px;
+    height: 50px;
+    margin-left: 10px;
 }
 
 .box-login {
@@ -102,5 +263,33 @@
 @media screen and (max-width: 900px) {
     .login-message {
         font-size: 2.75rem !important;
+    }
+
+    .wfm-h1 {
+        color: white;
+        font-size: 2rem;
+        letter-spacing: 0.3rem;
+    }
+
+    .wrap {
+        width: 100%;
+        height: 100%;
+    }
+
+    .grid-container {
+        /* background-color: #073377; */
+        overflow: hidden;
+        border-radius: 0px;
+    }
+
+    .slideshow .one {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+        flex-direction: column;
+    }
+
+    .slideshow h2 {
+        position: unset;
     }
 }

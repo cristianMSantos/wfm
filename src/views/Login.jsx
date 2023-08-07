@@ -218,114 +218,159 @@ export default function Login() {
     }
 
     return (
-        <Box sx={{ height: '100vh', width: '100%' }}>
-            <Grid container className='grid-container' sx={{ height: '100vh', width: '100%' }}>
-                <Grid item xs={12} md={8} className='grid-img'>
-                    <div className='overlay'>
-                        <Typography className='login-message' variant="h2" gutterBottom>
-                            Seja bem vindo ao seu novo <span style={{ color: '#073377' }}>Sistema </span>
-                            de Gestão <span style={{ color: '#073377' }}>Plansul</span>
-                        </Typography>
-                    </div>
-                </Grid>
-                <Grid item xs={12} md={4}>
-                    <Box component="form" onSubmit={handleSubmit} className="box-login">
-                        <ThemeProvider theme={LightTheme}>
-                            <Grid container justifyContent="center" alignItems="center" spacing={2}>
-                                <Grid item xs={6} md={6} className='grid-logo'>
-                                    <img className='img-logo' src={Logo} style={{ width: '100%' }}></img>
-                                </Grid>
-                                <Grid item xs={8} md={8} className='form-inputs'>
-                                    <Box sx={{
-                                        '& .MuiTextField-root': { mb: 1, width: '100%' },
-                                        '& .MuiLoadingButton-root': { mb: 1, width: '100%', backgroundColor: '#0D5710', color: 'white' },
-                                    }}>
-                                        <h3 className='login-title'>{showResetPassword ? 'Resetar Senha' : 'Login'}</h3>
-                                        <TextField
-                                            error={error['matricula']}
-                                            helperText={messageError['matricula']}
-                                            onChange={(event) => handleRules(event.target.value, 'matricula')}
-                                            required
-                                            id="matricula"
-                                            name="matricula"
-                                            label="Matricula"
-                                            autoComplete="matricula"
-                                            InputProps={{
-                                                readOnly: showResetPassword,
-                                            }}
-                                        // variant="filled"
-                                        />
-                                        <TextField
-                                            error={error['senha']}
-                                            helperText={messageError['senha']}
-                                            onChange={(event) => handleRules(event.target.value, 'senha')}
-                                            required
-                                            id="password"
-                                            name="password"
-                                            label="Senha"
-                                            type={showPassword ? 'text' : 'password'}
-                                            InputProps={{
-                                                endAdornment: (
-                                                    <InputAdornment position="end">
-                                                        <IconButton
-                                                            aria-label="toggle password visibility"
-                                                            onClick={handleClickShowPassword}
-                                                            onMouseDown={handleMouseDownPassword}
-                                                        >
-                                                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                        </IconButton>
-                                                    </InputAdornment>
-                                                ),
-                                            }}
-                                        />
-                                        {
-                                            showResetPassword ?
-                                                <TextField
-                                                    error={error['confirmPassword']}
-                                                    helperText={messageError['confirmPassword']}
-                                                    onChange={(event) => handleRules(event.target.value, 'confirmPassword')}
-                                                    required
-                                                    id="confirmPassword"
-                                                    name="confirmPassword"
-                                                    label="Confirmar Senha"
-                                                    type={showPasswordConfirm ? 'text' : 'password'}
-                                                    InputProps={{
-                                                        endAdornment: (
-                                                            <InputAdornment position="end">
-                                                                <IconButton
-                                                                    aria-label="toggle password visibility"
-                                                                    onClick={handleClickShowPasswordConfirm}
-                                                                    onMouseDown={handleMouseDownPasswordConfirm}
-                                                                >
-                                                                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                                                                </IconButton>
-                                                            </InputAdornment>
-                                                        ),
-                                                    }}
-                                                />
-                                                : null
-                                        }
-                                        {
-                                            errorLogin ?
-                                                <p className='errorLogin'>
-                                                    Usuário ou Senha Incorreto!
-                                                </p> : false
-                                        }
-                                        {/* <FormControlLabel
+        <Box className="content">
+            <div className="wrap">
+                <Grid container className='grid-container'
+                    columns={{ xs: 4, sm: 12, md: 12 }}
+                    sx={{ height: '100%', width: '100%' }}
+                >
+                    <Grid item xs={6} sm={6} md={6} className='grid-slider'>
+                        <Box className="logo" sx={{ display: 'flex' }}>
+                            <img className='img-logo' src={Logo}></img>
+                        </Box>
+                        <Box className='slideshow'>
+                            <div className='slide one'>
+                                <h2 className='wfm-departaments'>
+                                    <span>DAP</span>
+                                </h2>
+                                <p>Gerencie Talentos e Potencialize Equipes para um Futuro Brilhante.</p>
+                            </div>
+                            <div className='slide two'>
+                                <h2 className='wfm-departaments'>
+                                    <span>R&S</span>
+                                </h2>
+                                <p>Descubra os Melhores Talentos para Impulsionar o Sucesso da sua Equipe.</p>
+                            </div>
+                            <div className='slide three'>
+                                <h2 className='wfm-departaments'>
+                                    <span>Planejamento</span>
+                                </h2>
+                                <p>Estratégias Eficientes para otimizar Recursos e Alcançar Objetivos.</p>
+                            </div>
+                            {/* <Box className='two'>
+                                <h2><span>CP</span></h2>
+                                <p>Sign up to attend any of hundreds of events nationwide</p>
+                            </Box> */}
+                        </Box>
+                    </Grid>
+                    <Grid item xs={6} sm={6} md={6} className="grid-login">
+                        <Box component="form" onSubmit={handleSubmit} className="box-login">
+                            <ThemeProvider theme={LightTheme}>
+                                <Grid container className="container-login" spacing={2}>
+                                    <Box className='wfm-container'>
+                                        <h1 className='wfm-h1'>WFM</h1>
+                                    </Box>
+                                    <Grid item xs={9} sm={9} md={9} className='form-inputs'>
+                                        <Box sx={{
+                                            '& .MuiTextField-root': { mb: 2, width: '100%' },
+                                            '& .MuiLoadingButton-root': { mb: 2, width: '100%', backgroundColor: '#0D5710', color: 'white' },
+                                        }}>
+                                            <h3 className='login-title'>
+                                                <span>
+                                                    {showResetPassword ? 'Resetar Senha' : 'Login'}
+                                                </span>
+                                            </h3>
+                                            <TextField
+                                                variant="standard"
+                                                error={error['matricula']}
+                                                helperText={messageError['matricula']}
+                                                onChange={(event) => handleRules(event.target.value, 'matricula')}
+                                                required
+                                                id="matricula"
+                                                name="matricula"
+                                                label="Matricula"
+                                                autoComplete="matricula"
+                                                InputProps={{
+                                                    readOnly: showResetPassword,
+                                                    style: {
+                                                        borderBottom: '2px solid rgba(0, 0, 0, 0.3)',
+                                                        opacity: '0.3',
+                                                    },
+                                                }}
+
+                                            />
+                                            <TextField
+                                                variant="standard"
+                                                error={error['senha']}
+                                                helperText={messageError['senha']}
+                                                onChange={(event) => handleRules(event.target.value, 'senha')}
+                                                required
+                                                id="password"
+                                                name="password"
+                                                label="Senha"
+                                                type={showPassword ? 'text' : 'password'}
+                                                InputProps={{
+                                                    endAdornment: (
+                                                        <InputAdornment position="end">
+                                                            <IconButton
+                                                                aria-label="toggle password visibility"
+                                                                onClick={handleClickShowPassword}
+                                                                onMouseDown={handleMouseDownPassword}
+                                                            >
+                                                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                            </IconButton>
+                                                        </InputAdornment>
+                                                    ),
+                                                    style: {
+                                                        borderBottom: '2px solid rgba(0, 0, 0, 0.3)',
+                                                        opacity: '0.3',
+                                                    },
+                                                }}
+                                            />
+                                            {
+                                                showResetPassword ?
+                                                    <TextField
+                                                        variant="standard"
+                                                        error={error['confirmPassword']}
+                                                        helperText={messageError['confirmPassword']}
+                                                        onChange={(event) => handleRules(event.target.value, 'confirmPassword')}
+                                                        required
+                                                        id="confirmPassword"
+                                                        name="confirmPassword"
+                                                        label="Confirmar Senha"
+                                                        type={showPasswordConfirm ? 'text' : 'password'}
+                                                        InputProps={{
+                                                            endAdornment: (
+                                                                <InputAdornment position="end">
+                                                                    <IconButton
+                                                                        aria-label="toggle password visibility"
+                                                                        onClick={handleClickShowPasswordConfirm}
+                                                                        onMouseDown={handleMouseDownPasswordConfirm}
+                                                                    >
+                                                                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                                                                    </IconButton>
+                                                                </InputAdornment>
+                                                            ),
+                                                            style: {
+                                                                borderBottom: '2px solid rgba(0, 0, 0, 0.3)',
+                                                                opacity: '0.3',
+                                                            },
+                                                        }}
+                                                    />
+                                                    : null
+                                            }
+                                            {
+                                                errorLogin ?
+                                                    <p className='errorLogin'>
+                                                        Usuário ou Senha Incorreto!
+                                                    </p> : false
+                                            }
+                                            {/* <FormControlLabel
                                             className='login-remember'
                                             control={<Checkbox value="remember" color="primary" />}
                                             label="Lembrar-me"
                                         /> */}
-                                        <LoadingButton loading={loading} type="submit" variant="contained" color="success">
-                                            {showResetPassword ? 'Salvar' : 'Acessar'}
-                                        </LoadingButton>
-                                    </Box>
+                                            <LoadingButton className='button-save' loading={loading} type="submit" variant="contained">
+                                                {showResetPassword ? 'Salvar' : 'Acessar'}
+                                            </LoadingButton>
+                                        </Box>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </ThemeProvider>
-                    </Box>
+                            </ThemeProvider>
+                        </Box>
+                    </Grid>
                 </Grid>
-            </Grid>
+            </div>
         </Box>
     );
 }
