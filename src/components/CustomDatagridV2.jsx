@@ -19,7 +19,13 @@ import { styled } from "@mui/material/styles";
 import { ExportToExcel } from "./ExportToExcel.jsx";
 // import GridActionsComponent from "./GridActionsComponent";
 
-const GridToolbarExport = ({csvOptions, printOptions, columnsExcel, cellsExcel, selectedRows}) => (
+const GridToolbarExport = ({
+  csvOptions,
+  printOptions,
+  columnsExcel,
+  cellsExcel,
+  selectedRows,
+}) => (
   <GridToolbarExportContainer>
     <GridCsvExportMenuItem options={csvOptions} />
     <GridPrintExportMenuItem options={printOptions} />
@@ -110,7 +116,10 @@ function Pagination({ page, onPageChange, className }) {
       color="primary"
       className={className}
       count={pageCount}
-      page={page + 1}
+      siblingCount={1}
+      boundaryCount={0}
+      showFirstButton
+      showLastButton
       onChange={(event, newPage) => {
         onPageChange(event, newPage - 1);
       }}
@@ -122,31 +131,30 @@ function CustomPagination(props) {
   return <GridPagination ActionsComponent={Pagination} {...props} />;
 }
 
-const CustomToolbar = ({columnsExcel, cellsExcel, selectedRows}) => (
-  < GridToolbarContainer >
+const CustomToolbar = ({ columnsExcel, cellsExcel, selectedRows }) => (
+  <GridToolbarContainer>
     <Grid container>
       <Grid item sm={12} sx={{ display: "flex", justifyContent: "flex-end" }}>
         <GridToolbarQuickFilter></GridToolbarQuickFilter>
       </Grid>
     </Grid>
     <Grid container>
-      <Grid item sm={8} sx={{ display: "flex", justifyContent: "flex-start" }}>
+      <Grid item sm={6} sx={{ display: "flex", justifyContent: "flex-start" }}>
         <GridToolbarExport
           columnsExcel={columnsExcel}
           cellsExcel={cellsExcel}
           selectedRows={selectedRows}
         />
       </Grid>
-      <Grid item sm={4}>
+      <Grid item sm={6}>
         <CustomPagination />
       </Grid>
     </Grid>
-  </GridToolbarContainer >
-)
-
+  </GridToolbarContainer>
+);
 
 const CustomDataGrid = styled(DataGrid)(({ theme }) => ({
-  width: '100%',
+  width: "100%",
   "& .MuiDataGrid-columnHeaders": {
     backgroundColor:
       theme.palette.mode === "light" ? "hsl(0, 1%, 92%)" : "hsl(0, 1%, 22%)",
@@ -183,7 +191,7 @@ export default function CustomPaginationGrid({
   columnsExcel,
   cellsExcel,
   selectedRows,
-  handleSelectRow
+  handleSelectRow,
 }) {
   const data = { rows, columns };
   const onRowEditCommit = (event) => {
@@ -209,11 +217,15 @@ export default function CustomPaginationGrid({
       }}
     >
       {/* <GridActionsComponent /> */}
-      <Grid container sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+      <Grid
+        container
+        sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}
+      >
         <Grid xs={12} md={12}>
           <CustomDataGrid
             pagination
             hideFooter
+            density="compact"
             slots={{
               pagination: CustomPagination,
               toolbar: () => (
@@ -227,7 +239,7 @@ export default function CustomPaginationGrid({
             }}
             {...data}
             initialState={{
-              pagination: { paginationModel: { pageSize: 5 } },
+              pagination: { paginationModel: { pageSize: 10 } },
             }}
             localeText={ptBR.components.MuiDataGrid.defaultProps.localeText}
             editMode="row"
