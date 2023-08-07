@@ -334,7 +334,7 @@ function App() {
                 <DrawerHeader />
                 <ThemeProvider theme={defaultTheme}>
                   <Box component="main">
-                    <Box sx={{ padding: 0 }}>
+                    <Container maxWidth="lg" sx={{ padding: 0 }}>
                       {transitions((props, item) => (
                         <animated.div style={props}>
                           <RoutesContext.Provider value={routes}>
@@ -342,7 +342,7 @@ function App() {
                           </RoutesContext.Provider>
                         </animated.div>
                       ))}
-                    </Box>
+                    </Container>
                   </Box>
                 </ThemeProvider>
               </Main>
